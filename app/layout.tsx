@@ -19,16 +19,16 @@ const vt323 = VT323({
 })
 
 export const metadata: Metadata = {
-  title: 'molty.pet — The Crypto Robot Desk Pet',
+  title: 'molty.pet — AI Desk Companion That Fights Loneliness',
   description:
-    'A 3D-printed robot desk pet powered by emotional voice AI. Reacts to live crypto market events with physical expressions and real DeFi voice commands.',
+    'Molty is a 3D-printed AI desk companion with a voice and personality. It reacts to your day, celebrates wins, nudges you when you stall, and handles tasks by voice — so you never feel alone at your desk.',
   icons: {
     icon: '/favicon.png',
   },
   openGraph: {
-    title: 'molty.pet — The Crypto Robot Desk Pet',
+    title: 'molty.pet — AI Desk Companion That Fights Loneliness',
     description:
-      'Molty cries when ETH dumps, celebrates when it pumps, and can swap tokens with just its voice.',
+      'A desk pet that keeps you company, reacts to your mood, and gets things done — no apps, no typing, just Molty.',
     siteName: 'molty.pet',
   },
 }

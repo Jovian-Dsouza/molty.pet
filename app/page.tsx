@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { Eye, Heart, Mic, Sparkles, Zap, type LucideIcon } from 'lucide-react'
 import HeroSection from './components/HeroSection'
 import MoltyFace, { type Mood } from './components/MoltyFace'
 import WaitlistForm from './components/WaitlistForm'
@@ -11,44 +12,44 @@ const MOODS: Array<{ mood: Mood; label: string; emoji: string; bg: string; trigg
   { mood: 'side-eye', label: 'side-eye', emoji: '👀', bg: '#C8B8FF', trigger: 'You know what you did.' },
 ]
 
-const PET_VALUES = [
+const PET_VALUES: Array<{ Icon: LucideIcon; title: string; desc: string; color: string }> = [
   {
-    icon: '👁️',
+    Icon: Eye,
     title: 'Ambient Awareness',
     desc: 'Molty reacts so you don\'t have to constantly check. One glance at your desk tells you everything.',
     color: '#6E54FF',
   },
   {
-    icon: '💥',
+    Icon: Heart,
     title: 'Emotional Accountability',
     desc: 'When something goes wrong and Molty looks genuinely devastated, it actually hits different. You feel it.',
     color: '#FF66C4',
   },
   {
-    icon: '🗣️',
+    Icon: Mic,
     title: 'Voice-First',
-    desc: 'No dashboards, no typing. Just say what you want. Molty handles the rest — swaps, timers, questions, bets.',
+    desc: 'No dashboards, no typing. Just say what you want. Molty handles the rest — timers, questions, check-ins.',
     color: '#5CE1E6',
   },
 ]
 
-const FEATURES = [
+const FEATURES: Array<{ Icon: LucideIcon; title: string; desc: string; color: string }> = [
   {
-    icon: '🎭',
-    title: 'Emotional Reactions',
-    desc: 'Molty reads live market data and physically expresses real emotions — claws up when Bitcoin pumps, head down when it crashes.',
+    Icon: Zap,
+    title: 'Keeps You Going',
+    desc: 'Molty reacts to your work in real time. Celebrates progress, nudges you when you stall, and makes boring tasks feel less empty.',
     color: '#FF66C4',
   },
   {
-    icon: '🎙️',
-    title: 'Voice DeFi',
-    desc: 'Price checks, prediction market bets, and cross-chain swaps — all triggered by natural voice commands via the Raspberry Pi.',
+    Icon: Mic,
+    title: 'Just Say It',
+    desc: 'No apps. No typing. Set reminders, ask questions, run tasks, or check in. Molty handles it instantly by voice.',
     color: '#6E54FF',
   },
   {
-    icon: '🦾',
-    title: 'Physical Claws',
-    desc: '3D-printed servo-driven claws that wave, grip, and gesture in sync with Molty\'s emotional state and voice responses.',
+    Icon: Sparkles,
+    title: 'Feels Alive',
+    desc: 'Expressions, voice, movement. Molty isn\'t static. It responds, adapts, and feels like something that\'s actually there with you.',
     color: '#5CE1E6',
   },
 ]
@@ -57,19 +58,19 @@ const STEPS = [
   {
     num: '01',
     title: 'Talk',
-    desc: '"Molty, what\'s ETH at?" or "Bet 5 USDC on ETH going up."',
+    desc: '"Molty, remind me in 20 minutes." or "What\'s on my list?" Just say it.',
     icon: '🗣️',
   },
   {
     num: '02',
     title: 'Think',
-    desc: 'Emotional AI processes market data, your command, and Molty\'s current mood state.',
+    desc: 'Emotional AI processes your voice, your context, and Molty\'s current mood to respond.',
     icon: '🧠',
   },
   {
     num: '03',
-    title: 'Act',
-    desc: 'Claws move. Voice responds. DeFi executes. Molty reacts with its whole tiny body.',
+    title: 'React',
+    desc: 'Claws move. Voice responds. Molty reacts with its whole tiny body — instantly.',
     icon: '⚡',
   },
 ]
@@ -121,7 +122,7 @@ export default function Home() {
           <h2 className="font-heading text-3xl font-bold text-bg sm:text-4xl">
             A desk pet that actually gives a damn.
           </h2>
-          <p className="mt-3 font-body text-base text-bg/55">
+          <p className="mx-auto mt-4 font-body" style={{ fontSize: 20, color: 'rgb(180, 192, 210)', maxWidth: 640, lineHeight: 1.7 }}>
             Not an app. Not a dashboard. A presence that reacts to your world and talks back.
           </p>
         </div>
@@ -131,10 +132,10 @@ export default function Home() {
           {PET_VALUES.map((v) => (
             <div key={v.title} className="flex flex-col gap-3">
               <span
-                className="text-3xl w-fit rounded-xl p-2"
-                style={{ backgroundColor: v.color + '20' }}
+                className="w-fit rounded-xl p-2.5"
+                style={{ backgroundColor: v.color + '30' }}
               >
-                {v.icon}
+                <v.Icon size={26} strokeWidth={2} color={v.color} />
               </span>
               <h3 className="font-heading text-lg font-bold text-bg">
                 {v.title}
@@ -152,10 +153,10 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
             <h2 className="font-heading text-4xl font-bold text-dark sm:text-5xl">
-              More than a toy.
+              More than a toy
             </h2>
-            <p className="mt-3 font-body text-lg text-dark/60">
-              A desk companion that trades, reacts, and never shuts up about crypto.
+            <p className="mx-auto mt-4 font-body" style={{ fontSize: 20, color: 'rgb(100, 116, 139)', maxWidth: 640, lineHeight: 1.7 }}>
+              Molty doesn&apos;t just sit on your desk. It reacts, motivates, and helps you move through your day.
             </p>
           </div>
 
@@ -171,10 +172,10 @@ export default function Home() {
                 }}
               >
                 <div
-                  className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl border-2 border-dark text-3xl shadow-chunky-sm"
+                  className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl border-2 border-dark shadow-chunky-sm"
                   style={{ backgroundColor: f.color }}
                 >
-                  {f.icon}
+                  <f.Icon size={28} strokeWidth={2.5} color="white" />
                 </div>
                 <h3 className="mb-2 font-heading text-xl font-bold text-dark">
                   {f.title}
@@ -198,7 +199,7 @@ export default function Home() {
             <h2 className="font-heading text-4xl font-bold text-bg sm:text-5xl">
               How it works.
             </h2>
-            <p className="mt-3 font-body text-lg text-bg/50">
+            <p className="mx-auto mt-4 font-body" style={{ fontSize: 20, color: 'rgb(160, 150, 185)', maxWidth: 640, lineHeight: 1.7 }}>
               Three steps from voice to vibe.
             </p>
           </div>
@@ -250,7 +251,7 @@ export default function Home() {
           <h2 className="font-heading text-4xl font-bold text-dark sm:text-5xl">
             Be first in line.
           </h2>
-          <p className="mt-4 mb-8 font-body text-lg text-dark/60">
+          <p className="mx-auto mt-4 mb-8 font-body" style={{ fontSize: 20, color: 'rgb(100, 116, 139)', maxWidth: 640, lineHeight: 1.7 }}>
             Molty ships in limited batches. Get on the waitlist and we&apos;ll let
             you know the moment yours is ready.
           </p>
