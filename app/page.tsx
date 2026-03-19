@@ -3,12 +3,33 @@ import HeroSection from './components/HeroSection'
 import MoltyFace, { type Mood } from './components/MoltyFace'
 import WaitlistForm from './components/WaitlistForm'
 
-const MOODS: Array<{ mood: Mood; label: string; emoji: string; bg: string }> = [
-  { mood: 'hyped', label: 'hyped', emoji: '🔥', bg: '#FF66C4' },
-  { mood: 'heartbroken', label: 'heartbroken', emoji: '💔', bg: '#B0C4DE' },
-  { mood: 'celebrating', label: 'celebrating', emoji: '🎉', bg: '#5CE1E6' },
-  { mood: 'nervous', label: 'nervous', emoji: '😰', bg: '#FFB347' },
-  { mood: 'side-eye', label: 'side-eye', emoji: '👀', bg: '#C8B8FF' },
+const MOODS: Array<{ mood: Mood; label: string; emoji: string; bg: string; trigger: string }> = [
+  { mood: 'hyped', label: 'hyped', emoji: '🔥', bg: '#FF66C4', trigger: 'Big win. Could be anything.' },
+  { mood: 'heartbroken', label: 'heartbroken', emoji: '💔', bg: '#B0C4DE', trigger: 'That trade. That project. That day.' },
+  { mood: 'celebrating', label: 'celebrating', emoji: '🎉', bg: '#5CE1E6', trigger: 'You asked it to — and it did.' },
+  { mood: 'nervous', label: 'nervous', emoji: '😰', bg: '#FFB347', trigger: 'Something\'s about to happen.' },
+  { mood: 'side-eye', label: 'side-eye', emoji: '👀', bg: '#C8B8FF', trigger: 'You know what you did.' },
+]
+
+const PET_VALUES = [
+  {
+    icon: '👁️',
+    title: 'Ambient Awareness',
+    desc: 'Molty reacts so you don\'t have to constantly check. One glance at your desk tells you everything.',
+    color: '#6E54FF',
+  },
+  {
+    icon: '💥',
+    title: 'Emotional Accountability',
+    desc: 'When something goes wrong and Molty looks genuinely devastated, it actually hits different. You feel it.',
+    color: '#FF66C4',
+  },
+  {
+    icon: '🗣️',
+    title: 'Voice-First',
+    desc: 'No dashboards, no typing. Just say what you want. Molty handles the rest — swaps, timers, questions, bets.',
+    color: '#5CE1E6',
+  },
 ]
 
 const FEATURES = [
@@ -94,33 +115,33 @@ export default function Home() {
       <HeroSection />
 
       {/* ── Emotions Strip ── */}
-      <section className="border-y-3 border-dark bg-dark py-10 overflow-hidden" style={{ borderTopWidth: 3, borderBottomWidth: 3 }}>
-        <div className="mx-auto mb-8 px-6 text-center">
+      <section className="border-y-3 border-dark bg-dark py-16 overflow-hidden" style={{ borderTopWidth: 3, borderBottomWidth: 3 }}>
+        {/* Header */}
+        <div className="mx-auto mb-10 px-6 text-center max-w-xl">
           <h2 className="font-heading text-3xl font-bold text-bg sm:text-4xl">
-            5 moods. Infinite drama.
+            A desk pet that actually gives a damn.
           </h2>
-          <p className="mt-2 font-body text-bg/60">
-            Molty feels the market so you don&apos;t have to.
+          <p className="mt-3 font-body text-base text-bg/55">
+            Not an app. Not a dashboard. A presence that reacts to your world and talks back.
           </p>
         </div>
 
-        <div className="flex gap-6 overflow-x-auto pb-4 px-6 snap-x snap-mandatory">
-          {MOODS.map(({ mood, label, emoji, bg }) => (
-            <div
-              key={mood}
-              className="snap-center flex shrink-0 flex-col items-center gap-3 rounded-2xl border-3 border-bg/20 p-5 transition-transform hover:-translate-y-1"
-              style={{ backgroundColor: bg + '22', borderColor: bg, borderWidth: 3, minWidth: 140 }}
-            >
-              <MoltyFace mood={mood} size="sm" />
-              <div className="text-center">
-                <span className="text-xl">{emoji}</span>
-                <p
-                  className="font-retro text-lg tracking-widest"
-                  style={{ color: bg }}
-                >
-                  {label.toUpperCase()}
-                </p>
-              </div>
+        {/* Why a digital pet */}
+        <div className="mx-auto grid gap-6 px-6 max-w-4xl sm:grid-cols-3">
+          {PET_VALUES.map((v) => (
+            <div key={v.title} className="flex flex-col gap-3">
+              <span
+                className="text-3xl w-fit rounded-xl p-2"
+                style={{ backgroundColor: v.color + '20' }}
+              >
+                {v.icon}
+              </span>
+              <h3 className="font-heading text-lg font-bold text-bg">
+                {v.title}
+              </h3>
+              <p className="font-body text-sm leading-relaxed text-bg/55">
+                {v.desc}
+              </p>
             </div>
           ))}
         </div>
