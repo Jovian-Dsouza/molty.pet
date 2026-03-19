@@ -19,6 +19,9 @@
   --animate-led-blink: led-blink 1.2s ease-in-out infinite;
   --animate-enter: enter 0.5s ease-out both;
   --animate-spin-slow: spin 8s linear infinite;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-draw-line: draw-line 1.5s ease-out forwards;
+  --animate-fade-up: fade-up 0.6s ease-out both;
 }
 
 @keyframes blink {
@@ -53,6 +56,69 @@
 @keyframes enter {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes draw-line {
+  from { height: 0; }
+  to { height: 100%; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Noise texture overlay */
+.noise-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Scanline effect for retro sections */
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,245,249,0.015) 2px,
+    rgba(255,245,249,0.015) 4px
+  );
+  pointer-events: none;
+}
+
+/* Step connector line */
+.step-connector {
+  position: relative;
+}
+.step-connector::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: calc(100% - 80px);
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    #6E54FF 0,
+    #6E54FF 8px,
+    transparent 8px,
+    transparent 14px
+  );
+  opacity: 0.5;
 }
 
 body {
