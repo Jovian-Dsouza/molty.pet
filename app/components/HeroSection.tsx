@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import MoltyFace, { type Mood } from './MoltyFace'
+import MoltyVideo from './MoltyVideo'
+import { type Mood } from './MoltyFace'
 import WaitlistForm from './WaitlistForm'
 
 export default function HeroSection() {
@@ -70,19 +71,9 @@ export default function HeroSection() {
 
         {/* Right: Molty face */}
         <div className="relative flex shrink-0 flex-col items-center gap-4">
-          {/* Mood label */}
-          <div
-            className="rounded-full border-2 border-dark px-4 py-1 shadow-chunky-sm"
-            style={{ backgroundColor: mood === 'hyped' ? '#FF66C4' : '#FFD93D' }}
-          >
-            <span className="font-retro text-xl tracking-widest text-dark">
-              {mood === 'hyped' ? 'HYPED MODE 🔥' : 'MOOD: HAPPY 😊'}
-            </span>
-          </div>
-
           {/* Animated face */}
           <div className="animate-float">
-            <MoltyFace mood={mood} size="lg" animateClaws />
+            <MoltyVideo size="lg" />
           </div>
 
           {/* Decorative sparks */}
