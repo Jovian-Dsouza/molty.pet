@@ -22,6 +22,9 @@ export const metadata: Metadata = {
   title: 'molty.pet — The Crypto Robot Desk Pet',
   description:
     'A 3D-printed robot desk pet powered by emotional voice AI. Reacts to live crypto market events with physical expressions and real DeFi voice commands.',
+  icons: {
+    icon: '/favicon.png',
+  },
   openGraph: {
     title: 'molty.pet — The Crypto Robot Desk Pet',
     description:

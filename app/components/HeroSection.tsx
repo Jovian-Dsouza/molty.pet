@@ -26,11 +26,6 @@ export default function HeroSection() {
       <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-12 lg:flex-row lg:gap-16">
         {/* Left: Text + Form */}
         <div className="flex flex-1 flex-col gap-6 text-center lg:text-left">
-          {/* Badge */}
-          <div className="inline-flex items-center justify-center gap-2 self-center rounded-full border-2 border-dark bg-yellow px-4 py-1.5 shadow-chunky-sm lg:self-start">
-            <span className="font-retro text-xl tracking-wide text-dark">NEW DROP</span>
-            <span className="text-lg">🤖</span>
-          </div>
 
           {/* Headline */}
           <h1 className="font-heading text-5xl font-bold leading-tight tracking-wide text-dark sm:text-6xl lg:text-7xl">

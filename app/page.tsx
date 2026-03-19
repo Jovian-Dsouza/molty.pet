@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import HeroSection from './components/HeroSection'
 import MoltyFace, { type Mood } from './components/MoltyFace'
 import WaitlistForm from './components/WaitlistForm'
@@ -58,8 +59,26 @@ export default function Home() {
       {/* ── Nav ── */}
       <nav className="sticky top-0 z-50 border-b-3 border-dark bg-bg/95 backdrop-blur-sm" style={{ borderBottomWidth: 3 }}>
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <a href="#" className="font-heading text-2xl font-bold tracking-wide text-dark">
-            molty<span style={{ color: '#6E54FF' }}>.pet</span>
+          <a href="#" className="flex items-center gap-3 transition-opacity hover:opacity-80">
+            <div
+              className="rounded-full p-[2.5px] shrink-0"
+              style={{
+                background: 'linear-gradient(135deg, #6E54FF 0%, #FF66C4 100%)',
+                boxShadow: '0 2px 14px rgba(110,84,255,0.40)',
+              }}
+            >
+              <Image
+                src="/logo-rounded.png"
+                alt="Molty logo"
+                width={42}
+                height={42}
+                className="rounded-full block"
+                priority
+              />
+            </div>
+            <span className="font-heading text-2xl font-bold tracking-wide text-dark leading-none">
+              molty<span style={{ color: '#6E54FF' }}>.pet</span>
+            </span>
           </a>
           <a
             href="#waitlist"
@@ -229,9 +248,26 @@ export default function Home() {
 
           {/* Bottom bar */}
           <div className="mt-16 border-t-2 border-dark/10 pt-8 flex flex-col items-center gap-2">
-            <p className="font-heading text-xl font-bold text-dark">
-              molty<span style={{ color: '#6E54FF' }}>.pet</span>
-            </p>
+            <div className="flex items-center gap-2">
+              <div
+                className="rounded-full p-[2px] shrink-0"
+                style={{
+                  background: 'linear-gradient(135deg, #6E54FF 0%, #FF66C4 100%)',
+                  boxShadow: '0 1px 8px rgba(110,84,255,0.35)',
+                }}
+              >
+                <Image
+                  src="/logo-rounded.png"
+                  alt="Molty logo"
+                  width={28}
+                  height={28}
+                  className="rounded-full block"
+                />
+              </div>
+              <p className="font-heading text-xl font-bold text-dark">
+                molty<span style={{ color: '#6E54FF' }}>.pet</span>
+              </p>
+            </div>
             <p className="font-retro text-base tracking-wider text-dark/40">
               FEEL THE MARKET. OWN THE MOMENT.
             </p>
