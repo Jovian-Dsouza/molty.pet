@@ -447,7 +447,7 @@ export default function Home() {
               </p>
             </div>
             <p className="font-retro text-base tracking-wider text-dark/40">
-              FEEL THE MARKET. OWN THE MOMENT.
+              YOUR FAVORITE DESK PET
             </p>
           </div>
         </div>
