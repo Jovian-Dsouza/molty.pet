@@ -1,12 +1,48 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import MoltyVideo from './MoltyVideo'
 import { type Mood } from './MoltyFace'
 import WaitlistForm from './WaitlistForm'
 
+const VERBS = ['feels', 'trades', 'reacts', 'talks', 'executes', 'evolves', 'thinks']
+const TYPE_SPEED = 80
+const DELETE_SPEED = 50
+const PAUSE_MS = 1800
+
 export default function HeroSection() {
   const [mood, setMood] = useState<Mood>('happy')
+  const [displayed, setDisplayed] = useState(VERBS[0])
+  const [verbIndex, setVerbIndex] = useState(0)
+  const [phase, setPhase] = useState<'typing' | 'pausing' | 'deleting'>('pausing')
+
+  useEffect(() => {
+    const target = VERBS[verbIndex]
+
+    if (phase === 'pausing') {
+      const t = setTimeout(() => setPhase('deleting'), PAUSE_MS)
+      return () => clearTimeout(t)
+    }
+
+    if (phase === 'deleting') {
+      if (displayed.length === 0) {
+        setVerbIndex((i) => (i + 1) % VERBS.length)
+        setPhase('typing')
+        return
+      }
+      const t = setTimeout(() => setDisplayed((d) => d.slice(0, -1)), DELETE_SPEED)
+      return () => clearTimeout(t)
+    }
+
+    if (phase === 'typing') {
+      if (displayed === target) {
+        setPhase('pausing')
+        return
+      }
+      const t = setTimeout(() => setDisplayed(target.slice(0, displayed.length + 1)), TYPE_SPEED)
+      return () => clearTimeout(t)
+    }
+  }, [phase, displayed, verbIndex])
 
   function handleSuccess() {
     setMood('hyped')
@@ -32,19 +68,17 @@ export default function HeroSection() {
           <h1 className="font-heading text-5xl font-bold leading-tight tracking-wide text-dark sm:text-6xl lg:text-7xl">
             The desk pet that{' '}
             <span
-              className="inline-block rounded-lg px-2 py-0.5"
+              className="inline-block min-w-[6ch] rounded-lg px-2 py-0.5"
               style={{ backgroundColor: '#6E54FF', color: '#FFF5F9' }}
             >
-              feels
-            </span>{' '}
-            every crypto move.
+              {displayed}
+              <span className="animate-pulse">|</span>
+            </span>
           </h1>
 
           {/* Subheadline */}
           <p className="font-body text-lg leading-relaxed text-dark/70 sm:text-xl">
-            Molty is a 3D-printed robot desk pet with an emotional voice AI. It{' '}
-            <strong>cries when ETH dumps</strong>, celebrates when it pumps, and can
-            swap tokens with just its voice. Real DeFi. Real feelings.
+            A 3D-printed AI robot with a voice, personality, and real-world abilities.
           </p>
 
           {/* Form */}
