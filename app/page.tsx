@@ -287,7 +287,7 @@ export default function Home() {
               <span style={{ color: '#FF66C4' }}>Every moment.</span>
             </h2>
             <p className="mx-auto mt-4 font-body text-lg" style={{ color: 'rgb(100, 116, 139)', maxWidth: 500, lineHeight: 1.7 }}>
-              Molty doesn&apos;t fake it. Each expression maps to real context — your wins, your losses, your &ldquo;what just happened&rdquo; moments.
+              Molty doesn&apos;t fake it. Each expression maps to real context. Your wins, your losses, your &ldquo;what just happened&rdquo; moments.
             </p>
           </div>
 
