@@ -77,9 +77,28 @@ export default function HeroSection() {
           </h1>
 
           {/* Subheadline */}
-          <p className="font-body text-lg leading-relaxed text-dark/70 sm:text-xl">
+          <p
+            className="font-heading font-semibold pt-3"
+            style={{ fontSize: 'clamp(20px, 2.2vw, 28px)', color: '#334155', lineHeight: 1.5, maxWidth: '540px' }}
+          >
             A 3D-printed AI robot with a voice, personality, and real-world abilities.
           </p>
+
+          {/* CTA label */}
+          {/* <div className="flex items-center justify-center pt-4 lg:justify-start">
+            <div
+              className="inline-flex items-center gap-2 rounded-full px-3 py-1 -rotate-5 top-1"
+              style={{ background: 'linear-gradient(135deg, #6E54FF 0%, #FF66C4 100%)' }}
+            >
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+              </span>
+              <span className="font-body text-xs font-semibold tracking-wide text-white">
+                Early access — spots filling fast
+              </span>
+            </div>
+          </div> */}
 
           {/* Form */}
           <div className="w-full max-w-lg self-center lg:self-start">
@@ -89,11 +108,19 @@ export default function HeroSection() {
           {/* Social proof */}
           <div className="flex items-center justify-center gap-3 lg:justify-start">
             <div className="flex -space-x-2">
-              {['#FF66C4', '#6E54FF', '#5CE1E6', '#FFD93D', '#FFB347'].map((c, i) => (
-                <div
-                  key={i}
-                  className="h-8 w-8 rounded-full border-2 border-dark"
-                  style={{ backgroundColor: c }}
+              {[
+                { src: '/avatars/dsouzajovian.jpg', alt: '@DsouzaJovian' },
+                { src: '/avatars/pettiboy_com.jpg', alt: '@pettiboy_com' },
+                { src: '/avatars/vitalikbuterin.jpg', alt: '@VitalikButerin' },
+                { src: '/avatars/naval.jpg', alt: '@naval' },
+                { src: '/avatars/balajis.jpg', alt: '@balajis' },
+              ].map(({ src, alt }) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={alt}
+                  src={src}
+                  alt={alt}
+                  className="h-8 w-8 rounded-full border-2 border-dark object-cover"
                 />
               ))}
             </div>
