@@ -49,7 +49,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative overflow-hidden px-6 py-16 sm:py-24">
+    <section className="relative flex min-h-screen items-center overflow-hidden px-6 py-16 sm:py-24">
       {/* Background blobs */}
       <div
         className="pointer-events-none absolute -top-32 -left-32 h-96 w-96 rounded-full opacity-20 blur-3xl"
