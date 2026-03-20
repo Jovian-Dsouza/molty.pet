@@ -1,30 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { readFile, writeFile, mkdir } from 'fs/promises'
-import path from 'path'
-
-const DATA_DIR = path.join(process.cwd(), 'data')
-const WAITLIST_FILE = path.join(DATA_DIR, 'waitlist.json')
+import { prisma } from '@/lib/prisma'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-interface WaitlistEntry {
-  email: string
-  timestamp: string
-}
-
-async function readWaitlist(): Promise<WaitlistEntry[]> {
-  try {
-    const content = await readFile(WAITLIST_FILE, 'utf-8')
-    return JSON.parse(content) as WaitlistEntry[]
-  } catch {
-    return []
-  }
-}
-
-async function writeWaitlist(entries: WaitlistEntry[]): Promise<void> {
-  await mkdir(DATA_DIR, { recursive: true })
-  await writeFile(WAITLIST_FILE, JSON.stringify(entries, null, 2), 'utf-8')
-}
 
 export async function POST(request: NextRequest) {
   let body: unknown
@@ -59,21 +36,21 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  const entries = await readWaitlist()
+  const existing = await prisma.waitlistEntry.findUnique({
+    where: { email: rawEmail },
+  })
 
-  if (entries.some((e) => e.email === rawEmail)) {
+  if (existing) {
     return NextResponse.json(
       { success: false, message: "You're already on the list! We'll be in touch." },
       { status: 409 },
     )
   }
 
-  const updated = [...entries, { email: rawEmail, timestamp: new Date().toISOString() }]
-
   try {
-    await writeWaitlist(updated)
+    await prisma.waitlistEntry.create({ data: { email: rawEmail } })
   } catch (err) {
-    console.error('[waitlist] write error:', err)
+    console.error('[waitlist] db write error:', err)
     return NextResponse.json(
       { success: false, message: 'Failed to save. Please try again.' },
       { status: 500 },
