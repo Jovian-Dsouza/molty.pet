@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { track } from '@vercel/analytics'
 
 interface WaitlistFormProps {
   onSuccess?: () => void
@@ -40,14 +41,17 @@ export default function WaitlistForm({
         setFormState('success')
         setMessage(data.message)
         setEmail('')
+        track('waitlist_submit', { status: 'success' })
         onSuccess?.()
       } else {
         setFormState('error')
         setMessage(data.message)
+        track('waitlist_submit', { status: 'error' })
       }
     } catch {
       setFormState('error')
       setMessage('Something went wrong. Try again!')
+      track('waitlist_submit', { status: 'error' })
     }
   }
 

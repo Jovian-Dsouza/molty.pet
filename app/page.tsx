@@ -4,6 +4,7 @@ import HeroSection from './components/HeroSection'
 import MoltyFace from './components/MoltyFace'
 import MoodShowcase from './components/MoodShowcase'
 import WaitlistForm from './components/WaitlistForm'
+import SectionTracker from './components/SectionTracker'
 
 const FEATURES: Array<{ Icon: LucideIcon; title: string; desc: string; color: string; span?: string }> = [
   {
@@ -89,9 +90,12 @@ export default function Home() {
       </nav>
 
       {/* ── Hero ── */}
-      <HeroSection />
+      <SectionTracker sectionId="hero">
+        <HeroSection />
+      </SectionTracker>
 
       {/* ── The Problem ── */}
+      <SectionTracker sectionId="problem">
       <section
         className="noise-bg scanlines relative border-t-3 border-dark overflow-hidden"
         style={{ borderTopWidth: 3, backgroundColor: '#1A1528' }}
@@ -175,6 +179,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </SectionTracker>
 
       {/* ── Gradient Divider ── */}
       <div
@@ -185,6 +190,7 @@ export default function Home() {
       />
 
       {/* ── Meet Molty / Features — Bento Grid ── */}
+      <SectionTracker sectionId="features">
       <section className="px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <div className="mb-14 text-center">
@@ -258,8 +264,10 @@ export default function Home() {
           </p>
         </div>
       </section>
+      </SectionTracker>
 
       {/* ── Mood Showcase ── */}
+      <SectionTracker sectionId="mood-showcase">
       <section
         className="relative overflow-hidden border-y-3 border-dark px-6 py-20"
         style={{ backgroundColor: '#F8EEFF', borderTopWidth: 3, borderBottomWidth: 3 }}
@@ -294,8 +302,10 @@ export default function Home() {
           <MoodShowcase />
         </div>
       </section>
+      </SectionTracker>
 
       {/* ── How It Works ── */}
+      <SectionTracker sectionId="how-it-works">
       <section
         className="noise-bg scanlines relative overflow-hidden"
         style={{ backgroundColor: '#1A1528' }}
@@ -376,8 +386,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </SectionTracker>
 
       {/* ── Footer CTA / Waitlist ── */}
+      <SectionTracker sectionId="waitlist-cta">
       <footer id="waitlist" className="relative overflow-hidden px-6 py-24 sm:py-28">
         {/* Background decoration */}
         <div
@@ -452,6 +464,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      </SectionTracker>
     </div>
   )
 }
