@@ -37,8 +37,8 @@ const STEPS: Array<{ num: string; title: string; desc: string; Icon: LucideIcon;
   },
   {
     num: '02',
-    title: 'Think',
-    desc: 'Emotional AI processes your voice, your context, and Molty\'s current mood to respond.',
+    title: 'Think (OpenClaw)',
+    desc: 'OpenClaw handles execution: tasks, automations, and real-world actions.',
     Icon: PawPrint,
     color: '#6E54FF',
   },
@@ -254,7 +254,7 @@ export default function Home() {
           </div>
 
           <p className="mx-auto mt-12 text-center font-retro text-lg tracking-wider sm:text-xl" style={{ color: '#FF66C4' }}>
-            NOT JUST AN ASSISTANT — SOMETHING THAT FEELS ALIVE.
+            NOT JUST AN ASSISTANT — ITS YOUR FAVORITE DESK PET.
           </p>
         </div>
       </section>
