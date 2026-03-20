@@ -106,7 +106,7 @@ export default function HeroSection() {
           </div>
 
           {/* Social proof */}
-          <div className="flex items-center justify-center gap-3 lg:justify-start">
+          <div className="flex items-center justify-center gap-2 lg:justify-start">
             <div className="flex -space-x-2">
               {[
                 { src: '/avatars/dsouzajovian.jpg', alt: '@DsouzaJovian' },
@@ -120,11 +120,11 @@ export default function HeroSection() {
                   key={alt}
                   src={src}
                   alt={alt}
-                  className="h-8 w-8 rounded-full border-2 border-dark object-cover"
+                  className="h-6 w-6 rounded-full border-2 border-dark object-cover sm:h-8 sm:w-8"
                 />
               ))}
             </div>
-            <p className="font-body text-sm font-medium text-dark/60">
+            <p className="font-body text-xs font-medium text-dark/60 sm:text-sm">
               <span className="font-bold text-dark">2,341+</span> people already on the waitlist
             </p>
           </div>
