@@ -82,9 +82,13 @@ export default function Home() {
             className="focus-ring flex min-h-11 items-center gap-2 rounded-lg"
             aria-label="Molty home"
           >
-            <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
-              <PawPrint aria-hidden="true" className="size-4" />
-            </span>
+            <Image
+              src="/molty-logo.png"
+              alt=""
+              width={32}
+              height={32}
+              className="size-8 rounded-lg"
+            />
             <span className="font-mono text-sm font-semibold tracking-[0.12em]">
               MOLTY.PET
             </span>
@@ -595,9 +599,13 @@ export default function Home() {
         <div className="site-shell flex flex-col gap-8 py-10 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <div className="flex items-center gap-2">
-              <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
-                <PawPrint aria-hidden="true" className="size-4" />
-              </span>
+              <Image
+                src="/molty-logo.png"
+                alt=""
+                width={32}
+                height={32}
+                className="size-8 rounded-lg"
+              />
               <span className="font-mono text-sm font-semibold tracking-[0.12em]">
                 MOLTY.PET
               </span>
