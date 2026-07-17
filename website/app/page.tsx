@@ -1,470 +1,634 @@
 import Image from 'next/image'
-import { Mic, Sparkles, Zap, PawPrint, type LucideIcon } from 'lucide-react'
-import HeroSection from './components/HeroSection'
-import MoltyFace from './components/MoltyFace'
-import MoodShowcase from './components/MoodShowcase'
-import WaitlistForm from './components/WaitlistForm'
-import SectionTracker from './components/SectionTracker'
+import {
+  ArrowDown,
+  ArrowUpRight,
+  BookOpen,
+  BrainCircuit,
+  Cpu,
+  Github,
+  Move,
+  PawPrint,
+  Play,
+  Radio,
+  Route,
+  Sparkles,
+  Users,
+  Wrench,
+} from 'lucide-react'
 
-const FEATURES: Array<{ Icon: LucideIcon; title: string; desc: string; color: string; span?: string }> = [
+const BUILD_POST =
+  'https://x.com/DsouzaJovian/status/2077026876728676777?s=20'
+const CREATOR_PROFILE = 'https://x.com/DsouzaJovian'
+const VIRTUALS_COMMUNITY = 'https://os.virtuals.io/community#champion'
+
+const values = [
   {
-    Icon: Zap,
-    title: 'Keeps You Going',
-    desc: 'Molty reacts to your work in real time. Celebrates progress, nudges you when you stall, and makes boring tasks feel less empty.',
-    color: '#FF66C4',
-    span: 'sm:col-span-2',
+    icon: PawPrint,
+    title: 'Presence, not another screen',
+    body: 'A pet can notice, approach, wait, and share a room. Intelligence becomes something you live alongside—not another tab you open.',
   },
   {
-    Icon: Mic,
-    title: 'Just Say It',
-    desc: 'No apps. No typing. Set reminders, ask questions, run tasks. Molty handles it instantly by voice.',
-    color: '#6E54FF',
+    icon: Radio,
+    title: 'A natural interface',
+    body: 'Voice, movement, touch, and routine give people a familiar way to interact with an agent without learning a new product.',
   },
   {
-    Icon: Sparkles,
-    title: 'Feels Alive',
-    desc: 'Expressions, voice, movement. Molty responds, adapts, and feels like something that\'s actually there with you.',
-    color: '#5CE1E6',
+    icon: BookOpen,
+    title: 'Robotics in public',
+    body: 'Every stumble becomes a useful lesson: motion policies, sensors, planning, memory, safety, and the reality of embodied AI.',
+  },
+  {
+    icon: Users,
+    title: 'A bridge to physical agents',
+    body: 'Molty can turn abstract agent infrastructure into a character people understand—and a reference build other makers can extend.',
   },
 ]
 
-const STEPS: Array<{ num: string; title: string; desc: string; Icon: LucideIcon; color: string }> = [
+const roadmap = [
   {
-    num: '01',
-    title: 'Talk',
-    desc: '"Molty, remind me in 20 minutes." or "What\'s on my list?" Just say it.',
-    Icon: Mic,
-    color: '#FF66C4',
+    phase: '01 / BODY',
+    title: 'Move with confidence',
+    copy: 'Stable walking, responsive gait control, better proprioception, obstacle sensing, and safer recovery.',
+    state: 'Building now',
+    icon: Move,
   },
   {
-    num: '02',
-    title: 'Think (OpenClaw)',
-    desc: 'OpenClaw handles execution: tasks, automations, and real-world actions.',
-    Icon: PawPrint,
-    color: '#6E54FF',
+    phase: '02 / MIND',
+    title: 'Think across time',
+    copy: 'Planning, memory, voice, curiosity, and reflection—grounded in what Molty can actually sense and do.',
+    state: 'Next',
+    icon: BrainCircuit,
   },
   {
-    num: '03',
-    title: 'React',
-    desc: 'Claws move. Voice responds. Molty reacts with its whole tiny body.',
-    Icon: Zap,
-    color: '#5CE1E6',
+    phase: '03 / LIFE',
+    title: 'Become a companion',
+    copy: 'Learn household routines, develop useful behaviors, coordinate with other agents, and grow through long-term interaction.',
+    state: 'North star',
+    icon: Sparkles,
   },
 ]
 
 export default function Home() {
   return (
-    <div className="flex flex-col">
-      {/* ── Nav ── */}
-      <nav className="sticky top-0 z-50 border-b-3 border-dark bg-bg/95 backdrop-blur-sm" style={{ borderBottomWidth: 3 }}>
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <a href="#" className="flex items-center gap-3 transition-opacity hover:opacity-80">
-            <div
-              className="rounded-full p-[2.5px] shrink-0"
-              style={{
-                background: 'linear-gradient(135deg, #6E54FF 0%, #FF66C4 100%)',
-                boxShadow: '0 2px 14px rgba(110,84,255,0.40)',
-              }}
-            >
-              <Image
-                src="/logo-rounded.png"
-                alt="Molty logo"
-                width={42}
-                height={42}
-                className="rounded-full block"
-                priority
-              />
-            </div>
-            <span className="font-heading text-2xl font-bold tracking-wide text-dark leading-none">
-              molty<span style={{ color: '#6E54FF' }}>.pet</span>
+    <>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+
+      <header className="site-header">
+        <div className="site-shell flex h-16 items-center justify-between">
+          <a
+            href="#top"
+            className="focus-ring flex min-h-11 items-center gap-2 rounded-lg"
+            aria-label="Molty home"
+          >
+            <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
+              <PawPrint aria-hidden="true" className="size-4" />
+            </span>
+            <span className="font-mono text-sm font-semibold tracking-[0.12em]">
+              MOLTY.PET
             </span>
           </a>
+
+          <nav aria-label="Main navigation" className="hidden items-center gap-6 md:flex">
+            <a className="nav-link focus-ring" href="#origin">
+              Origin
+            </a>
+            <a className="nav-link focus-ring" href="#two-minds">
+              Two minds
+            </a>
+            <a className="nav-link focus-ring" href="#why-a-pet">
+              Why a pet
+            </a>
+            <a className="nav-link focus-ring" href="#roadmap">
+              Roadmap
+            </a>
+          </nav>
+
           <a
-            href="#waitlist"
-            className="rounded-xl border-3 border-dark bg-accent px-5 py-2 font-heading text-base font-semibold text-white shadow-chunky-sm transition-all active:translate-x-0.5 active:translate-y-0.5 active:shadow-none hover:bg-accent/90"
-            style={{ borderWidth: 3 }}
+            href={BUILD_POST}
+            target="_blank"
+            rel="noreferrer"
+            className="button button-secondary"
           >
-            Join Waitlist 🚀
+            Follow the build
+            <ArrowUpRight aria-hidden="true" className="size-4" />
           </a>
         </div>
-      </nav>
+      </header>
 
-      {/* ── Hero ── */}
-      <SectionTracker sectionId="hero">
-        <HeroSection />
-      </SectionTracker>
+      <main id="main">
+        <section id="top" className="hero-section ambient-grid scroll-mt-24">
+          <div className="site-shell grid min-h-[calc(100svh-4rem)] items-center gap-12 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:py-24">
+            <div className="relative z-10">
+              <div className="eyebrow">
+                <span className="status-dot" aria-hidden="true" />
+                Raspberry Pi quadruped / active prototype
+              </div>
 
-      {/* ── The Problem ── */}
-      <SectionTracker sectionId="problem">
-      <section
-        className="noise-bg scanlines relative border-t-3 border-dark overflow-hidden"
-        style={{ borderTopWidth: 3, backgroundColor: '#1A1528' }}
-      >
-        {/* Decorative grid dots */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, #FFF5F9 1px, transparent 1px)',
-            backgroundSize: '32px 32px',
-          }}
-        />
+              <h1 className="mt-6 max-w-[11ch] text-balance text-5xl font-semibold leading-[0.94] tracking-[-0.055em] sm:text-6xl lg:text-7xl">
+                Fast reflexes.
+                <span className="block text-primary">Slow thoughts.</span>
+              </h1>
 
-        <div className="relative px-6 py-20 sm:py-24">
-          <div className="mx-auto max-w-3xl text-center">
-            {/* Oversized retro label */}
-            <p
-              className="font-retro text-sm tracking-[0.3em] uppercase mb-6"
-              style={{ color: '#FF66C4' }}
-            >
-              The problem
-            </p>
+              <p className="mt-7 max-w-xl text-pretty text-lg leading-8 text-muted-foreground sm:text-xl">
+                Molty is a robot dog learning to move, reason, and live alongside
+                people—one messy experiment at a time.
+              </p>
 
-            <h2 className="font-heading text-4xl font-bold text-bg sm:text-5xl lg:text-6xl leading-tight">
-              Your desk is quiet.{' '}
-              <span
-                className="relative inline-block"
-              >
-                <span className="font-retro" style={{ color: '#B0C4DE' }}>
-                  Too quiet.
-                </span>
-                {/* Underline scribble */}
-                <span
-                  className="absolute -bottom-2 left-0 right-0 h-[3px] rounded-full"
-                  style={{
-                    background: 'linear-gradient(90deg, #FF66C4, #6E54FF)',
-                    opacity: 0.6,
-                  }}
-                />
-              </span>
-            </h2>
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                <a href="#prototype" className="button button-primary">
+                  <Play aria-hidden="true" className="size-4 fill-current" />
+                  Watch Molty move
+                </a>
+                <a href="#two-minds" className="button button-secondary">
+                  Explore the two minds
+                  <ArrowDown aria-hidden="true" className="size-4" />
+                </a>
+              </div>
 
-            <p
-              className="mx-auto mt-6 font-body text-lg sm:text-xl"
-              style={{ color: 'rgb(160, 150, 185)', maxWidth: 580, lineHeight: 1.8 }}
-            >
-              No reactions. No feedback. Just you, your screen, and the hum of
-              silence. The grind doesn&apos;t care how you feel.
-            </p>
-
-            {/* Emotional stat blocks */}
-            <div className="mx-auto mt-12 grid max-w-lg grid-cols-3 gap-4">
-              {[
-                { stat: '8hrs', label: 'avg. alone at desk', color: '#B0C4DE' },
-                { stat: '73%', label: 'feel isolated WFH', color: '#FF66C4' },
-                { stat: '0', label: 'things that react', color: '#6E54FF' },
-              ].map((s) => (
-                <div key={s.label} className="flex flex-col items-center gap-1">
-                  <span
-                    className="font-heading text-3xl font-bold sm:text-4xl"
-                    style={{ color: s.color }}
-                  >
-                    {s.stat}
-                  </span>
-                  <span
-                    className="font-body text-xs sm:text-sm"
-                    style={{ color: 'rgb(130, 120, 160)' }}
-                  >
-                    {s.label}
-                  </span>
+              <dl className="mt-12 grid max-w-xl grid-cols-3 border-y border-border/80 py-5">
+                <div>
+                  <dt className="metric-label">Body</dt>
+                  <dd className="metric-value">Quadruped</dd>
                 </div>
-              ))}
+                <div className="border-x border-border/80 px-4 sm:px-6">
+                  <dt className="metric-label">Brain</dt>
+                  <dd className="metric-value">Raspberry Pi</dd>
+                </div>
+                <div className="pl-4 sm:pl-6">
+                  <dt className="metric-label">Status</dt>
+                  <dd className="metric-value text-primary">Learning</dd>
+                </div>
+              </dl>
             </div>
 
-            <p
-              className="mx-auto mt-12 font-retro text-lg tracking-wider sm:text-xl"
-              style={{ color: 'rgba(255,245,249,0.20)' }}
-            >
-              HUMANS WEREN&apos;T BUILT TO WORK LIKE THIS.
-            </p>
-          </div>
-        </div>
-      </section>
-      </SectionTracker>
-
-      {/* ── Gradient Divider ── */}
-      <div
-        className="h-24 sm:h-32"
-        style={{
-          background: 'linear-gradient(to bottom, #1A1528, #FFF5F9)',
-        }}
-      />
-
-      {/* ── Meet Molty / Features — Bento Grid ── */}
-      <SectionTracker sectionId="features">
-      <section className="px-6 py-20">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-14 text-center">
-            <p
-              className="font-retro text-sm tracking-[0.3em] uppercase mb-4"
-              style={{ color: '#6E54FF' }}
-            >
-              Meet your companion
-            </p>
-            <h2 className="font-heading text-4xl font-bold text-dark sm:text-5xl lg:text-6xl">
-              Meet{' '}
-              <span
-                style={{
-                  background: 'linear-gradient(135deg, #6E54FF 0%, #FF66C4 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                Molty
-              </span>
-              .
-            </h2>
-            <p className="mx-auto mt-4 font-body text-lg sm:text-xl" style={{ color: 'rgb(100, 116, 139)', maxWidth: 640, lineHeight: 1.7 }}>
-              A desk companion that reacts, motivates, and actually helps you get things done.
-            </p>
-          </div>
-
-          {/* Bento grid */}
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {FEATURES.map((f, i) => (
-              <div
-                key={f.title}
-                className={`group relative overflow-hidden rounded-2xl border-3 border-dark p-7 shadow-chunky transition-all duration-300 hover:-translate-y-1 hover:shadow-chunky-lg ${f.span ?? ''}`}
-                style={{
-                  borderWidth: 3,
-                  backgroundColor: f.color + '12',
-                }}
-              >
-                {/* Corner accent */}
-                <div
-                  className="absolute -top-12 -right-12 h-24 w-24 rounded-full opacity-20 blur-2xl transition-opacity duration-300 group-hover:opacity-40"
-                  style={{ backgroundColor: f.color }}
+            <div className="relative z-10">
+              <div className="hero-photo-frame">
+                <Image
+                  src="/molty-dog-front.jpg"
+                  alt="Molty, a red four-legged robot dog prototype, standing on a workbench"
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 55vw, 100vw"
+                  className="object-cover"
                 />
+                <div className="photo-label left-4 top-4">
+                  <span className="status-dot" aria-hidden="true" />
+                  LIVE PROTOTYPE
+                </div>
+                <div className="photo-label bottom-4 right-4">
+                  <Cpu aria-hidden="true" className="size-4 text-primary" />
+                  PI-POWERED
+                </div>
+              </div>
+              <div className="absolute -bottom-5 -left-5 hidden max-w-60 rounded-xl border border-border bg-card p-4 shadow-2xl lg:block">
+                <p className="font-mono text-[0.65rem] tracking-[0.14em] text-primary">
+                  CURRENT OBSESSION
+                </p>
+                <p className="mt-2 text-sm leading-6 text-card-foreground">
+                  Teaching four legs to agree on where the ground is.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-                <div className="relative">
-                  <div
-                    className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl border-2 border-dark shadow-chunky-sm transition-transform duration-300 group-hover:rotate-6"
-                    style={{ backgroundColor: f.color }}
-                  >
-                    <f.Icon size={28} strokeWidth={2.5} color="white" />
-                  </div>
-                  <h3 className="mb-2 font-heading text-xl font-bold text-dark sm:text-2xl">
-                    {f.title}
+        <section id="origin" className="section scroll-mt-20">
+          <div className="site-shell">
+            <div className="section-heading">
+              <p className="section-kicker">01 / ORIGIN STORY</p>
+              <h2 className="section-title">Molty grew legs.</h2>
+              <p className="section-copy">
+                The first Molty was a friendly desk robot on two tracks. It could
+                roam, listen, and talk—but it still felt like a device. Giving
+                Molty four legs changed the question from “what can this robot
+                do?” to “what kind of creature could this become?”
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-5 lg:grid-cols-2">
+              <article className="story-card">
+                <div className="story-media bg-secondary">
+                  <Image
+                    src="/molty-hero.png"
+                    alt="The original Molty concept, a small desk robot with two track wheels and a face display"
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-contain p-8"
+                  />
+                </div>
+                <div className="p-6 sm:p-7">
+                  <p className="section-kicker">THEN / DESK ROBOT</p>
+                  <h3 className="mt-3 text-2xl font-semibold tracking-tight">
+                    A companion that lived on the desk
                   </h3>
-                  <p className="font-body text-base leading-relaxed text-dark/70">
-                    {f.desc}
+                  <p className="mt-3 leading-7 text-muted-foreground">
+                    Tracks, a screen, voice interaction, and a cheerful
+                    personality. A useful starting point—but not yet the pet I
+                    wanted to build.
                   </p>
                 </div>
+              </article>
 
-                {/* Bottom decorative bar */}
-                <div
-                  className="absolute bottom-0 left-0 h-1 w-0 transition-all duration-500 group-hover:w-full"
-                  style={{ backgroundColor: f.color }}
-                />
-              </div>
-            ))}
+              <article className="story-card story-card-current">
+                <div className="story-media">
+                  <Image
+                    src="/molty-dog-side.jpg"
+                    alt="The new Molty quadruped prototype showing its four red articulated legs and exposed Raspberry Pi"
+                    fill
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6 sm:p-7">
+                  <p className="section-kicker text-primary">NOW / ROBOT DOG</p>
+                  <h3 className="mt-3 text-2xl font-semibold tracking-tight">
+                    A creature that can share your space
+                  </h3>
+                  <p className="mt-3 leading-7 text-muted-foreground">
+                    Four legs, an exposed nervous system, and a much bigger
+                    ambition: explore what it takes for an intelligent machine to
+                    feel present, responsive, and alive.
+                  </p>
+                </div>
+              </article>
+            </div>
           </div>
+        </section>
 
-          <p className="mx-auto mt-12 text-center font-retro text-lg tracking-wider sm:text-xl" style={{ color: '#FF66C4' }}>
-            NOT JUST AN ASSISTANT — ITS YOUR FAVORITE DESK PET.
-          </p>
-        </div>
-      </section>
-      </SectionTracker>
-
-      {/* ── Mood Showcase ── */}
-      <SectionTracker sectionId="mood-showcase">
-      <section
-        className="relative overflow-hidden border-y-3 border-dark px-6 py-20"
-        style={{ backgroundColor: '#F8EEFF', borderTopWidth: 3, borderBottomWidth: 3 }}
-      >
-        {/* Decorative background shapes */}
-        <div
-          className="pointer-events-none absolute top-10 left-10 h-40 w-40 rounded-full opacity-15 blur-3xl"
-          style={{ backgroundColor: '#6E54FF' }}
-        />
-        <div
-          className="pointer-events-none absolute bottom-10 right-10 h-32 w-32 rounded-full opacity-15 blur-3xl"
-          style={{ backgroundColor: '#FF66C4' }}
-        />
-
-        <div className="relative mx-auto max-w-5xl">
-          <div className="mb-14 text-center">
-            <p
-              className="font-retro text-sm tracking-[0.3em] uppercase mb-4"
-              style={{ color: '#6E54FF' }}
-            >
-              Emotional range
-            </p>
-            <h2 className="font-heading text-4xl font-bold text-dark sm:text-5xl">
-              Every mood.{' '}
-              <span style={{ color: '#FF66C4' }}>Every moment.</span>
-            </h2>
-            <p className="mx-auto mt-4 font-body text-lg" style={{ color: 'rgb(100, 116, 139)', maxWidth: 500, lineHeight: 1.7 }}>
-              Molty doesn&apos;t fake it. Each expression maps to real context. Your wins, your losses, your &ldquo;what just happened&rdquo; moments.
-            </p>
-          </div>
-
-          <MoodShowcase />
-        </div>
-      </section>
-      </SectionTracker>
-
-      {/* ── How It Works ── */}
-      <SectionTracker sectionId="how-it-works">
-      <section
-        className="noise-bg scanlines relative overflow-hidden"
-        style={{ backgroundColor: '#1A1528' }}
-      >
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: 'radial-gradient(circle, #FFF5F9 1px, transparent 1px)',
-            backgroundSize: '32px 32px',
-          }}
-        />
-
-        <div className="relative px-6 py-20 sm:py-24">
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-16 text-center">
-              <p
-                className="font-retro text-sm tracking-[0.3em] uppercase mb-4"
-                style={{ color: '#5CE1E6' }}
-              >
-                How it works
-              </p>
-              <h2 className="font-heading text-4xl font-bold text-bg sm:text-5xl lg:text-6xl">
-                Three steps.{' '}
-                <span style={{ color: '#5CE1E6' }}>Zero friction.</span>
-              </h2>
-              <p className="mx-auto mt-4 font-body text-lg" style={{ color: 'rgb(160, 150, 185)', maxWidth: 500, lineHeight: 1.7 }}>
-                From voice to vibe in under a second.
+        <section id="two-minds" className="section section-alt scroll-mt-20">
+          <div className="site-shell">
+            <div className="section-heading">
+              <p className="section-kicker">02 / THE ARCHITECTURE</p>
+              <h2 className="section-title">One body. Two speeds of thought.</h2>
+              <p className="section-copy">
+                Animals do not ask their conscious mind to calculate every footstep.
+                Molty follows the same idea: a fast loop keeps the body responsive
+                while a slower loop works out what to do next.
               </p>
             </div>
 
-            {/* Vertical timeline on mobile, horizontal on desktop */}
-            <div className="relative mx-auto max-w-4xl">
-              {/* Desktop connector line */}
-              <div
-                className="absolute top-[52px] left-[calc(16.67%+40px)] right-[calc(16.67%+40px)] hidden h-[3px] sm:block"
-                style={{
-                  background: 'repeating-linear-gradient(90deg, #6E54FF 0, #6E54FF 8px, transparent 8px, transparent 16px)',
-                  opacity: 0.4,
-                }}
-              />
+            <div className="mt-12 grid gap-5 lg:grid-cols-2">
+              <article className="mind-card mind-card-fast">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="icon-box">
+                    <Move aria-hidden="true" className="size-6" />
+                  </div>
+                  <span className="state-badge">MILLISECONDS</span>
+                </div>
+                <p className="section-kicker mt-8 text-primary">FAST THINKING</p>
+                <h3 className="mt-3 text-3xl font-semibold tracking-tight">
+                  The reflex loop
+                </h3>
+                <p className="mt-4 max-w-lg leading-7 text-muted-foreground">
+                  Neural motion policies turn live sensor data into motor commands.
+                  This loop handles balance, gait, reactions, and recovery without
+                  waiting for language.
+                </p>
+                <div className="flow-row" aria-label="Fast thinking flow">
+                  <span>Sense</span>
+                  <ArrowUpRight aria-hidden="true" />
+                  <span>Policy</span>
+                  <ArrowUpRight aria-hidden="true" />
+                  <span>Move</span>
+                </div>
+              </article>
 
-              <div className="grid gap-8 sm:grid-cols-3 sm:gap-6">
-                {STEPS.map((step, i) => (
-                  <div key={step.num} className="relative flex flex-col items-center text-center">
-                    {/* Step icon */}
-                    <div
-                      className="relative mb-6 flex h-[104px] w-[104px] items-center justify-center rounded-2xl border-3 shadow-chunky transition-transform duration-300 hover:rotate-3 hover:scale-105"
-                      style={{
-                        backgroundColor: step.color + '20',
-                        borderWidth: 3,
-                        borderColor: step.color,
-                      }}
-                    >
-                      <step.Icon size={48} strokeWidth={1.75} color={step.color} />
-                      {/* Number badge */}
-                      <span
-                        className="absolute -top-3 -right-3 flex h-8 w-8 items-center justify-center rounded-full border-2 font-retro text-base"
-                        style={{
-                          backgroundColor: step.color,
-                          borderColor: '#1A1528',
-                          color: '#1A1528',
-                        }}
-                      >
-                        {step.num.replace('0', '')}
+              <article className="mind-card">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="icon-box">
+                    <BrainCircuit aria-hidden="true" className="size-6" />
+                  </div>
+                  <span className="state-badge">SECONDS → HOURS</span>
+                </div>
+                <p className="section-kicker mt-8">SLOW THINKING</p>
+                <h3 className="mt-3 text-3xl font-semibold tracking-tight">
+                  The reasoning loop
+                </h3>
+                <p className="mt-4 max-w-lg leading-7 text-muted-foreground">
+                  An LLM observes context, plans actions, reflects on outcomes, and
+                  builds memory. It gives the reflex loop direction without trying
+                  to micromanage every joint.
+                </p>
+                <div className="flow-row" aria-label="Slow thinking flow">
+                  <span>Observe</span>
+                  <ArrowUpRight aria-hidden="true" />
+                  <span>Plan</span>
+                  <ArrowUpRight aria-hidden="true" />
+                  <span>Remember</span>
+                </div>
+              </article>
+            </div>
+
+            <div className="learning-loop mt-5">
+              <div className="icon-box shrink-0">
+                <Route aria-hidden="true" className="size-6" />
+              </div>
+              <div>
+                <p className="section-kicker text-primary">
+                  THE LOOP BETWEEN THE LOOPS
+                </p>
+                <h3 className="mt-2 text-xl font-semibold">
+                  Both systems learn continuously.
+                </h3>
+                <p className="mt-2 max-w-3xl leading-7 text-muted-foreground">
+                  Fast learning improves how Molty moves. Slow learning improves
+                  what Molty attempts, remembers, and values. The long-term
+                  experiment is how those two forms of learning shape each other.
+                </p>
+              </div>
+            </div>
+
+            <p className="mt-5 max-w-3xl font-mono text-xs leading-6 text-muted-foreground">
+              Honest status: the current prototype is focused on the body and
+              locomotion. The full two-speed learning architecture is the direction
+              being built toward, not a finished claim.
+            </p>
+          </div>
+        </section>
+
+        <section id="prototype" className="section scroll-mt-20">
+          <div className="site-shell">
+            <div className="grid items-end gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-12">
+              <div>
+                <p className="section-kicker">03 / FROM THE BENCH</p>
+                <h2 className="section-title">The messy middle is the project.</h2>
+                <p className="section-copy">
+                  Molty wobbles. Servos disagree. Cables escape. That is exactly
+                  why this is worth sharing: embodied intelligence is built through
+                  thousands of small encounters with the real world.
+                </p>
+                <a
+                  href={BUILD_POST}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="button button-secondary mt-7"
+                >
+                  View the build log on X
+                  <ArrowUpRight aria-hidden="true" className="size-4" />
+                </a>
+              </div>
+
+              <div className="video-frame">
+                <video
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster="/molty-dog-front.jpg"
+                  aria-label="Prototype video of Molty walking and moving on a workbench"
+                >
+                  <source src="/molty-dog-prototype.mp4" type="video/mp4" />
+                  Your browser does not support embedded video.
+                </video>
+                <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-5 py-4">
+                  <span className="font-mono text-xs tracking-[0.1em] text-muted-foreground">
+                    PROTOTYPE LOG / JUL 2026
+                  </span>
+                  <span className="flex items-center gap-2 text-sm text-foreground">
+                    <Wrench aria-hidden="true" className="size-4 text-primary" />
+                    Hardware in active development
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="why-a-pet" className="section section-alt scroll-mt-20">
+          <div className="site-shell">
+            <div className="section-heading">
+              <p className="section-kicker">04 / WHY A PET?</p>
+              <h2 className="section-title">
+                The most human place for an agent is beside us.
+              </h2>
+              <p className="section-copy">
+                A robotic dog is not only a locomotion problem. It is a way to
+                explore trust, companionship, useful autonomy, and how intelligence
+                changes when it has a body.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-2">
+              {values.map(({ icon: Icon, title, body }) => (
+                <article key={title} className="value-card">
+                  <div className="icon-box">
+                    <Icon aria-hidden="true" className="size-5" />
+                  </div>
+                  <h3 className="mt-6 text-xl font-semibold">{title}</h3>
+                  <p className="mt-3 max-w-lg leading-7 text-muted-foreground">
+                    {body}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="site-shell">
+            <div className="virtuals-panel">
+              <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+                <div>
+                  <p className="section-kicker text-primary">
+                    05 / MOLTY × VIRTUALS
+                  </p>
+                  <h2 className="section-title">
+                    A physical front door to the agent economy.
+                  </h2>
+                  <p className="section-copy">
+                    Virtuals gives agents identity, coordination, distribution,
+                    and an economy. Molty asks what happens when that stack can
+                    walk into a room.
+                  </p>
+                  <a
+                    href={VIRTUALS_COMMUNITY}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="button button-primary mt-8"
+                  >
+                    Explore the Champion program
+                    <ArrowUpRight aria-hidden="true" className="size-4" />
+                  </a>
+                </div>
+
+                <div className="grid gap-3">
+                  {[
+                    [
+                      'Ship a real reference build',
+                      'Publish the hardware, architecture, experiments, and hard-won lessons behind an embodied agent.',
+                    ],
+                    [
+                      'Turn iteration into education',
+                      'Make motion control, planning, memory, and safety understandable through demos and build logs.',
+                    ],
+                    [
+                      'Onboard embodied-agent builders',
+                      'Give robotics makers a tangible path into the Virtuals ecosystem—and agent builders a path into robotics.',
+                    ],
+                    [
+                      'Explore agent coordination',
+                      'Investigate EconomyOS for slow-thinking compute and future ACP coordination as the project matures.',
+                    ],
+                  ].map(([title, copy], index) => (
+                    <article key={title} className="virtuals-item">
+                      <span className="font-mono text-xs text-primary">
+                        0{index + 1}
                       </span>
-                    </div>
+                      <div>
+                        <h3 className="font-semibold">{title}</h3>
+                        <p className="mt-1.5 leading-6 text-muted-foreground">
+                          {copy}
+                        </p>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
 
-                    <h3 className="mb-3 font-heading text-2xl font-bold text-bg">
-                      {step.title}
-                    </h3>
-                    <p className="mx-auto max-w-xs font-body text-sm leading-relaxed" style={{ color: 'rgb(160, 150, 185)' }}>
-                      {step.desc}
-                    </p>
+              <div className="contribution-loop mt-10">
+                {['BUILD', 'DOCUMENT', 'TEACH', 'IMPROVE'].map((item, index) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <span>{item}</span>
+                    {index < 3 && (
+                      <ArrowUpRight
+                        aria-hidden="true"
+                        className="hidden size-4 text-primary sm:block"
+                      />
+                    )}
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      </SectionTracker>
-
-      {/* ── Footer CTA / Waitlist ── */}
-      <SectionTracker sectionId="waitlist-cta">
-      <footer id="waitlist" className="relative overflow-hidden px-6 py-24 sm:py-28">
-        {/* Background decoration */}
-        <div
-          className="pointer-events-none absolute -top-20 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full opacity-15 blur-3xl"
-          style={{ backgroundColor: '#6E54FF' }}
-        />
-        <div
-          className="pointer-events-none absolute -bottom-10 left-1/4 h-48 w-48 rounded-full opacity-10 blur-3xl"
-          style={{ backgroundColor: '#FF66C4' }}
-        />
-
-        <div className="relative mx-auto max-w-2xl text-center">
-          {/* Molty face */}
-          <div className="mb-10 flex justify-center">
-            <div className="animate-float">
-              <MoltyFace mood="celebrating" size="md" animateClaws />
-            </div>
-          </div>
-
-          <p
-            className="font-retro text-sm tracking-[0.3em] uppercase mb-4"
-            style={{ color: '#6E54FF' }}
-          >
-            Limited batches
-          </p>
-
-          <h2 className="font-heading text-4xl font-bold text-dark sm:text-5xl lg:text-6xl">
-            Be first in line.
-          </h2>
-          <p className="mx-auto mt-4 mb-10 font-body text-lg" style={{ color: 'rgb(100, 116, 139)', maxWidth: 540, lineHeight: 1.7 }}>
-            Molty ships in limited batches. Get on the waitlist and we&apos;ll let
-            you know the moment yours is ready.
-          </p>
-
-          <div
-            className="rounded-2xl border-3 border-dark p-6 shadow-chunky sm:p-8"
-            style={{ backgroundColor: '#6E54FF12', borderWidth: 3 }}
-          >
-            <WaitlistForm buttonText="Notify Me 🔔" />
-          </div>
-
-          <p className="mt-6 font-body text-sm text-dark/40">
-            No spam. Just Molty news, shipping updates, and the occasional crypto
-            meme.
-          </p>
-
-          {/* Bottom bar */}
-          <div className="mt-20 border-t-2 border-dark/10 pt-8 flex flex-col items-center gap-2">
-            <div className="flex items-center gap-2">
-              <div
-                className="rounded-full p-[2px] shrink-0"
-                style={{
-                  background: 'linear-gradient(135deg, #6E54FF 0%, #FF66C4 100%)',
-                  boxShadow: '0 1px 8px rgba(110,84,255,0.35)',
-                }}
-              >
-                <Image
-                  src="/logo-rounded.png"
-                  alt="Molty logo"
-                  width={28}
-                  height={28}
-                  className="rounded-full block"
-                />
-              </div>
-              <p className="font-heading text-xl font-bold text-dark">
-                molty<span style={{ color: '#6E54FF' }}>.pet</span>
+              <p className="mt-4 font-mono text-xs leading-6 text-muted-foreground">
+                EconomyOS and ACP are future integration targets. This page does
+                not imply that those integrations are complete today.
               </p>
             </div>
-            <p className="font-retro text-base tracking-wider text-dark/40">
-              YOUR FAVORITE DESK PET
+          </div>
+        </section>
+
+        <section id="roadmap" className="section section-alt scroll-mt-20">
+          <div className="site-shell">
+            <div className="section-heading">
+              <p className="section-kicker">06 / LONG-TERM EXPERIMENT</p>
+              <h2 className="section-title">Build the body. Grow the mind. Live together.</h2>
+              <p className="section-copy">
+                Molty is a long-running exploration of robotics—not a single demo.
+                The roadmap stays simple enough to remember and difficult enough
+                to spend years on.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-5 lg:grid-cols-3">
+              {roadmap.map(({ phase, title, copy, state, icon: Icon }) => (
+                <article key={phase} className="roadmap-card">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="icon-box">
+                      <Icon aria-hidden="true" className="size-5" />
+                    </div>
+                    <span className="state-badge">{state}</span>
+                  </div>
+                  <p className="section-kicker mt-8">{phase}</p>
+                  <h3 className="mt-3 text-2xl font-semibold">{title}</h3>
+                  <p className="mt-3 leading-7 text-muted-foreground">{copy}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="site-shell">
+            <div className="creator-card">
+              <div>
+                <p className="section-kicker text-primary">BUILDING IN PUBLIC</p>
+                <blockquote className="mt-5 max-w-3xl text-balance text-2xl font-medium leading-snug tracking-tight sm:text-4xl">
+                  “Side questing a sentient robot dog. Fast thinking = neural
+                  networks controlling motion. Slow thinking = an LLM planning and
+                  reasoning. Both learn continuously. Let’s see where this goes.”
+                </blockquote>
+              </div>
+
+              <div className="mt-10 flex flex-col justify-between gap-6 border-t border-border pt-6 sm:flex-row sm:items-center">
+                <div className="flex items-center gap-4">
+                  <Image
+                    src="/avatars/dsouzajovian.jpg"
+                    alt="Jovian Dsouza"
+                    width={48}
+                    height={48}
+                    className="rounded-full border border-border"
+                  />
+                  <div>
+                    <p className="font-semibold">Jovian Dsouza</p>
+                    <p className="text-sm text-muted-foreground">
+                      Creator of Molty · Robotics explorer
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href={BUILD_POST}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="button button-primary"
+                  >
+                    Read the post
+                    <ArrowUpRight aria-hidden="true" className="size-4" />
+                  </a>
+                  <a
+                    href="https://github.com/DsouzaJovian"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="button button-secondary"
+                  >
+                    <Github aria-hidden="true" className="size-4" />
+                    GitHub
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-border">
+        <div className="site-shell flex flex-col gap-8 py-10 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
+                <PawPrint aria-hidden="true" className="size-4" />
+              </span>
+              <span className="font-mono text-sm font-semibold tracking-[0.12em]">
+                MOLTY.PET
+              </span>
+            </div>
+            <p className="mt-4 text-muted-foreground">
+              A sentient robot dog. Let’s see where this goes.
             </p>
+          </div>
+          <div className="flex gap-5 text-sm">
+            <a
+              className="footer-link focus-ring"
+              href={CREATOR_PROFILE}
+              target="_blank"
+              rel="noreferrer"
+            >
+              X / Twitter
+            </a>
+            <a
+              className="footer-link focus-ring"
+              href="https://github.com/DsouzaJovian"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub
+            </a>
+            <a className="footer-link focus-ring" href="#top">
+              Back to top
+            </a>
           </div>
         </div>
       </footer>
-      </SectionTracker>
-    </div>
+    </>
   )
 }
