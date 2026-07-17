@@ -101,7 +101,7 @@ export default function Home() {
               Origin
             </a>
             <a className="nav-link focus-ring" href="#two-minds">
-              Two minds
+              Two pathways
             </a>
             <a className="nav-link focus-ring" href="#why-a-pet">
               Why a pet
@@ -138,8 +138,9 @@ export default function Home() {
               </h1>
 
               <p className="mt-7 max-w-xl text-pretty text-lg leading-8 text-muted-foreground sm:text-xl">
-                Molty is a robot dog learning to move, reason, and live alongside
-                people
+                Molty is a robot dog built around two pathways: fast neural
+                reflexes for movement, and slower AI reasoning for plans,
+                memories, and decisions.
               </p>
 
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -148,7 +149,7 @@ export default function Home() {
                   Watch Molty move
                 </a>
                 <a href="#two-minds" className="button button-secondary">
-                  Explore the two minds
+                  Explore the two pathways
                   <ArrowDown aria-hidden="true" className="size-4" />
                 </a>
               </div>
@@ -267,11 +268,12 @@ export default function Home() {
           <div className="site-shell">
             <div className="section-heading">
               <p className="section-kicker">02 / THE ARCHITECTURE</p>
-              <h2 className="section-title">One body. Two speeds of thought.</h2>
+              <h2 className="section-title">One body. Two pathways.</h2>
               <p className="section-copy">
-                Animals do not ask their conscious mind to calculate every footstep.
-                Molty follows the same idea: a fast loop keeps the body responsive
-                while a slower loop works out what to do next.
+                Inspired by the brain, Molty separates movement from deliberation.
+                A fast, automatic neural pathway reacts in real time—like the
+                cerebellum—while a slower reasoning layer plans, remembers, and
+                decides, like the prefrontal cortex.
               </p>
             </div>
 
@@ -283,19 +285,21 @@ export default function Home() {
                   </div>
                   <span className="state-badge">MILLISECONDS</span>
                 </div>
-                <p className="section-kicker mt-8 text-primary">FAST THINKING</p>
+                <p className="section-kicker mt-8 text-primary">
+                  FAST / CEREBELLUM-INSPIRED
+                </p>
                 <h3 className="mt-3 text-3xl font-semibold tracking-tight">
-                  The reflex loop
+                  The reflex pathway
                 </h3>
                 <p className="mt-4 max-w-lg leading-7 text-muted-foreground">
-                  Neural motion policies turn live sensor data into motor commands.
-                  This loop handles balance, gait, reactions, and recovery without
-                  waiting for language.
+                  A neural network turns live sensor data into motor commands. It
+                  handles gait, balance, reflexes, and recovery automatically—without
+                  waiting for language or deliberate reasoning.
                 </p>
-                <div className="flow-row" aria-label="Fast thinking flow">
+                <div className="flow-row" aria-label="Fast pathway flow">
                   <span>Sense</span>
                   <ArrowUpRight aria-hidden="true" />
-                  <span>Policy</span>
+                  <span>Reflex</span>
                   <ArrowUpRight aria-hidden="true" />
                   <span>Move</span>
                 </div>
@@ -308,21 +312,23 @@ export default function Home() {
                   </div>
                   <span className="state-badge">SECONDS → HOURS</span>
                 </div>
-                <p className="section-kicker mt-8">SLOW THINKING</p>
+                <p className="section-kicker mt-8">
+                  SLOW / PREFRONTAL-INSPIRED
+                </p>
                 <h3 className="mt-3 text-3xl font-semibold tracking-tight">
-                  The reasoning loop
+                  The reasoning pathway
                 </h3>
                 <p className="mt-4 max-w-lg leading-7 text-muted-foreground">
-                  An LLM observes context, plans actions, reflects on outcomes, and
-                  builds memory. It gives the reflex loop direction without trying
-                  to micromanage every joint.
+                  Advanced AI models interpret context, plan actions, form memories,
+                  and make decisions over longer timescales. This layer chooses what
+                  Molty should do without micromanaging every joint.
                 </p>
-                <div className="flow-row" aria-label="Slow thinking flow">
-                  <span>Observe</span>
-                  <ArrowUpRight aria-hidden="true" />
+                <div className="flow-row" aria-label="Slow pathway flow">
                   <span>Plan</span>
                   <ArrowUpRight aria-hidden="true" />
                   <span>Remember</span>
+                  <ArrowUpRight aria-hidden="true" />
+                  <span>Decide</span>
                 </div>
               </article>
             </div>
@@ -333,15 +339,16 @@ export default function Home() {
               </div>
               <div>
                 <p className="section-kicker text-primary">
-                  THE LOOP BETWEEN THE LOOPS
+                  LEARNING ACROSS BOTH PATHWAYS
                 </p>
                 <h3 className="mt-2 text-xl font-semibold">
-                  Both systems learn continuously.
+                  Both pathways learn continuously.
                 </h3>
                 <p className="mt-2 max-w-3xl leading-7 text-muted-foreground">
-                  Fast learning improves how Molty moves. Slow learning improves
-                  what Molty attempts, remembers, and values. The long-term
-                  experiment is how those two forms of learning shape each other.
+                  The fast pathway learns better movement. The slow pathway learns
+                  better choices. The long-term experiment is how reflex, memory,
+                  and planning can improve one another while keeping the body
+                  responsive.
                 </p>
               </div>
             </div>

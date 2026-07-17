@@ -17,16 +17,16 @@ const mono = Space_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://molty.pet'),
-  title: 'Molty — A Sentient Robot Dog With Two Minds',
+  title: 'Molty — A Robot Dog With Two AI Pathways',
   description:
-    'Molty is a Raspberry Pi-powered quadruped exploring fast neural motion control, slow LLM planning, and continuous learning in a physical pet.',
+    'Molty is a Raspberry Pi-powered robot dog combining fast neural motor control with slower AI reasoning for planning, memory, and decisions.',
   icons: {
     icon: '/favicon.png',
   },
   openGraph: {
     title: 'Molty — Fast Reflexes. Slow Thoughts.',
     description:
-      'A Raspberry Pi-powered robot dog exploring neural motion, LLM reasoning, and continuous learning.',
+      'A robot dog with fast neural reflexes and slower AI reasoning for planning, memory, and decisions.',
     siteName: 'molty.pet',
     url: 'https://molty.pet',
     type: 'website',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     creator: '@DsouzaJovian',
     title: 'Molty — Fast Reflexes. Slow Thoughts.',
     description:
-      'A Raspberry Pi-powered robot dog exploring neural motion, LLM reasoning, and continuous learning.',
+      'A robot dog with fast neural reflexes and slower AI reasoning for planning, memory, and decisions.',
     images: ['/og.png'],
   },
 }
