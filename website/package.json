@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
+    "build:sites": "npm run build && node scripts/build-sites.mjs",
     "start": "next start",
     "postinstall": "prisma generate",
     "lint": "eslint",
