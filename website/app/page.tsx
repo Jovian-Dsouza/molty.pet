@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Script from 'next/script'
 import {
   ArrowDown,
   ArrowUpRight,
@@ -18,8 +19,9 @@ import {
 
 const BUILD_POST =
   'https://x.com/DsouzaJovian/status/2077026876728676777?s=20'
+const PROTOTYPE_POST =
+  'https://x.com/DsouzaJovian/status/2078107900359356547?s=20'
 const CREATOR_PROFILE = 'https://x.com/DsouzaJovian'
-const VIRTUALS_COMMUNITY = 'https://os.virtuals.io/community#champion'
 
 const values = [
   {
@@ -137,7 +139,7 @@ export default function Home() {
 
               <p className="mt-7 max-w-xl text-pretty text-lg leading-8 text-muted-foreground sm:text-xl">
                 Molty is a robot dog learning to move, reason, and live alongside
-                people—one messy experiment at a time.
+                people
               </p>
 
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -343,19 +345,13 @@ export default function Home() {
                 </p>
               </div>
             </div>
-
-            <p className="mt-5 max-w-3xl font-mono text-xs leading-6 text-muted-foreground">
-              Honest status: the current prototype is focused on the body and
-              locomotion. The full two-speed learning architecture is the direction
-              being built toward, not a finished claim.
-            </p>
           </div>
         </section>
 
         <section id="prototype" className="section scroll-mt-20">
           <div className="site-shell">
-            <div className="grid items-end gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:gap-12">
-              <div>
+            <div className="prototype-layout">
+              <div className="prototype-copy">
                 <p className="section-kicker">03 / FROM THE BENCH</p>
                 <h2 className="section-title">The messy middle is the project.</h2>
                 <p className="section-copy">
@@ -364,30 +360,48 @@ export default function Home() {
                   thousands of small encounters with the real world.
                 </p>
                 <a
-                  href={BUILD_POST}
+                  href={PROTOTYPE_POST}
                   target="_blank"
                   rel="noreferrer"
                   className="button button-secondary mt-7"
                 >
-                  View the build log on X
+                  Open the live playlist on X
                   <ArrowUpRight aria-hidden="true" className="size-4" />
                 </a>
               </div>
 
-              <div className="video-frame">
-                <video
-                  controls
-                  playsInline
-                  preload="metadata"
-                  poster="/molty-dog-front.jpg"
-                  aria-label="Prototype video of Molty walking and moving on a workbench"
-                >
-                  <source src="/molty-dog-prototype.mp4" type="video/mp4" />
-                  Your browser does not support embedded video.
-                </video>
+              <div className="video-frame prototype-feed">
+                <div className="prototype-feed-bar">
+                  <span className="flex items-center gap-2 font-mono text-xs tracking-[0.1em] text-foreground">
+                    <span className="feed-status-dot" aria-hidden="true" />
+                    LIVE FIELD NOTES
+                  </span>
+                  <span className="font-mono text-xs tracking-[0.08em] text-muted-foreground">
+                    UPDATED ON X
+                  </span>
+                </div>
+                <div className="x-embed-shell">
+                  <blockquote
+                    className="twitter-tweet x-embed-fallback"
+                    data-theme="dark"
+                    data-dnt="true"
+                    data-conversation="none"
+                  >
+                    <p>Molty’s live prototype playlist is hosted on X.</p>
+                    <a
+                      href={PROTOTYPE_POST}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="button button-secondary"
+                    >
+                      Watch on X
+                      <ArrowUpRight aria-hidden="true" className="size-4" />
+                    </a>
+                  </blockquote>
+                </div>
                 <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border px-5 py-4">
                   <span className="font-mono text-xs tracking-[0.1em] text-muted-foreground">
-                    PROTOTYPE LOG / JUL 2026
+                    PLAY THE LATEST CLIPS ABOVE
                   </span>
                   <span className="flex items-center gap-2 text-sm text-foreground">
                     <Wrench aria-hidden="true" className="size-4 text-primary" />
@@ -429,92 +443,10 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="section">
-          <div className="site-shell">
-            <div className="virtuals-panel">
-              <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-                <div>
-                  <p className="section-kicker text-primary">
-                    05 / MOLTY × VIRTUALS
-                  </p>
-                  <h2 className="section-title">
-                    A physical front door to the agent economy.
-                  </h2>
-                  <p className="section-copy">
-                    Virtuals gives agents identity, coordination, distribution,
-                    and an economy. Molty asks what happens when that stack can
-                    walk into a room.
-                  </p>
-                  <a
-                    href={VIRTUALS_COMMUNITY}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="button button-primary mt-8"
-                  >
-                    Explore the Champion program
-                    <ArrowUpRight aria-hidden="true" className="size-4" />
-                  </a>
-                </div>
-
-                <div className="grid gap-3">
-                  {[
-                    [
-                      'Ship a real reference build',
-                      'Publish the hardware, architecture, experiments, and hard-won lessons behind an embodied agent.',
-                    ],
-                    [
-                      'Turn iteration into education',
-                      'Make motion control, planning, memory, and safety understandable through demos and build logs.',
-                    ],
-                    [
-                      'Onboard embodied-agent builders',
-                      'Give robotics makers a tangible path into the Virtuals ecosystem—and agent builders a path into robotics.',
-                    ],
-                    [
-                      'Explore agent coordination',
-                      'Investigate EconomyOS for slow-thinking compute and future ACP coordination as the project matures.',
-                    ],
-                  ].map(([title, copy], index) => (
-                    <article key={title} className="virtuals-item">
-                      <span className="font-mono text-xs text-primary">
-                        0{index + 1}
-                      </span>
-                      <div>
-                        <h3 className="font-semibold">{title}</h3>
-                        <p className="mt-1.5 leading-6 text-muted-foreground">
-                          {copy}
-                        </p>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </div>
-
-              <div className="contribution-loop mt-10">
-                {['BUILD', 'DOCUMENT', 'TEACH', 'IMPROVE'].map((item, index) => (
-                  <div key={item} className="flex items-center gap-3">
-                    <span>{item}</span>
-                    {index < 3 && (
-                      <ArrowUpRight
-                        aria-hidden="true"
-                        className="hidden size-4 text-primary sm:block"
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-              <p className="mt-4 font-mono text-xs leading-6 text-muted-foreground">
-                EconomyOS and ACP are future integration targets. This page does
-                not imply that those integrations are complete today.
-              </p>
-            </div>
-          </div>
-        </section>
-
         <section id="roadmap" className="section section-alt scroll-mt-20">
           <div className="site-shell">
             <div className="section-heading">
-              <p className="section-kicker">06 / LONG-TERM EXPERIMENT</p>
+              <p className="section-kicker">05 / LONG-TERM EXPERIMENT</p>
               <h2 className="section-title">Build the body. Grow the mind. Live together.</h2>
               <p className="section-copy">
                 Molty is a long-running exploration of robotics—not a single demo.
@@ -637,6 +569,12 @@ export default function Home() {
           </div>
         </div>
       </footer>
+
+      <Script
+        id="x-widgets"
+        src="https://platform.twitter.com/widgets.js"
+        strategy="lazyOnload"
+      />
     </>
   )
 }
