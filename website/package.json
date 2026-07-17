@@ -4,39 +4,26 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "build:sites": "npm run build && node scripts/build-sites.mjs",
     "start": "next start",
-    "postinstall": "prisma generate",
-    "lint": "eslint",
-    "db:up": "docker compose up -d",
-    "db:down": "docker compose down",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:generate": "prisma generate",
-    "prisma:studio": "prisma studio",
-    "db:push": "prisma db push"
+    "lint": "eslint"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.5.0",
-    "@prisma/client": "^7.5.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "dotenv": "^17.3.1",
     "lucide-react": "^0.577.0",
     "next": "16.2.0",
-    "pg": "^8.20.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/pg": "^8.18.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.0",
-    "prisma": "^7.5.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
