@@ -1,0 +1,191 @@
+<mujoco model="molty_reference_quadruped">
+  <compiler angle="radian" autolimits="true" balanceinertia="true"/>
+  <option timestep="0.002" integrator="implicitfast" cone="elliptic"
+          iterations="20" ls_iterations="5"/>
+
+  <visual>
+    <headlight ambient="0.25 0.25 0.25" diffuse="0.75 0.75 0.75" specular="0.2 0.2 0.2"/>
+    <rgba haze="0.12 0.16 0.2 1"/>
+    <global azimuth="135" elevation="-22"/>
+  </visual>
+
+  <default>
+    <joint type="hinge" axis="0 1 0" damping="0.08" armature="0.003"
+           limited="true" range="-1.4 1.4"/>
+    <geom condim="4" friction="0.9 0.01 0.0002" solref="0.008 1" solimp="0.9 0.95 0.002"/>
+    <position kp="5.0" kv="0.15" ctrllimited="true" ctrlrange="-1.4 1.4"
+              forcelimited="true" forcerange="-0.90 0.90"/>
+  </default>
+
+  <asset>
+    <texture name="floor_texture" type="2d" builtin="checker" width="512" height="512"
+             rgb1="0.10 0.12 0.15" rgb2="0.16 0.19 0.23"/>
+    <material name="floor_material" texture="floor_texture" texrepeat="10 10" reflectance="0.12"/>
+    <material name="shell_material" rgba="0.92 0.12 0.045 1"/>
+    <material name="shell_dark_material" rgba="0.60 0.045 0.025 1"/>
+    <material name="servo_material" rgba="0.055 0.06 0.07 1"/>
+    <material name="board_material" rgba="0.05 0.30 0.18 1"/>
+    <material name="metal_material" rgba="0.65 0.68 0.70 1"/>
+    <material name="eye_material" rgba="0.15 0.9 1 1" emission="0.5"/>
+    <material name="foot_material" rgba="0.10 0.11 0.12 1"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 3" dir="0 0 -1" directional="true" castshadow="true"/>
+    <light pos="-2 -2 2" dir="1 1 -1" diffuse="0.35 0.35 0.35"/>
+    <geom name="floor" type="plane" size="6 6 0.1" material="floor_material"/>
+
+    <site name="start_marker" type="cylinder" pos="0 0 0.002" size="0.24 0.002"
+          rgba="0.15 0.55 0.7 0.22"/>
+    <site name="goal_marker" type="cylinder" pos="2 0 0.002" size="0.18 0.002"
+          rgba="0.2 0.95 0.45 0.28"/>
+
+    <body name="torso" pos="0 0 0.222">
+      <freejoint name="root"/>
+
+      <geom name="lower_shell" type="box" size="0.145 0.085 0.032" mass="0.30"
+            material="shell_material"/>
+      <geom name="upper_shell" type="box" pos="-0.015 0 0.065" size="0.095 0.07 0.035"
+            mass="0.08" material="shell_material"/>
+      <geom name="pi_board" type="box" pos="-0.015 0 0.108" size="0.065 0.043 0.006"
+            mass="0.012" material="board_material"/>
+      <geom name="pin_header" type="box" pos="-0.015 0.03 0.122" size="0.05 0.009 0.009"
+            mass="0.002" material="metal_material"/>
+      <geom name="face" type="box" pos="0.105 0 0.069" size="0.012 0.06 0.029"
+            mass="0.01" material="servo_material"/>
+      <geom name="left_eye" type="sphere" pos="0.118 0.032 0.076" size="0.008"
+            mass="0.0005" material="eye_material" contype="0" conaffinity="0"/>
+      <geom name="right_eye" type="sphere" pos="0.118 -0.032 0.076" size="0.008"
+            mass="0.0005" material="eye_material" contype="0" conaffinity="0"/>
+      <site name="imu" type="box" pos="0 0 0.09" size="0.012 0.012 0.006"
+            rgba="0.2 0.8 0.3 1"/>
+
+      <!-- Front-left leg: hip servo + knee servo. -->
+      <body name="front_left_hip" pos="0.105 0.09 -0.018">
+        <joint name="front_left_hip_joint"/>
+        <geom name="front_left_hip_servo" type="box" size="0.021 0.025 0.015"
+              mass="0.009" material="servo_material"/>
+        <geom name="front_left_upper" type="capsule" fromto="0 0 0  0 0.015 -0.10"
+              size="0.013" mass="0.014" material="shell_material"/>
+        <body name="front_left_knee" pos="0 0.015 -0.10">
+          <joint name="front_left_knee_joint"/>
+          <geom name="front_left_knee_servo" type="box" size="0.022 0.018 0.026"
+                mass="0.009" material="servo_material"/>
+          <geom name="front_left_lower" type="capsule" fromto="0 0 0  0 0.015 -0.10"
+                size="0.012" mass="0.012" material="shell_dark_material"/>
+          <geom name="front_left_foot" type="sphere" pos="0 0.015 -0.10" size="0.018"
+                mass="0.005" material="foot_material" friction="1.2 0.01 0.0002"/>
+          <site name="front_left_foot_site" type="sphere" pos="0 0.015 -0.10" size="0.019"
+                rgba="0.2 0.8 1 0.18"/>
+        </body>
+      </body>
+
+      <!-- Front-right leg. -->
+      <body name="front_right_hip" pos="0.105 -0.09 -0.018">
+        <joint name="front_right_hip_joint"/>
+        <geom name="front_right_hip_servo" type="box" size="0.021 0.025 0.015"
+              mass="0.009" material="servo_material"/>
+        <geom name="front_right_upper" type="capsule" fromto="0 0 0  0 -0.015 -0.10"
+              size="0.013" mass="0.014" material="shell_material"/>
+        <body name="front_right_knee" pos="0 -0.015 -0.10">
+          <joint name="front_right_knee_joint"/>
+          <geom name="front_right_knee_servo" type="box" size="0.022 0.018 0.026"
+                mass="0.009" material="servo_material"/>
+          <geom name="front_right_lower" type="capsule" fromto="0 0 0  0 -0.015 -0.10"
+                size="0.012" mass="0.012" material="shell_dark_material"/>
+          <geom name="front_right_foot" type="sphere" pos="0 -0.015 -0.10" size="0.018"
+                mass="0.005" material="foot_material" friction="1.2 0.01 0.0002"/>
+          <site name="front_right_foot_site" type="sphere" pos="0 -0.015 -0.10" size="0.019"
+                rgba="0.2 0.8 1 0.18"/>
+        </body>
+      </body>
+
+      <!-- Rear-left leg. -->
+      <body name="rear_left_hip" pos="-0.105 0.09 -0.018">
+        <joint name="rear_left_hip_joint"/>
+        <geom name="rear_left_hip_servo" type="box" size="0.021 0.025 0.015"
+              mass="0.009" material="servo_material"/>
+        <geom name="rear_left_upper" type="capsule" fromto="0 0 0  0 0.015 -0.10"
+              size="0.013" mass="0.014" material="shell_material"/>
+        <body name="rear_left_knee" pos="0 0.015 -0.10">
+          <joint name="rear_left_knee_joint"/>
+          <geom name="rear_left_knee_servo" type="box" size="0.022 0.018 0.026"
+                mass="0.009" material="servo_material"/>
+          <geom name="rear_left_lower" type="capsule" fromto="0 0 0  0 0.015 -0.10"
+                size="0.012" mass="0.012" material="shell_dark_material"/>
+          <geom name="rear_left_foot" type="sphere" pos="0 0.015 -0.10" size="0.018"
+                mass="0.005" material="foot_material" friction="1.2 0.01 0.0002"/>
+          <site name="rear_left_foot_site" type="sphere" pos="0 0.015 -0.10" size="0.019"
+                rgba="0.2 0.8 1 0.18"/>
+        </body>
+      </body>
+
+      <!-- Rear-right leg. -->
+      <body name="rear_right_hip" pos="-0.105 -0.09 -0.018">
+        <joint name="rear_right_hip_joint"/>
+        <geom name="rear_right_hip_servo" type="box" size="0.021 0.025 0.015"
+              mass="0.009" material="servo_material"/>
+        <geom name="rear_right_upper" type="capsule" fromto="0 0 0  0 -0.015 -0.10"
+              size="0.013" mass="0.014" material="shell_material"/>
+        <body name="rear_right_knee" pos="0 -0.015 -0.10">
+          <joint name="rear_right_knee_joint"/>
+          <geom name="rear_right_knee_servo" type="box" size="0.022 0.018 0.026"
+                mass="0.009" material="servo_material"/>
+          <geom name="rear_right_lower" type="capsule" fromto="0 0 0  0 -0.015 -0.10"
+                size="0.012" mass="0.012" material="shell_dark_material"/>
+          <geom name="rear_right_foot" type="sphere" pos="0 -0.015 -0.10" size="0.018"
+                mass="0.005" material="foot_material" friction="1.2 0.01 0.0002"/>
+          <site name="rear_right_foot_site" type="sphere" pos="0 -0.015 -0.10" size="0.019"
+                rgba="0.2 0.8 1 0.18"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="front_left_hip_servo" joint="front_left_hip_joint"/>
+    <position name="front_left_knee_servo" joint="front_left_knee_joint"/>
+    <position name="front_right_hip_servo" joint="front_right_hip_joint"/>
+    <position name="front_right_knee_servo" joint="front_right_knee_joint"/>
+    <position name="rear_left_hip_servo" joint="rear_left_hip_joint"/>
+    <position name="rear_left_knee_servo" joint="rear_left_knee_joint"/>
+    <position name="rear_right_hip_servo" joint="rear_right_hip_joint"/>
+    <position name="rear_right_knee_servo" joint="rear_right_knee_joint"/>
+  </actuator>
+
+  <sensor>
+    <gyro name="imu_gyro" site="imu"/>
+    <accelerometer name="imu_accelerometer" site="imu"/>
+    <velocimeter name="imu_velocity" site="imu"/>
+    <framequat name="torso_orientation" objtype="body" objname="torso"/>
+
+    <jointpos name="front_left_hip_position" joint="front_left_hip_joint"/>
+    <jointpos name="front_left_knee_position" joint="front_left_knee_joint"/>
+    <jointpos name="front_right_hip_position" joint="front_right_hip_joint"/>
+    <jointpos name="front_right_knee_position" joint="front_right_knee_joint"/>
+    <jointpos name="rear_left_hip_position" joint="rear_left_hip_joint"/>
+    <jointpos name="rear_left_knee_position" joint="rear_left_knee_joint"/>
+    <jointpos name="rear_right_hip_position" joint="rear_right_hip_joint"/>
+    <jointpos name="rear_right_knee_position" joint="rear_right_knee_joint"/>
+
+    <jointvel name="front_left_hip_velocity" joint="front_left_hip_joint"/>
+    <jointvel name="front_left_knee_velocity" joint="front_left_knee_joint"/>
+    <jointvel name="front_right_hip_velocity" joint="front_right_hip_joint"/>
+    <jointvel name="front_right_knee_velocity" joint="front_right_knee_joint"/>
+    <jointvel name="rear_left_hip_velocity" joint="rear_left_hip_joint"/>
+    <jointvel name="rear_left_knee_velocity" joint="rear_left_knee_joint"/>
+    <jointvel name="rear_right_hip_velocity" joint="rear_right_hip_joint"/>
+    <jointvel name="rear_right_knee_velocity" joint="rear_right_knee_joint"/>
+
+    <touch name="front_left_foot_contact" site="front_left_foot_site"/>
+    <touch name="front_right_foot_contact" site="front_right_foot_site"/>
+    <touch name="rear_left_foot_contact" site="rear_left_foot_site"/>
+    <touch name="rear_right_foot_contact" site="rear_right_foot_site"/>
+  </sensor>
+
+  <keyframe>
+    <key name="home"
+         qpos="0 0 0.222  1 0 0 0  -0.4 0.8  -0.4 0.8  -0.4 0.8  -0.4 0.8"
+         ctrl="-0.4 0.8  -0.4 0.8  -0.4 0.8  -0.4 0.8"/>
+  </keyframe>
+</mujoco>

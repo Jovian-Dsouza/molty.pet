@@ -1,0 +1,14 @@
+[project]
+name = "molty-simulation-demo"
+version = "0.1.0"
+description = "A minimal local MuJoCo simulation for Molty.pet"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "gymnasium>=1.1,<2",
+    "mujoco>=3.3,<4",
+    "numpy>=2,<3",
+    "stable-baselines3>=2.7,<3",
+]
+
+[tool.uv]
+package = false
