@@ -50,6 +50,14 @@ flowchart LR
 > [!NOTE]
 > The simulation model uses approximate dimensions, masses, joint limits, and optimistic servo force. It is useful for experiments, but it is not yet a calibrated digital twin of the physical robot.
 
+## Hardware
+
+The physical robot is built on a 3D-printed quadruped body with eight servos and a Raspberry Pi. Full hardware details — including 3D print files, CAD models, assembly instructions, and a bill of materials — are available in the open-source hardware repository:
+
+**[dorianborian/sesame-robot](https://github.com/dorianborian/sesame-robot)**
+
+Head there to download everything you need to build or modify the physical robot.
+
 ## See Molty move
 
 <table>
