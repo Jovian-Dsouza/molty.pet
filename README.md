@@ -52,9 +52,7 @@ flowchart LR
 
 ## Hardware
 
-The physical robot is built on a 3D-printed quadruped body with eight servos and a Raspberry Pi. Full hardware details — including 3D print files, CAD models, assembly instructions, and a bill of materials — are available in the open-source hardware repository:
-
-**[dorianborian/sesame-robot](https://github.com/dorianborian/sesame-robot)**
+The physical robot is inspired by a 3D-printed quadruped body built by [dorianborian/sesame-robot](https://github.com/dorianborian/sesame-robot) — check out the full hardware details there.
 
 ## See Molty move
 
