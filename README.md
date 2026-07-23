@@ -50,6 +50,10 @@ flowchart LR
 > [!NOTE]
 > The simulation model uses approximate dimensions, masses, joint limits, and optimistic servo force. It is useful for experiments, but it is not yet a calibrated digital twin of the physical robot.
 
+## Hardware
+
+The physical robot is inspired by a 3D-printed quadruped body built by [dorianborian/sesame-robot](https://github.com/dorianborian/sesame-robot) — check out the full hardware details there.
+
 ## See Molty move
 
 <table>
