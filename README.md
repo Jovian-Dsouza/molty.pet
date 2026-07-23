@@ -56,8 +56,6 @@ The physical robot is built on a 3D-printed quadruped body with eight servos and
 
 **[dorianborian/sesame-robot](https://github.com/dorianborian/sesame-robot)**
 
-Head there to download everything you need to build or modify the physical robot.
-
 ## See Molty move
 
 <table>
