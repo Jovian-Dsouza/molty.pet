@@ -87,9 +87,9 @@ export default function Home() {
             <Image
               src="/molty-logo.png"
               alt=""
-              width={32}
-              height={32}
-              className="size-8 rounded-lg"
+              width={36}
+              height={36}
+              className="size-9"
             />
             <span className="font-mono text-sm font-semibold tracking-[0.12em]">
               MOLTY.PET
@@ -541,9 +541,9 @@ export default function Home() {
               <Image
                 src="/molty-logo.png"
                 alt=""
-                width={32}
-                height={32}
-                className="size-8 rounded-lg"
+                width={36}
+                height={36}
+                className="size-9"
               />
               <span className="font-mono text-sm font-semibold tracking-[0.12em]">
                 MOLTY.PET
