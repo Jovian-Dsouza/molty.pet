@@ -218,6 +218,20 @@ button {
   background: var(--secondary);
 }
 
+.status-line {
+  max-width: 36rem;
+  margin-top: 1.25rem;
+  border-left: 2px solid var(--primary);
+  padding-left: 0.9rem;
+  color: var(--muted-foreground);
+  font-size: 0.925rem;
+  line-height: 1.6;
+}
+
+.status-line strong {
+  color: var(--foreground);
+}
+
 .hero-section {
   position: relative;
   overflow: clip;
@@ -351,7 +365,10 @@ button {
 .story-card,
 .mind-card,
 .roadmap-card,
-.creator-card {
+.creator-card,
+.feature-card,
+.reaction-card,
+.signup-card {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) * 1.35);
@@ -445,6 +462,45 @@ button {
   background: var(--card);
 }
 
+.proof-layout,
+.connect-layout {
+  display: grid;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.prototype-video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--background);
+  object-fit: cover;
+}
+
+.media-caption {
+  border-top: 1px solid var(--border);
+  padding: 0.9rem 1rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.feature-grid,
+.status-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 3rem;
+}
+
+.feature-card {
+  min-height: 16rem;
+  padding: clamp(1.5rem, 4vw, 2rem);
+}
+
+.reaction-card {
+  padding: clamp(1.5rem, 5vw, 3rem);
+}
+
 .prototype-layout {
   display: grid;
   align-items: start;
@@ -521,6 +577,41 @@ button {
   padding: clamp(1.5rem, 5vw, 3rem);
 }
 
+.progress-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.35);
+  background: var(--card);
+  box-shadow: 0 1.5rem 4rem
+    color-mix(in oklch, black 25%, transparent);
+}
+
+.signup-card {
+  padding: clamp(2rem, 7vw, 4.5rem);
+  text-align: center;
+}
+
+.signup-card .section-title,
+.signup-card .section-copy {
+  max-width: 38rem;
+}
+
+.footer-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-block: 2.5rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
 @media (max-width: 767px) {
   .site-shell {
     width: min(100% - 1.25rem, 76rem);
@@ -558,7 +649,39 @@ button {
 
 }
 
+@media (min-width: 640px) {
+  .status-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-layout {
+    align-items: flex-end;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .footer-links {
+    justify-content: flex-end;
+  }
+}
+
+@media (min-width: 768px) {
+  .feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (min-width: 1024px) {
+  .proof-layout {
+    grid-template-columns: minmax(0, 0.82fr) minmax(32rem, 1.18fr);
+    gap: clamp(3rem, 6vw, 6rem);
+  }
+
+  .connect-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(28rem, 0.85fr);
+    gap: clamp(3rem, 7vw, 7rem);
+  }
+
   .prototype-layout {
     grid-template-columns: minmax(0, 0.82fr) minmax(34rem, 1.18fr);
     gap: clamp(3rem, 6vw, 6rem);

@@ -17,9 +17,9 @@ const mono = Space_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://molty.pet'),
-  title: 'Molty — A Robot Dog With Two AI Pathways',
+  title: 'Molty — Build a Robot Pet. Give Your AI a Body.',
   description:
-    'Molty is a Raspberry Pi-powered robot dog combining fast neural motor control with slower AI reasoning for planning, memory, and decisions.',
+    'Molty is an open-source, Raspberry Pi robot pet you build yourself—then talk to, teach, and connect to your AI agents. Follow the prototype from first steps to expressive companion.',
   icons: {
     icon: {
       url: '/favicon.png',
@@ -33,9 +33,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Molty — Fast Reflexes. Slow Thoughts.',
+    title: 'Build a Robot Pet. Give Your AI a Body.',
     description:
-      'A robot dog with fast neural reflexes and slower AI reasoning for planning, memory, and decisions.',
+      'Meet Molty: an open robot pet you build yourself, grow attached to, and connect to your AI agents.',
     siteName: 'molty.pet',
     url: 'https://molty.pet',
     type: 'website',
@@ -44,16 +44,16 @@ export const metadata: Metadata = {
         url: '/og.png',
         width: 1200,
         height: 630,
-        alt: 'Molty robot dog — Fast reflexes. Slow thoughts.',
+        alt: 'Molty, an open-source robot pet you can build yourself.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    creator: '@DsouzaJovian',
-    title: 'Molty — Fast Reflexes. Slow Thoughts.',
+    creator: '@moltypet',
+    title: 'Build a Robot Pet. Give Your AI a Body.',
     description:
-      'A robot dog with fast neural reflexes and slower AI reasoning for planning, memory, and decisions.',
+      'Meet Molty: an open robot pet you build yourself, grow attached to, and connect to your AI agents.',
     images: ['/og.png'],
   },
 }
