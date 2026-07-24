@@ -21,7 +21,16 @@ export const metadata: Metadata = {
   description:
     'Molty is a Raspberry Pi-powered robot dog combining fast neural motor control with slower AI reasoning for planning, memory, and decisions.',
   icons: {
-    icon: '/favicon.png',
+    icon: {
+      url: '/favicon.png',
+      type: 'image/png',
+      sizes: '64x64',
+    },
+    apple: {
+      url: '/apple-icon.png',
+      type: 'image/png',
+      sizes: '180x180',
+    },
   },
   openGraph: {
     title: 'Molty — Fast Reflexes. Slow Thoughts.',
