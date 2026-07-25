@@ -15,11 +15,13 @@ const mono = Space_Mono({
   variable: '--font-space-mono',
 })
 
+const description =
+  'Molty is an open-source Raspberry Pi robot pet you build yourself. The prototype walks today; voice, memory, and AI agent connections are planned.'
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://molty.pet'),
   title: 'Molty — Build a Robot Pet. Give Your AI a Body.',
-  description:
-    'Molty is an open-source, Raspberry Pi robot pet you build yourself—then talk to, teach, and connect to your AI agents. Follow the prototype from first steps to expressive companion.',
+  description,
   icons: {
     icon: {
       url: '/favicon.png',
@@ -34,17 +36,16 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Build a Robot Pet. Give Your AI a Body.',
-    description:
-      'Meet Molty: an open robot pet you build yourself, grow attached to, and connect to your AI agents.',
+    description,
     siteName: 'molty.pet',
     url: 'https://molty.pet',
     type: 'website',
     images: [
       {
-        url: '/og.png',
-        width: 1200,
-        height: 630,
-        alt: 'Molty, an open-source robot pet you can build yourself.',
+        url: '/molty-dog-front.jpg',
+        width: 1800,
+        height: 1350,
+        alt: 'Molty, a red four-legged robot pet prototype, standing on a workbench.',
       },
     ],
   },
@@ -52,9 +53,8 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     creator: '@moltypet',
     title: 'Build a Robot Pet. Give Your AI a Body.',
-    description:
-      'Meet Molty: an open robot pet you build yourself, grow attached to, and connect to your AI agents.',
-    images: ['/og.png'],
+    description,
+    images: ['/molty-dog-front.jpg'],
   },
 }
 

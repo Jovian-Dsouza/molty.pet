@@ -362,7 +362,6 @@ button {
   line-height: 1.8;
 }
 
-.story-card,
 .mind-card,
 .roadmap-card,
 .creator-card,
@@ -373,17 +372,6 @@ button {
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) * 1.35);
   background: var(--card);
-}
-
-.story-card-current {
-  border-color: color-mix(in oklch, var(--primary) 45%, var(--border));
-}
-
-.story-media {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border);
 }
 
 .mind-card {
@@ -511,63 +499,6 @@ button {
   max-width: 34rem;
 }
 
-.prototype-feed {
-  width: 100%;
-  max-width: 44rem;
-  justify-self: end;
-}
-
-.prototype-feed-bar {
-  display: flex;
-  min-height: 3.5rem;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  border-bottom: 1px solid var(--border);
-  background: color-mix(in oklch, var(--card) 88%, var(--secondary));
-  padding-inline: 1.25rem;
-}
-
-.feed-status-dot {
-  width: 0.45rem;
-  height: 0.45rem;
-  flex: 0 0 auto;
-  border-radius: 999px;
-  background: var(--primary);
-  box-shadow: 0 0 0 0.25rem
-    color-mix(in oklch, var(--primary) 15%, transparent);
-}
-
-.x-embed-shell {
-  display: grid;
-  width: 100%;
-  min-height: 36rem;
-  place-items: center;
-  background: color-mix(in oklch, var(--secondary) 72%, var(--card));
-  padding: clamp(0.5rem, 2vw, 1.25rem);
-}
-
-.x-embed-shell .twitter-tweet,
-.x-embed-shell iframe {
-  width: 100% !important;
-  max-width: 550px !important;
-  margin: 0 auto !important;
-}
-
-.x-embed-fallback {
-  display: grid;
-  justify-items: center;
-  gap: 1rem;
-  color: var(--muted-foreground);
-  text-align: center;
-}
-
-.value-card {
-  min-height: 18rem;
-  background: var(--card);
-  padding: clamp(1.5rem, 4vw, 2rem);
-}
-
 .roadmap-card {
   min-height: 20rem;
   padding: clamp(1.5rem, 4vw, 2rem);
@@ -633,18 +564,6 @@ button {
 
   .learning-loop {
     flex-direction: column;
-  }
-
-  .x-embed-shell {
-    min-height: 30rem;
-    padding: 0.5rem;
-  }
-
-  .prototype-feed-bar {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.35rem;
-    padding-block: 0.9rem;
   }
 
 }
