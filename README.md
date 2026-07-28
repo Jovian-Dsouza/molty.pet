@@ -6,11 +6,11 @@
 
 <h1 align="center">Molty</h1>
 
-<p align="center"><strong>Fast reflexes. Slow thoughts.</strong></p>
+<p align="center"><strong>Build a robot pet. Give your AI a body.</strong></p>
 
 <p align="center">
-  A Raspberry Pi-powered robot dog exploring what happens when fast neural motion control<br>
-  shares a body with slower AI planning, memory, and decision-making.
+  An open Raspberry Pi robot pet you assemble yourself.<br>
+  The prototype walks today; voice, memory, and AI agent connections are planned.
 </p>
 
 <p align="center">
@@ -21,7 +21,7 @@
 
 <p align="center">
   <a href="https://molty.pet">
-    <img src="./website/public/og.png" width="100%" alt="Molty robot dog — fast reflexes, slow thoughts">
+    <img src="./website/public/molty-dog-front.jpg" width="100%" alt="Molty, a red four-legged robot pet prototype, standing on a workbench">
   </a>
 </p>
 
@@ -45,7 +45,7 @@ flowchart LR
 | --- | --- | --- |
 | Physical prototype | Walking, waving, and dancing; hardware is still changing | [Build log on X](https://x.com/DsouzaJovian/status/2078107900359356547) |
 | Motion simulation | Eight-actuator MuJoCo model, Gymnasium environment, scripted showcase, and PPO trainer | [`simulation/`](./simulation) |
-| Project website | Next.js site with the story, architecture, prototype footage, and roadmap | [`website/`](./website) · [molty.pet](https://molty.pet) |
+| Project website | Next.js site with the Build → Bond → Connect story, architecture, prototype footage, and roadmap | [`website/`](./website) · [molty.pet](https://molty.pet) |
 
 > [!NOTE]
 > The simulation model uses approximate dimensions, masses, joint limits, and optimistic servo force. It is useful for experiments, but it is not yet a calibrated digital twin of the physical robot.
@@ -147,9 +147,9 @@ New to robotics or reinforcement learning? Documentation fixes, reproducible bug
 
 ## Roadmap
 
-- **Body — building now:** stable walking, responsive gait control, proprioception, obstacle sensing, and safer recovery.
-- **Mind — next:** planning, memory, voice, curiosity, and reflection grounded in what Molty can actually sense and do.
-- **Life — north star:** useful household behaviors, learned routines, and long-term interaction as a physical companion.
+- **Build — building now:** affordable parts, documented assembly, stable walking, and repairable hardware.
+- **Bond — next:** voice, memory, routines, and expressive movement grounded in what Molty can sense and do.
+- **Connect — early experiments:** turn meaningful agent events into movement, sound, attention, and shared rituals.
 
 ## License
 
@@ -161,5 +161,5 @@ Contributions are accepted under the same license unless agreed otherwise in wri
 
 <p align="center">
   Built in public by <a href="https://x.com/DsouzaJovian">Jovian Dsouza</a>.<br>
-  If the idea of a robot learning how to share a room with us interests you, come build it.
+  Follow <a href="https://x.com/moltypet">@moltypet</a> for build releases and prototype progress.
 </p>
