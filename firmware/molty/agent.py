@@ -280,7 +280,13 @@ async def entrypoint(ctx: JobContext) -> None:
     async def shutdown_after_goodbye() -> None:
         await agent.cancel_motion("the voice session timed out")
         try:
-            await session.say("Tiny yawn. I'll be right here when you need me.")
+            await session.generate_reply(
+                instructions=(
+                    "Say one very short, sleepy goodbye because the user went away. "
+                    "Do not move or use tools."
+                ),
+                allow_interruptions=False,
+            )
         finally:
             session.shutdown()
 
