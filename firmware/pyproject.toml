@@ -25,6 +25,7 @@ device = [
 pi = [
   "Adafruit-Blinka>=8.68,<9",
   "adafruit-circuitpython-pca9685>=3.4,<4",
+  "rpi-lgpio>=0.6,<0.7; sys_platform == 'linux' and platform_machine == 'aarch64'",
 ]
 
 [project.scripts]
