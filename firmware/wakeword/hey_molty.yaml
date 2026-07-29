@@ -1,5 +1,6 @@
 # Training configuration for Molty's production wake phrase.
-# Run this on a workstation with a capable GPU, not on the Raspberry Pi.
+# Mirrored by train_hey_molty_colab.ipynb; train in Google Colab, never on the
+# Mac or Raspberry Pi.
 
 model_name: hey_molty
 target_phrases:

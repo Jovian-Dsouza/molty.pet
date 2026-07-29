@@ -45,14 +45,14 @@ On the Pi:
 ```bash
 sudo apt update
 sudo apt install -y portaudio19-dev libsndfile1
-cd hardware
+cd firmware
 uv sync --extra device --extra pi
 ```
 
 On the machine that runs the cloud agent:
 
 ```bash
-cd hardware
+cd firmware
 uv sync --extra agent
 ```
 
@@ -62,7 +62,7 @@ media are still cloud-hosted.
 ## Configure
 
 ```bash
-cd hardware
+cd firmware
 cp .env.example .env.local
 ```
 
@@ -77,7 +77,7 @@ without storing the LiveKit API secret.
 ## Test motion without servos
 
 ```bash
-cd hardware
+cd firmware
 uv run molty-motion wave
 uv run molty-motion forward --cycles 1
 ```
@@ -87,7 +87,7 @@ These commands expand and validate every frame but do not touch PCA9685.
 ## Calibrate and test one physical action
 
 ```bash
-cd hardware
+cd firmware
 cp calibration.example.json calibration.json
 ```
 
@@ -106,7 +106,7 @@ Keep a manual servo-power disconnect within reach.
 Start the agent:
 
 ```bash
-cd hardware
+cd firmware
 uv run --extra agent molty-agent dev
 ```
 
@@ -114,7 +114,7 @@ On the Pi, connect one session immediately. Leave off `--hardware` for the
 first conversation:
 
 ```bash
-cd hardware
+cd firmware
 uv run --extra device molty-device --skip-wakeword --dry-run
 ```
 
@@ -137,7 +137,7 @@ The repository does not pretend that LiveKit's supplied test model recognizes
 "Hey Molty." Download the pinned test model:
 
 ```bash
-cd hardware
+cd firmware
 uv run molty-test-wake-model
 ```
 
@@ -150,30 +150,31 @@ uv run --extra device molty-device --dry-run
 Set `MOLTY_WAKEWORD_MODEL` to a trained `hey_molty.onnx` when that model is
 ready. The same runtime will use it without code changes.
 
-### Train “Hey Molty”
+### Train “Hey Molty” in Google Colab
 
-Training is intentionally a workstation job rather than a Pi job. The
-production-oriented configuration is in `wakeword/hey_molty.yaml` and includes
+Wake-word training is Colab-only for Molty. The Mac and Raspberry Pi install
+only the listener needed to run the exported ONNX model.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Jovian-Dsouza/molty.pet/blob/main/firmware/wakeword/train_hey_molty_colab.ipynb)
+
+The project notebook follows LiveKit WakeWord's current pipeline and includes
 phonetically similar negatives such as “hey molly,” “hey moldy,” and “hey
-multi.”
+multi.” In Colab:
 
-Following LiveKit WakeWord's current training workflow:
+1. Select a T4 GPU runtime.
+2. Run all cells.
+3. Download the generated `hey_molty_colab_bundle.zip`.
+4. Extract `hey_molty.onnx` into `firmware/models/`.
+5. Copy the two values from `molty-wakeword.env` into `.env.local`.
 
-```bash
-uv tool install "livekit-wakeword[train,eval,export]"
-cd hardware/wakeword
-livekit-wakeword setup --config hey_molty.yaml
-livekit-wakeword run hey_molty.yaml
-```
-
-Evaluate the false-positive rate with real Molty servo and speaker noise before
-copying the exported ONNX model to the Pi. Start at the evaluator's recommended
-threshold instead of assuming `0.5`.
+The bundle also includes the false-positive metrics and DET plot. Test the
+recommended threshold with real Molty servo and speaker noise before deploying
+it to the Pi.
 
 ## Run tests
 
 ```bash
-cd hardware
+cd firmware
 uv sync
 uv run pytest
 uv run ruff check .

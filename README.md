@@ -44,7 +44,7 @@ flowchart LR
 | Area | Status | Where to look |
 | --- | --- | --- |
 | Physical prototype | Walking, waving, and dancing; hardware is still changing | [Build log on X](https://x.com/DsouzaJovian/status/2078107900359356547) |
-| Voice agent | LiveKit/OpenAI vertical slice with local wake word, session context, and safe motion RPCs | [`hardware/`](./hardware) |
+| Voice agent | LiveKit/OpenAI vertical slice with local wake word, session context, and safe motion RPCs | [`firmware/`](./firmware) |
 | Motion simulation | Eight-actuator MuJoCo model, Gymnasium environment, scripted showcase, and PPO trainer | [`simulation/`](./simulation) |
 | Project website | Next.js site with the Build → Bond → Connect story, architecture, prototype footage, and roadmap | [`website/`](./website) · [molty.pet](https://molty.pet) |
 
@@ -71,7 +71,7 @@ Watch the latest [prototype playlist](https://x.com/DsouzaJovian/status/20781079
 ### Run the voice and motion dry run
 
 The voice runtime is dry-run by default and will not touch the servos. See the
-[hardware guide](./hardware/README.md) for LiveKit/OpenAI setup, wake-word
+[firmware guide](./firmware/README.md) for LiveKit/OpenAI setup, wake-word
 testing, calibration, and the first physical `wave`.
 
 ### Run the simulation
@@ -122,7 +122,7 @@ npm run build
 
 ```text
 molty.pet/
-├── hardware/                # Servo actions, safe executor, and voice runtime
+├── firmware/                # Servo actions, safe executor, and voice runtime
 │   ├── molty/
 │   └── tests/
 ├── simulation/              # MuJoCo model, Gymnasium env, demos, and PPO training
