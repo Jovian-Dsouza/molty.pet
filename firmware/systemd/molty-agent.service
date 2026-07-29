@@ -13,7 +13,7 @@ Environment=PYTHONUNBUFFERED=1
 ExecStart=/home/pi/molty.pet/firmware/.venv/bin/molty-agent start
 Restart=always
 RestartSec=5
-TimeoutStopSec=20
+TimeoutStopSec=30
 
 [Install]
 WantedBy=multi-user.target

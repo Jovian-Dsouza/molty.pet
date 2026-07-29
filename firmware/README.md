@@ -137,8 +137,9 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now molty-agent.service molty-device.service
 ```
 
-The checked-in device service explicitly uses `--dry-run`. Only remove it after
-calibration and lifted-robot testing.
+The checked-in device service uses hardware mode and requires a device-local
+`calibration.json`. That file is intentionally gitignored. Use `--dry-run`
+manually for tests that must not move the robot.
 
 On the Pi, connect one session immediately. Leave off `--hardware` for the
 first conversation:

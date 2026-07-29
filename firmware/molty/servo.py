@@ -315,6 +315,7 @@ class PCA9685ServoDriver:
             self._pca.channels[spec.channel].duty_cycle = duty_cycle
             if index < len(items) - 1 and self.calibration.motor_delay_ms:
                 time.sleep(self.calibration.motor_delay_ms / 1000)
+        logger.info("hardware servo frame: %s", dict(angles))
 
     def release_all(self) -> None:
         if self._pca is None:

@@ -243,6 +243,7 @@ def _single_session_load(agent_server: AgentServer) -> float:
 server = AgentServer(
     job_executor_type=EXECUTOR,
     num_idle_processes=IDLE_PROCESSES,
+    drain_timeout=10,
     initialize_process_timeout=60.0,
     load_threshold=0.5,
     load_fnc=_single_session_load,
@@ -285,7 +286,6 @@ async def entrypoint(ctx: JobContext) -> None:
                     "Say one very short, sleepy goodbye because the user went away. "
                     "Do not move or use tools."
                 ),
-                allow_interruptions=False,
             )
         finally:
             session.shutdown()

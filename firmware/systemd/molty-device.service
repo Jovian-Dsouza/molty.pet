@@ -10,7 +10,7 @@ Group=pi
 WorkingDirectory=/home/pi/molty.pet/firmware
 EnvironmentFile=-/home/pi/molty.pet/firmware/.env
 Environment=PYTHONUNBUFFERED=1
-ExecStart=/home/pi/molty.pet/firmware/.venv/bin/molty-device --dry-run
+ExecStart=/home/pi/molty.pet/firmware/.venv/bin/molty-device --hardware --calibration calibration.json
 Restart=always
 RestartSec=5
 TimeoutStopSec=20
