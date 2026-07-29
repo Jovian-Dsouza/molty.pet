@@ -109,6 +109,9 @@ audio to BlueALSA. Set `MOLTY_AUDIO_OUTPUT_DEVICE_NAME` to
 `Loopback: PCM (plughw:2,0)` when `PA_ALSA_PLUGHW=1`; name selection is
 preferred over a PortAudio index. Update the speaker MAC in
 `systemd/molty-asound.conf` when pairing a different speaker.
+The checked-in bridge uses adaptive ALSA clock synchronization and a small
+buffer to prevent drift-induced gaps without adding enough latency to confuse
+echo cancellation.
 
 Do not use the development credential arrangement for an unattended robot. Configure
 `MOLTY_TOKEN_ENDPOINT` afterward so the Pi receives a short-lived room token

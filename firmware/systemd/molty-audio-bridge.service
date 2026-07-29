@@ -8,7 +8,11 @@ Before=molty-device.service
 Type=simple
 User=pi
 Group=pi
-ExecStart=/usr/bin/alsaloop -C hw:Loopback,1,0 -P molty_bt -r 48000 -c 1 -f S16_LE -t 100000 -S 0
+AmbientCapabilities=CAP_SYS_NICE
+CapabilityBoundingSet=CAP_SYS_NICE
+LimitRTPRIO=99
+LimitMEMLOCK=infinity
+ExecStart=/usr/bin/alsaloop -C hw:Loopback,1,0 -P molty_bt -r 48000 -c 1 -f S16_LE -t 20000
 Restart=always
 RestartSec=2
 
