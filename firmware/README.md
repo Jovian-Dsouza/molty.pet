@@ -87,7 +87,7 @@ hardware rate, including Google Voice HAT. This lets the 16 kHz wake listener
 use ALSA's resampling layer while the LiveKit session continues at 48 kHz.
 
 On a Pi Zero 2 W using Wi-Fi and a Bluetooth speaker at the same time, disable
-Wi-Fi power saving and install the BlueALSA override to reduce radio dropouts:
+Wi-Fi power saving and install the Bluetooth audio services:
 
 ```bash
 nmcli connection modify "$(nmcli -g GENERAL.CONNECTION device show wlan0)" \
@@ -95,9 +95,22 @@ nmcli connection modify "$(nmcli -g GENERAL.CONNECTION device show wlan0)" \
 sudo mkdir -p /etc/systemd/system/bluealsa.service.d
 sudo cp systemd/bluealsa.override.conf \
   /etc/systemd/system/bluealsa.service.d/molty.conf
+sudo cp systemd/molty-asound.conf /etc/asound.conf
+sudo cp systemd/molty-snd-aloop.conf /etc/modules-load.d/molty-audio.conf
+sudo cp systemd/molty-snd-aloop-options.conf \
+  /etc/modprobe.d/molty-audio.conf
+sudo cp systemd/molty-audio-bridge.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now molty-audio-bridge.service
 ```
 
-Do not use that arrangement for an unattended robot. Configure
+The loopback bridge keeps LiveKit's playback/AEC path intact while forwarding
+audio to BlueALSA. Set `MOLTY_AUDIO_OUTPUT_DEVICE_NAME` to
+`Loopback: PCM (hw:2,0)`; name selection is preferred over a PortAudio index.
+Update the speaker MAC in `systemd/molty-asound.conf` when pairing a different
+speaker.
+
+Do not use the development credential arrangement for an unattended robot. Configure
 `MOLTY_TOKEN_ENDPOINT` afterward so the Pi receives a short-lived room token
 without storing the LiveKit API secret.
 

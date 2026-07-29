@@ -1,7 +1,7 @@
 [Unit]
 Description=Molty wake word, audio, and motion device
-Wants=network-online.target
-After=network-online.target sound.target molty-agent.service
+Wants=network-online.target molty-audio-bridge.service
+After=network-online.target sound.target molty-agent.service molty-audio-bridge.service
 
 [Service]
 Type=simple

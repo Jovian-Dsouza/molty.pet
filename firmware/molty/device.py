@@ -67,6 +67,7 @@ class DeviceConfig:
     i2c_address: int
     input_device: int | None
     output_device: int | None
+    output_device_name: str | None
     agent_join_timeout_seconds: float
     status_tones: bool
 
@@ -94,6 +95,7 @@ class DeviceConfig:
             i2c_address=int(os.getenv("MOLTY_I2C_ADDRESS", "0x40"), 0),
             input_device=_env_int("MOLTY_AUDIO_INPUT_DEVICE"),
             output_device=_env_int("MOLTY_AUDIO_OUTPUT_DEVICE"),
+            output_device_name=os.getenv("MOLTY_AUDIO_OUTPUT_DEVICE_NAME"),
             agent_join_timeout_seconds=float(
                 os.getenv("MOLTY_AGENT_JOIN_TIMEOUT_SECONDS", "20")
             ),
@@ -124,6 +126,8 @@ class DeviceConfig:
             raise ValueError("MOLTY_WAKE_DEBOUNCE_SECONDS cannot be negative")
         if self.agent_join_timeout_seconds <= 0:
             raise ValueError("MOLTY_AGENT_JOIN_TIMEOUT_SECONDS must be positive")
+        if self.output_device_name is not None and not self.output_device_name.strip():
+            raise ValueError("MOLTY_AUDIO_OUTPUT_DEVICE_NAME cannot be blank")
         if not self.skip_wakeword:
             if self.wake_model is None:
                 raise ValueError(
@@ -131,6 +135,51 @@ class DeviceConfig:
                 )
             if not self.wake_model.is_file():
                 raise ValueError(f"wake model does not exist: {self.wake_model}")
+
+
+def _find_output_device(
+    devices: list[dict[str, Any]],
+    configured_name: str,
+) -> int:
+    """Find one output device by exact name, then by a unique substring."""
+
+    wanted = configured_name.strip().casefold()
+    outputs = [
+        (index, str(device.get("name", "")))
+        for index, device in enumerate(devices)
+        if int(device.get("max_output_channels", 0)) > 0
+    ]
+    exact = [index for index, name in outputs if name.casefold() == wanted]
+    matches = exact or [index for index, name in outputs if wanted in name.casefold()]
+    if len(matches) == 1:
+        return matches[0]
+
+    available = ", ".join(f"{index}: {name}" for index, name in outputs) or "none"
+    if not matches:
+        raise ValueError(
+            f"audio output {configured_name!r} was not found; available: {available}"
+        )
+    raise ValueError(
+        f"audio output {configured_name!r} is ambiguous; available: {available}"
+    )
+
+
+def _resolve_output_device(config: DeviceConfig) -> int | None:
+    if config.output_device_name is None:
+        return config.output_device
+
+    import sounddevice as sd
+
+    output_device = _find_output_device(
+        list(sd.query_devices()),
+        config.output_device_name,
+    )
+    logger.info(
+        "selected audio output %d by name %s",
+        output_device,
+        config.output_device_name,
+    )
+    return output_device
 
 
 @dataclass(frozen=True, slots=True)
@@ -421,6 +470,7 @@ async def play_tone(
 
 async def run_device(config: DeviceConfig) -> None:
     config.validate()
+    config = replace(config, output_device=_resolve_output_device(config))
     if config.hardware:
         calibration = RobotCalibration.from_file(config.calibration_path)
         driver = PCA9685ServoDriver(

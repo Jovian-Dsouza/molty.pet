@@ -1,0 +1,16 @@
+[Unit]
+Description=Molty LiveKit-to-Bluetooth audio bridge
+Requires=bluealsa.service
+After=bluetooth.service bluealsa.service
+Before=molty-device.service
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+ExecStart=/usr/bin/alsaloop -C hw:Loopback,1,0 -P molty_bt -r 48000 -c 1 -f S16_LE -t 100000 -S 0
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
