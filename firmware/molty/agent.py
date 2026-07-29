@@ -48,6 +48,7 @@ SILENCE_DURATION_MS = int(
 )
 IDLE_PROCESSES = int(os.getenv("MOLTY_AGENT_IDLE_PROCESSES", "1"))
 EXECUTOR = JobExecutorType(os.getenv("MOLTY_AGENT_EXECUTOR", "thread"))
+EMOTION_MAX_SECONDS = float(os.getenv("MOLTY_EMOTION_MAX_SECONDS", "20"))
 
 ActionName = Literal[
     "stand",
@@ -112,6 +113,7 @@ class MoltyAgent(Agent):
         self.ctx = ctx
         self._emotion_motion_task: asyncio.Task[None] | None = None
         self._emotion_command_id: str | None = None
+        self._emotion_generation = 0
         super().__init__(
             instructions=INSTRUCTIONS,
             llm=openai.realtime.RealtimeModel(
@@ -151,11 +153,11 @@ class MoltyAgent(Agent):
         del context
         await self.cancel_emotional_motion("a new emotional reaction started")
         motion = motion_for_emotion(emotion, intensity)
-        command_id = f"emotion-{uuid.uuid4().hex}"
-        self._emotion_command_id = command_id
+        self._emotion_generation += 1
+        generation = self._emotion_generation
         task = asyncio.create_task(
             self._run_emotional_motion(
-                command_id,
+                generation,
                 emotion,
                 motion.actions,
                 motion.speed,
@@ -255,41 +257,64 @@ class MoltyAgent(Agent):
             logger.exception("failed to cancel device motion")
 
     async def cancel_emotional_motion(self, reason: str) -> None:
-        if self._emotion_command_id is None:
+        if self._emotion_motion_task is None:
             return
-        await self.cancel_motion(reason)
+        self._emotion_generation += 1
+        if self._emotion_command_id is not None:
+            await self.cancel_motion(reason)
 
     async def _run_emotional_motion(
         self,
-        command_id: str,
+        generation: int,
         emotion: EmotionName,
         actions: tuple[str, ...],
         speed: str,
     ) -> None:
+        current_task = asyncio.current_task()
+        started_at = asyncio.get_running_loop().time()
+        logger.info(
+            "starting %s emotional body language with %s at %s speed",
+            emotion,
+            ", ".join(actions),
+            speed,
+        )
         try:
-            response = await self._rpc(
-                PLAN_RPC,
-                {
-                    "command_id": command_id,
-                    "steps": [
-                        {"action": action, "speed": speed, "cycles": 1}
-                        for action in actions
-                    ],
-                },
-                timeout=40,
-            )
-            result = response.get("result")
-            status = result.get("status") if isinstance(result, dict) else None
-            if not response.get("ok") and status != "cancelled":
-                logger.warning(
-                    "emotional motion was rejected",
-                    extra={"emotion": emotion, "response": response},
+            while (
+                self._emotion_motion_task is current_task
+                and self._emotion_generation == generation
+                and asyncio.get_running_loop().time() - started_at
+                < EMOTION_MAX_SECONDS
+            ):
+                command_id = f"emotion-{uuid.uuid4().hex}"
+                self._emotion_command_id = command_id
+                response = await self._rpc(
+                    PLAN_RPC,
+                    {
+                        "command_id": command_id,
+                        "steps": [
+                            {"action": action, "speed": speed, "cycles": 1}
+                            for action in actions
+                        ],
+                    },
+                    timeout=40,
                 )
+                result = response.get("result")
+                status = result.get("status") if isinstance(result, dict) else None
+                if status != "completed":
+                    if not response.get("ok") and status != "cancelled":
+                        logger.warning(
+                            "emotional motion was rejected",
+                            extra={"emotion": emotion, "response": response},
+                        )
+                    break
         except Exception:
             logger.exception(
                 "emotional motion failed",
                 extra={"emotion": emotion},
             )
+        finally:
+            if self._emotion_motion_task is current_task:
+                self._emotion_command_id = None
 
     def _on_emotional_motion_done(self, task: asyncio.Task[None]) -> None:
         if self._emotion_motion_task is task:
