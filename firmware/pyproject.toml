@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "molty-hardware"
+version = "0.1.0"
+description = "Safe servo motion and LiveKit voice runtime for Molty"
+requires-python = ">=3.11,<3.15"
+dependencies = []
+
+[project.optional-dependencies]
+agent = [
+  "livekit-agents[openai]>=1.6.7,<1.7",
+  "python-dotenv>=1.2,<2",
+]
+device = [
+  "livekit==1.1.13",
+  "livekit-api>=1.2,<1.3",
+  "livekit-wakeword[listener]>=0.2.1,<0.3",
+  "numpy>=2,<3",
+  "python-dotenv>=1.2,<2",
+  "sounddevice>=0.5.5,<0.6",
+]
+pi = [
+  "Adafruit-Blinka>=8.68,<9",
+  "adafruit-circuitpython-pca9685>=3.4,<4",
+]
+
+[project.scripts]
+molty-agent = "molty.agent:main"
+molty-device = "molty.device:main"
+molty-motion = "molty.motion_cli:main"
+molty-test-wake-model = "molty.model_download:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=9,<10",
+  "pytest-asyncio>=1.3,<2",
+  "ruff>=0.14,<0.15",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["molty*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+exclude = ["eight_servo_control.py", "sesame_actions.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "B", "A", "C4", "UP", "SIM", "RUF"]
+
+[tool.ruff.format]
+quote-style = "double"

@@ -1,3 +1,11 @@
 .superstack
 .DS_Store
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
 .env
+.env.*
+!.env.example
+firmware/models/*.onnx
