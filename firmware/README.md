@@ -22,7 +22,11 @@ and executes every frame.
 - LiveKit room audio with echo cancellation, noise suppression, and gain
   control.
 - Local wake-word listener.
-- OpenAI `gpt-realtime-2.1-mini` agent with short pet-like responses.
+- OpenAI `gpt-realtime-2.1-mini` agent with Cedar voice and short pet-like
+  responses.
+- Normal server VAD with a `0.50` threshold, `300 ms` prefix padding, and
+  `500 ms` silence detection.
+- No automatic idle timeout; the active room keeps its session context.
 - Named action, composed action-plan, cancel, and body-state RPCs.
 - Session context that disappears when the room ends.
 
@@ -71,6 +75,12 @@ cp .env.example .env.local
 Fill in the LiveKit project values on both machines and `OPENAI_API_KEY` on the
 agent machine. For this first development test, the Pi can use the LiveKit API
 key and secret to create its own room token.
+
+The checked-in defaults match the current voice configuration: Cedar,
+`gpt-realtime-2.1-mini`, normal server VAD at `0.50`, `300 ms` prefix padding,
+`500 ms` silence duration, and no idle timeout. The VAD values can be adjusted
+with the `OPENAI_REALTIME_TURN_*`, `OPENAI_REALTIME_PREFIX_PADDING_MS`, and
+`OPENAI_REALTIME_SILENCE_DURATION_MS` environment variables.
 
 Keep `PA_ALSA_PLUGHW=1` on Raspberry Pi audio cards that expose only a fixed
 hardware rate, including Google Voice HAT. This lets the 16 kHz wake listener

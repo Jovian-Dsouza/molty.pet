@@ -25,6 +25,7 @@ from livekit.agents import (
     function_tool,
 )
 from livekit.plugins import openai
+from openai.types.realtime.realtime_audio_input_turn_detection import ServerVad
 from openai.types.realtime.realtime_reasoning import RealtimeReasoning
 
 from .rpc import ACTION_RPC, CANCEL_RPC, PLAN_RPC, STATE_RPC
@@ -37,7 +38,12 @@ DEVICE_IDENTITY_PREFIX = os.getenv(
     "molty-device-",
 )
 MODEL = os.getenv("OPENAI_REALTIME_MODEL", "gpt-realtime-2.1-mini")
-VOICE = os.getenv("OPENAI_REALTIME_VOICE", "marin")
+VOICE = os.getenv("OPENAI_REALTIME_VOICE", "cedar")
+TURN_THRESHOLD = float(os.getenv("OPENAI_REALTIME_TURN_THRESHOLD", "0.50"))
+PREFIX_PADDING_MS = int(os.getenv("OPENAI_REALTIME_PREFIX_PADDING_MS", "300"))
+SILENCE_DURATION_MS = int(
+    os.getenv("OPENAI_REALTIME_SILENCE_DURATION_MS", "500")
+)
 IDLE_PROCESSES = int(os.getenv("MOLTY_AGENT_IDLE_PROCESSES", "1"))
 EXECUTOR = JobExecutorType(os.getenv("MOLTY_AGENT_EXECUTOR", "thread"))
 
@@ -99,6 +105,15 @@ class MoltyAgent(Agent):
             llm=openai.realtime.RealtimeModel(
                 model=MODEL,
                 voice=VOICE,
+                turn_detection=ServerVad(
+                    type="server_vad",
+                    create_response=True,
+                    interrupt_response=True,
+                    threshold=TURN_THRESHOLD,
+                    prefix_padding_ms=PREFIX_PADDING_MS,
+                    silence_duration_ms=SILENCE_DURATION_MS,
+                    idle_timeout_ms=None,
+                ),
                 reasoning=RealtimeReasoning(effort="low"),
             ),
         )
@@ -262,8 +277,9 @@ async def entrypoint(ctx: JobContext) -> None:
         task.add_done_callback(background_tasks.discard)
 
     session = AgentSession(
-        user_away_timeout=60,
+        user_away_timeout=None,
         turn_handling=TurnHandlingOptions(
+            turn_detection="realtime_llm",
             interruption=InterruptionOptions(
                 enabled=True,
                 min_duration=0.3,
@@ -275,20 +291,6 @@ async def entrypoint(ctx: JobContext) -> None:
     def on_user_state_changed(event: UserStateChangedEvent) -> None:
         if event.new_state == "speaking":
             spawn(agent.cancel_motion("the user interrupted"))
-        elif event.new_state == "away":
-            spawn(shutdown_after_goodbye())
-
-    async def shutdown_after_goodbye() -> None:
-        await agent.cancel_motion("the voice session timed out")
-        try:
-            await session.generate_reply(
-                instructions=(
-                    "Say one very short, sleepy goodbye because the user went away. "
-                    "Do not move or use tools."
-                ),
-            )
-        finally:
-            session.shutdown()
 
     await session.start(agent=agent, room=ctx.room)
     await session.generate_reply(
