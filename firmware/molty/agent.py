@@ -17,6 +17,7 @@ from livekit.agents import (
     AgentSession,
     InterruptionOptions,
     JobContext,
+    JobExecutorType,
     RunContext,
     TurnHandlingOptions,
     UserStateChangedEvent,
@@ -38,6 +39,7 @@ DEVICE_IDENTITY_PREFIX = os.getenv(
 MODEL = os.getenv("OPENAI_REALTIME_MODEL", "gpt-realtime-2.1-mini")
 VOICE = os.getenv("OPENAI_REALTIME_VOICE", "marin")
 IDLE_PROCESSES = int(os.getenv("MOLTY_AGENT_IDLE_PROCESSES", "1"))
+EXECUTOR = JobExecutorType(os.getenv("MOLTY_AGENT_EXECUTOR", "thread"))
 
 ActionName = Literal[
     "stand",
@@ -239,6 +241,7 @@ def _single_session_load(agent_server: AgentServer) -> float:
 
 
 server = AgentServer(
+    job_executor_type=EXECUTOR,
     num_idle_processes=IDLE_PROCESSES,
     initialize_process_timeout=60.0,
     load_threshold=0.5,

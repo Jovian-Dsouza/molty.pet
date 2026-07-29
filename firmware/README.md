@@ -116,13 +116,17 @@ cd firmware
 uv run --extra agent molty-agent dev
 ```
 
-On the Pi, use production mode. Molty keeps one process warm by default to fit
-the Pi Zero 2 W. The worker admits one robot session at a time and does not
+On the Pi, use production mode. Molty keeps one job executor warm by default.
+The worker admits one robot session at a time and does not
 mistake the wake-word listener's CPU use for model load:
 
 ```bash
 uv run --no-dev molty-agent start
 ```
+
+`MOLTY_AGENT_EXECUTOR=thread` avoids duplicating the Python runtime for this
+single-user robot. Use `process` only on a machine with more memory when process
+isolation is worth the overhead.
 
 To run both processes after every Pi reboot:
 
