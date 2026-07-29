@@ -15,6 +15,7 @@ from livekit.agents import (
     Agent,
     AgentServer,
     AgentSession,
+    AgentStateChangedEvent,
     InterruptionOptions,
     JobContext,
     JobExecutorType,
@@ -28,6 +29,7 @@ from livekit.plugins import openai
 from openai.types.realtime.realtime_audio_input_turn_detection import ServerVad
 from openai.types.realtime.realtime_reasoning import RealtimeReasoning
 
+from .emotion import EmotionIntensity, EmotionName, motion_for_emotion
 from .rpc import ACTION_RPC, CANCEL_RPC, PLAN_RPC, STATE_RPC
 
 load_dotenv(".env.local")
@@ -85,13 +87,21 @@ Voice behavior:
 - You have session context only. Never claim to remember an earlier wake session.
 
 Body behavior:
+- Before nearly every spoken reply, call express_emotion exactly once with the
+  emotion you genuinely feel and its intensity. It starts body language
+  immediately so you can speak while moving.
+- Choose subtle for ordinary conversation, normal for a clear emotional moment,
+  and big only for rare, strongly emotional moments.
+- Emotional body language never walks or turns. Do not use perform_action or
+  perform_motion_plan merely to show emotion.
+- If the user explicitly requests movement, use the requested movement tool and
+  skip express_emotion for that turn so motions never queue behind each other.
 - Use perform_action for a named reaction or an explicit short movement request.
 - Walking actions must only follow a clear request from the user and use at most
   two cycles.
-- Use perform_motion_plan for creative emotional reactions. Choose at most four
-  approved actions; prefer expressive actions over locomotion.
+- Use perform_motion_plan only when the user explicitly asks for a sequence of
+  movements. Choose at most four approved actions.
 - Never invent servo names, angles, trajectories, or unsupported physical abilities.
-- Do not move constantly. Small, meaningful reactions feel more alive than noise.
 - If the user says stop, freeze, wait, no, or begins interrupting, movement will
   be cancelled. Do not immediately restart it.
 """
@@ -100,6 +110,8 @@ Body behavior:
 class MoltyAgent(Agent):
     def __init__(self, ctx: JobContext) -> None:
         self.ctx = ctx
+        self._emotion_motion_task: asyncio.Task[None] | None = None
+        self._emotion_command_id: str | None = None
         super().__init__(
             instructions=INSTRUCTIONS,
             llm=openai.realtime.RealtimeModel(
@@ -116,6 +128,45 @@ class MoltyAgent(Agent):
                 ),
                 reasoning=RealtimeReasoning(effort="low"),
             ),
+        )
+
+    @function_tool
+    async def express_emotion(
+        self,
+        context: RunContext,
+        emotion: EmotionName,
+        intensity: EmotionIntensity = "subtle",
+    ) -> str:
+        """Start emotional body language, then continue speaking immediately.
+
+        Call this once before a spoken response so Molty moves while talking.
+        This tool never walks or turns the robot.
+
+        Args:
+            emotion: Molty's genuine emotional reaction to the conversation.
+            intensity: Subtle for normal conversation, normal for a clear
+                reaction, or big for a rare strong reaction.
+        """
+
+        del context
+        await self.cancel_emotional_motion("a new emotional reaction started")
+        motion = motion_for_emotion(emotion, intensity)
+        command_id = f"emotion-{uuid.uuid4().hex}"
+        self._emotion_command_id = command_id
+        task = asyncio.create_task(
+            self._run_emotional_motion(
+                command_id,
+                emotion,
+                motion.actions,
+                motion.speed,
+            )
+        )
+        self._emotion_motion_task = task
+        task.add_done_callback(self._on_emotional_motion_done)
+        await asyncio.sleep(0)
+        return (
+            f"{emotion} body language started. Continue the spoken response "
+            "immediately while the body is moving."
         )
 
     @function_tool
@@ -202,6 +253,48 @@ class MoltyAgent(Agent):
             )
         except Exception:
             logger.exception("failed to cancel device motion")
+
+    async def cancel_emotional_motion(self, reason: str) -> None:
+        if self._emotion_command_id is None:
+            return
+        await self.cancel_motion(reason)
+
+    async def _run_emotional_motion(
+        self,
+        command_id: str,
+        emotion: EmotionName,
+        actions: tuple[str, ...],
+        speed: str,
+    ) -> None:
+        try:
+            response = await self._rpc(
+                PLAN_RPC,
+                {
+                    "command_id": command_id,
+                    "steps": [
+                        {"action": action, "speed": speed, "cycles": 1}
+                        for action in actions
+                    ],
+                },
+                timeout=40,
+            )
+            result = response.get("result")
+            status = result.get("status") if isinstance(result, dict) else None
+            if not response.get("ok") and status != "cancelled":
+                logger.warning(
+                    "emotional motion was rejected",
+                    extra={"emotion": emotion, "response": response},
+                )
+        except Exception:
+            logger.exception(
+                "emotional motion failed",
+                extra={"emotion": emotion},
+            )
+
+    def _on_emotional_motion_done(self, task: asyncio.Task[None]) -> None:
+        if self._emotion_motion_task is task:
+            self._emotion_motion_task = None
+            self._emotion_command_id = None
 
     async def _rpc(
         self,
@@ -292,11 +385,17 @@ async def entrypoint(ctx: JobContext) -> None:
         if event.new_state == "speaking":
             spawn(agent.cancel_motion("the user interrupted"))
 
+    @session.on("agent_state_changed")
+    def on_agent_state_changed(event: AgentStateChangedEvent) -> None:
+        if event.old_state == "speaking" and event.new_state != "speaking":
+            spawn(agent.cancel_emotional_motion("Molty finished speaking"))
+
     await session.start(agent=agent, room=ctx.room)
     await session.generate_reply(
         instructions=(
-            "Greet the user as Molty in one very short, playful sentence. "
-            "Do not move unless the user asks."
+            "Feel playful and greet the user as Molty in one very short sentence. "
+            "Call express_emotion before speaking so your greeting and movement "
+            "happen together."
         )
     )
 
