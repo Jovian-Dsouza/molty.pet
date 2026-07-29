@@ -6,14 +6,14 @@ from molty.device import _find_output_device
 
 DEVICES = [
     {"name": "Voice HAT", "max_output_channels": 2},
-    {"name": "Loopback: PCM (hw:2,0)", "max_output_channels": 32},
-    {"name": "Loopback: PCM (hw:2,1)", "max_output_channels": 32},
+    {"name": "Loopback: PCM (plughw:2,0)", "max_output_channels": 32},
+    {"name": "Loopback: PCM (plughw:2,1)", "max_output_channels": 32},
     {"name": "Microphone only", "max_output_channels": 0},
 ]
 
 
 def test_find_output_device_prefers_an_exact_name() -> None:
-    assert _find_output_device(DEVICES, "Loopback: PCM (hw:2,0)") == 1
+    assert _find_output_device(DEVICES, "Loopback: PCM (plughw:2,0)") == 1
 
 
 def test_find_output_device_accepts_a_unique_substring() -> None:

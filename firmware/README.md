@@ -106,9 +106,9 @@ sudo systemctl enable --now molty-audio-bridge.service
 
 The loopback bridge keeps LiveKit's playback/AEC path intact while forwarding
 audio to BlueALSA. Set `MOLTY_AUDIO_OUTPUT_DEVICE_NAME` to
-`Loopback: PCM (hw:2,0)`; name selection is preferred over a PortAudio index.
-Update the speaker MAC in `systemd/molty-asound.conf` when pairing a different
-speaker.
+`Loopback: PCM (plughw:2,0)` when `PA_ALSA_PLUGHW=1`; name selection is
+preferred over a PortAudio index. Update the speaker MAC in
+`systemd/molty-asound.conf` when pairing a different speaker.
 
 Do not use the development credential arrangement for an unattended robot. Configure
 `MOLTY_TOKEN_ENDPOINT` afterward so the Pi receives a short-lived room token
