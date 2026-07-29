@@ -23,6 +23,7 @@ from .servo import DryRunServoDriver, PCA9685ServoDriver, RobotCalibration
 logger = logging.getLogger("molty.device")
 SAMPLE_RATE = 48_000
 CHANNELS = 1
+AGENT_STATE_ATTRIBUTE = "lk.agent.state"
 
 
 def _env_bool(name: str, default: bool = False) -> bool:
@@ -70,6 +71,8 @@ class DeviceConfig:
     output_device_name: str | None
     agent_join_timeout_seconds: float
     status_tones: bool
+    half_duplex: bool
+    half_duplex_release_seconds: float
 
     @classmethod
     def from_env(cls) -> DeviceConfig:
@@ -103,6 +106,11 @@ class DeviceConfig:
                 "MOLTY_STATUS_TONES",
                 default=sys.platform.startswith("linux"),
             ),
+            half_duplex=_env_bool("MOLTY_HALF_DUPLEX"),
+            half_duplex_release_seconds=float(
+                os.getenv("MOLTY_HALF_DUPLEX_RELEASE_MS", "350")
+            )
+            / 1000,
         )
 
     def validate(self) -> None:
@@ -128,6 +136,8 @@ class DeviceConfig:
             raise ValueError("MOLTY_AGENT_JOIN_TIMEOUT_SECONDS must be positive")
         if self.output_device_name is not None and not self.output_device_name.strip():
             raise ValueError("MOLTY_AUDIO_OUTPUT_DEVICE_NAME cannot be blank")
+        if self.half_duplex_release_seconds < 0:
+            raise ValueError("MOLTY_HALF_DUPLEX_RELEASE_MS cannot be negative")
         if not self.skip_wakeword:
             if self.wake_model is None:
                 raise ValueError(
@@ -283,7 +293,10 @@ class LiveKitRoomSession:
             num_channels=CHANNELS,
         )
         self.mic: Any = None
+        self.mic_track: Any = None
         self.player: Any = None
+        self.agent_speaking = False
+        self.mic_release_task: asyncio.Task[Any] | None = None
 
     async def __aenter__(self) -> LiveKitRoomSession:
         from livekit import rtc
@@ -319,6 +332,22 @@ class LiveKitRoomSession:
         def on_participant_connected(participant: Any) -> None:
             if participant.identity.startswith(self.config.agent_identity_prefix):
                 self.agent_joined.set()
+                self._set_agent_speaking(
+                    participant.attributes.get(AGENT_STATE_ATTRIBUTE) == "speaking"
+                )
+
+        @self.room.on("participant_attributes_changed")
+        def on_participant_attributes_changed(
+            changed_attributes: dict[str, str],
+            participant: Any,
+        ) -> None:
+            if (
+                participant.identity.startswith(self.config.agent_identity_prefix)
+                and AGENT_STATE_ATTRIBUTE in changed_attributes
+            ):
+                self._set_agent_speaking(
+                    changed_attributes[AGENT_STATE_ATTRIBUTE] == "speaking"
+                )
 
         @self.room.on("participant_disconnected")
         def on_participant_disconnected(participant: Any) -> None:
@@ -351,17 +380,20 @@ class LiveKitRoomSession:
         await self.room.connect(self.credentials.url, self.credentials.token)
         logger.info("connected to LiveKit room %s", self.room.name)
         self._register_rpcs()
-        track = rtc.LocalAudioTrack.create_audio_track(
+        self.mic_track = rtc.LocalAudioTrack.create_audio_track(
             "microphone",
             self.mic.source,
         )
         options = rtc.TrackPublishOptions(source=rtc.TrackSource.SOURCE_MICROPHONE)
-        await self.room.local_participant.publish_track(track, options)
+        await self.room.local_participant.publish_track(self.mic_track, options)
         await self.player.start()
 
         for participant in self.room.remote_participants.values():
             if participant.identity.startswith(self.config.agent_identity_prefix):
                 self.agent_joined.set()
+                self._set_agent_speaking(
+                    participant.attributes.get(AGENT_STATE_ATTRIBUTE) == "speaking"
+                )
                 break
         return self
 
@@ -374,6 +406,8 @@ class LiveKitRoomSession:
 
     async def __aexit__(self, _exc_type: Any, _exc: Any, _tb: Any) -> None:
         await self.rpc_controller.executor.cancel(reason="voice session ended")
+        if self.mic_release_task is not None:
+            self.mic_release_task.cancel()
         if self.background_tasks:
             await asyncio.gather(
                 *self.background_tasks,
@@ -389,6 +423,41 @@ class LiveKitRoomSession:
         task = asyncio.create_task(coroutine)
         self.background_tasks.add(task)
         task.add_done_callback(self.background_tasks.discard)
+
+    def _set_agent_speaking(self, speaking: bool) -> None:
+        self.agent_speaking = speaking
+        if not self.config.half_duplex or self.mic_track is None:
+            return
+
+        if speaking:
+            if self.mic_release_task is not None:
+                self.mic_release_task.cancel()
+                self.mic_release_task = None
+            if not self.mic_track.muted:
+                self.mic_track.mute()
+                logger.info("microphone paused while Molty is speaking")
+            return
+
+        if not self.mic_track.muted:
+            return
+        if self.mic_release_task is not None and not self.mic_release_task.done():
+            return
+
+        task = asyncio.create_task(self._release_microphone())
+        self.mic_release_task = task
+        self.background_tasks.add(task)
+        task.add_done_callback(self._on_mic_release_done)
+
+    async def _release_microphone(self) -> None:
+        await asyncio.sleep(self.config.half_duplex_release_seconds)
+        if not self.agent_speaking and self.mic_track is not None:
+            self.mic_track.unmute()
+            logger.info("microphone resumed after Molty finished speaking")
+
+    def _on_mic_release_done(self, task: asyncio.Task[Any]) -> None:
+        self.background_tasks.discard(task)
+        if self.mic_release_task is task:
+            self.mic_release_task = None
 
     def _register_rpcs(self) -> None:
         participant = self.room.local_participant
