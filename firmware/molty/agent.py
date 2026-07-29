@@ -37,6 +37,7 @@ DEVICE_IDENTITY_PREFIX = os.getenv(
 )
 MODEL = os.getenv("OPENAI_REALTIME_MODEL", "gpt-realtime-2.1-mini")
 VOICE = os.getenv("OPENAI_REALTIME_VOICE", "marin")
+IDLE_PROCESSES = int(os.getenv("MOLTY_AGENT_IDLE_PROCESSES", "1"))
 
 ActionName = Literal[
     "stand",
@@ -231,7 +232,7 @@ def _tool_summary(response: dict[str, object]) -> str:
     return f"Movement failed: {detail}"
 
 
-server = AgentServer()
+server = AgentServer(num_idle_processes=IDLE_PROCESSES)
 
 
 @server.rtc_session(agent_name=AGENT_NAME)

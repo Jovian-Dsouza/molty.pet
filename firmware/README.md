@@ -46,18 +46,20 @@ On the Pi:
 sudo apt update
 sudo apt install -y portaudio19-dev libsndfile1
 cd firmware
-uv sync --extra device --extra pi
+uv sync --extra agent --extra device --extra pi
 ```
 
-On the machine that runs the cloud agent:
+OpenAI still performs model inference in the cloud. The Pi hosts the LiveKit
+agent worker and robot device client. To host the worker on another machine
+instead:
 
 ```bash
 cd firmware
 uv sync --extra agent
 ```
 
-The agent can run on a laptop for the first test; OpenAI inference and LiveKit
-media are still cloud-hosted.
+The agent can run on a laptop for the first test; model inference and LiveKit
+media are still cloud-hosted in either layout.
 
 ## Configure
 
@@ -113,6 +115,25 @@ Start the agent:
 cd firmware
 uv run --extra agent molty-agent dev
 ```
+
+On the Pi, use production mode. Molty keeps one process warm by default to fit
+the Pi Zero 2 W:
+
+```bash
+uv run --no-dev molty-agent start
+```
+
+To run both processes after every Pi reboot:
+
+```bash
+sudo cp systemd/molty-agent.service systemd/molty-device.service \
+  /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now molty-agent.service molty-device.service
+```
+
+The checked-in device service explicitly uses `--dry-run`. Only remove it after
+calibration and lifted-robot testing.
 
 On the Pi, connect one session immediately. Leave off `--hardware` for the
 first conversation:
