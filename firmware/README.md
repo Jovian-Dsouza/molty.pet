@@ -76,6 +76,17 @@ Keep `PA_ALSA_PLUGHW=1` on Raspberry Pi audio cards that expose only a fixed
 hardware rate, including Google Voice HAT. This lets the 16 kHz wake listener
 use ALSA's resampling layer while the LiveKit session continues at 48 kHz.
 
+On a Pi Zero 2 W using Wi-Fi and a Bluetooth speaker at the same time, disable
+Wi-Fi power saving and install the BlueALSA override to reduce radio dropouts:
+
+```bash
+nmcli connection modify "$(nmcli -g GENERAL.CONNECTION device show wlan0)" \
+  802-11-wireless.powersave 2
+sudo mkdir -p /etc/systemd/system/bluealsa.service.d
+sudo cp systemd/bluealsa.override.conf \
+  /etc/systemd/system/bluealsa.service.d/molty.conf
+```
+
 Do not use that arrangement for an unattended robot. Configure
 `MOLTY_TOKEN_ENDPOINT` afterward so the Pi receives a short-lived room token
 without storing the LiveKit API secret.
