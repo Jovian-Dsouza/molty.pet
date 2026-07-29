@@ -232,7 +232,18 @@ def _tool_summary(response: dict[str, object]) -> str:
     return f"Movement failed: {detail}"
 
 
-server = AgentServer(num_idle_processes=IDLE_PROCESSES)
+def _single_session_load(agent_server: AgentServer) -> float:
+    """Admit one robot session without treating wake-word CPU as agent load."""
+
+    return 1.0 if agent_server.active_jobs else 0.0
+
+
+server = AgentServer(
+    num_idle_processes=IDLE_PROCESSES,
+    initialize_process_timeout=60.0,
+    load_threshold=0.5,
+    load_fnc=_single_session_load,
+)
 
 
 @server.rtc_session(agent_name=AGENT_NAME)
