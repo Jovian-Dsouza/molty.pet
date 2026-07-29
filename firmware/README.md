@@ -70,6 +70,10 @@ Fill in the LiveKit project values on both machines and `OPENAI_API_KEY` on the
 agent machine. For this first development test, the Pi can use the LiveKit API
 key and secret to create its own room token.
 
+Keep `PA_ALSA_PLUGHW=1` on Raspberry Pi audio cards that expose only a fixed
+hardware rate, including Google Voice HAT. This lets the 16 kHz wake listener
+use ALSA's resampling layer while the LiveKit session continues at 48 kHz.
+
 Do not use that arrangement for an unattended robot. Configure
 `MOLTY_TOKEN_ENDPOINT` afterward so the Pi receives a short-lived room token
 without storing the LiveKit API secret.
