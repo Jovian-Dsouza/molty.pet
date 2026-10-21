@@ -1,0 +1,19 @@
+[Unit]
+Description=Molty wake word, audio, and motion device
+Wants=network-online.target molty-audio-bridge.service
+After=network-online.target sound.target molty-agent.service molty-audio-bridge.service
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/molty.pet/firmware
+EnvironmentFile=-/home/pi/molty.pet/firmware/.env
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/pi/molty.pet/firmware/.venv/bin/molty-device --hardware --calibration calibration.json
+Restart=always
+RestartSec=5
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target

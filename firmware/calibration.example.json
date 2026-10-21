@@ -1,0 +1,87 @@
+{
+  "calibrated": false,
+  "frequency_hz": 50,
+  "motor_delay_ms": 20,
+  "servos": {
+    "r1": {
+      "channel": 0,
+      "anatomical_joint": "front-right hip",
+      "minimum_angle": 0,
+      "maximum_angle": 180,
+      "trim_degrees": 0,
+      "inverted": false,
+      "minimum_us": 500,
+      "maximum_us": 2400
+    },
+    "r2": {
+      "channel": 1,
+      "anatomical_joint": "rear-right hip",
+      "minimum_angle": 0,
+      "maximum_angle": 180,
+      "trim_degrees": 0,
+      "inverted": false,
+      "minimum_us": 500,
+      "maximum_us": 2400
+    },
+    "l1": {
+      "channel": 2,
+      "anatomical_joint": "front-left hip",
+      "minimum_angle": 0,
+      "maximum_angle": 180,
+      "trim_degrees": 0,
+      "inverted": false,
+      "minimum_us": 500,
+      "maximum_us": 2400
+    },
+    "l2": {
+      "channel": 3,
+      "anatomical_joint": "rear-left hip",
+      "minimum_angle": 0,
+      "maximum_angle": 180,
+      "trim_degrees": 0,
+      "inverted": false,
+      "minimum_us": 500,
+      "maximum_us": 2400
+    },
+    "r4": {
+      "channel": 4,
+      "anatomical_joint": "rear-right knee",
+      "minimum_angle": 0,
+      "maximum_angle": 180,
+      "trim_degrees": 0,
+      "inverted": false,
+      "minimum_us": 500,
+      "maximum_us": 2400
+    },
+    "r3": {
+      "channel": 5,
+      "anatomical_joint": "front-right knee",
+      "minimum_angle": 0,
+      "maximum_angle": 180,
+      "trim_degrees": 0,
+      "inverted": false,
+      "minimum_us": 500,
+      "maximum_us": 2400
+    },
+    "l3": {
+      "channel": 6,
+      "anatomical_joint": "front-left knee",
+      "minimum_angle": 0,
+      "maximum_angle": 180,
+      "trim_degrees": 0,
+      "inverted": false,
+      "minimum_us": 500,
+      "maximum_us": 2400
+    },
+    "l4": {
+      "channel": 7,
+      "anatomical_joint": "rear-left knee",
+      "minimum_angle": 0,
+      "maximum_angle": 180,
+      "trim_degrees": 0,
+      "inverted": false,
+      "minimum_us": 500,
+      "maximum_us": 2400
+    }
+  }
+}
