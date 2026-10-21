@@ -8,8 +8,8 @@ and one primitive per material. Geometry stays in CAD coordinates (millimetres,
 Y up, nose toward -X, left toward +Z); `app/components/robot/rig.ts` holds the
 matching joint pivots and does the conversion to scene space.
 
-Molty swaps the stock ESP32-S2 board and OLED for a Raspberry Pi Zero 2 W on the
-top cover, so those are left out and a simple Pi is added.
+The 0.96" SSD1306 OLED (128 x 64) sits in the top cover's front window; the
+face drawn on it lives in `app/components/robot/face.ts`.
 
 Run with an interpreter that has `cadgen` (see the CAD skill requirements):
 
@@ -41,13 +41,17 @@ ANGULAR_TOLERANCE = 0.9
 SERVO_MIN_SOLID_MM3 = 100.0
 SERVO_MIN_FACE_MM2 = 3.0
 
+TOP_COVER = "#o1.57"
+
 # STEP occurrence refs (Sesame-ESP32-v122) grouped by rigid body and material.
 # Hip servo cases sit in the body; each horn turns with the femur it drives.
 # Knee servo cases ride in the foot (as on the real robot); their horns bolt to the femur.
 BODIES: dict[str, dict[str, list[str]]] = {
     "body": {
-        "printed": ["#o1.53", "#o1.54", "#o1.57"],  # bottom cover, internal frame, top cover
+        "printed": ["#o1.53", "#o1.54", TOP_COVER],  # bottom cover, internal frame, top cover
         "servo": ["#o1.1.1", "#o1.2.1", "#o1.3.1", "#o1.4.1"],
+        "oled": ["#o1.11.1"],  # display PCB
+        "glass": ["#o1.11.4", "#o1.11.9"],  # front panel + screen border
     },
     "femur_l1": {"printed": ["#o1.12"], "horn": ["#o1.1.2"]},
     "femur_r1": {"printed": ["#o1.16"], "horn": ["#o1.2.2"]},
@@ -63,20 +67,20 @@ MATERIALS = {
     "printed": ([0.86, 0.11, 0.07, 1.0], 0.0, 0.62),  # red PLA
     "servo": ([0.16, 0.11, 0.09, 1.0], 0.0, 0.35),  # smoky brown servo case
     "horn": ([0.92, 0.91, 0.88, 1.0], 0.0, 0.5),  # white servo horns
-    "pcb": ([0.07, 0.42, 0.24, 1.0], 0.0, 0.45),  # Pi Zero green
-    "metal": ([0.72, 0.74, 0.76, 1.0], 0.8, 0.35),  # headers, heatsink
+    "oled": ([0.05, 0.12, 0.3, 1.0], 0.0, 0.5),  # blue OLED module PCB
+    "glass": ([0.015, 0.015, 0.02, 1.0], 0.0, 0.12),  # unlit OLED glass
 }
 
-# Raspberry Pi Zero 2 W (65 x 30 x 1.6 mm), lengthwise on the top cover.
-PI_CENTER = (26.0, 62.3, 2.4)
+
+def open_window(cover: bd.Shape) -> bd.Shape:
+    """The top cover without its 1.4 mm screen-window insert, so the OLED shows
+    through the front opening as on Molty (the insert is a separate small solid)."""
+    return max(cover.solids(), key=lambda solid: solid.volume)
 
 
-def pi_zero() -> dict[str, list[bd.Shape]]:
-    cx, cy, cz = PI_CENTER
-    board = bd.Pos(cx, cy, cz) * bd.Box(65, 1.6, 30)
-    header = bd.Pos(cx, cy + 0.8 + 4.25, cz - 11.5) * bd.Box(51, 8.5, 5)
-    heatsink = bd.Pos(cx + 4, cy + 0.8 + 3, cz + 2) * bd.Box(14, 6, 14)
-    return {"pcb": [board], "metal": [header, heatsink]}
+def load(scene, ref: str) -> bd.Shape:
+    shape = scene.resolve(ref).shape()
+    return open_window(shape) if ref == TOP_COVER else shape
 
 
 def outer_faces(shape: bd.Shape) -> list[bd.Face]:
@@ -200,11 +204,9 @@ def main() -> None:
     writer = GlbWriter()
     for body, materials in BODIES.items():
         groups = {
-            material: tessellate([scene.resolve(ref).shape() for ref in refs], simplify=material == "servo")
+            material: tessellate([load(scene, ref) for ref in refs], simplify=material == "servo")
             for material, refs in materials.items()
         }
-        if body == "body":
-            groups.update({m: tessellate(shapes) for m, shapes in pi_zero().items()})
         triangles = sum(idx.size // 3 for _, idx in groups.values())
         print(f"{body:10} {triangles:7d} triangles")
         writer.add_node(body, groups)

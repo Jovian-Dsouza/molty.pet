@@ -7,6 +7,7 @@ import { Box3, Group, Matrix4, Mesh, Vector3, type Object3D } from "three";
 import { HIPS, KNEES, BODY_CENTER, STAND, jointAngle, type Joint, type ServoPose, type Vec3 } from "./servos";
 import { ACTIONS, gaitCycle, loopPoseAt, poseAt, slewToward, type ActionName, type GaitName } from "./motions";
 import { supportTilt, type Tilt } from "./support";
+import { createOledScreen, type OledScreen } from "./oledScreen";
 
 export const MOLTY_MODEL_URL = "/models/molty.glb";
 
@@ -15,6 +16,9 @@ const SCALE = 0.01;
 const GAIT_FRAME_MS = 90;
 /** How quickly the body settles onto a new support (1/s). */
 const TILT_RATE = 10;
+/** Blink for BLINK_S once every BLINK_EVERY_S. */
+const BLINK_EVERY_S = 3.4;
+const BLINK_S = 0.13;
 
 export interface MoltyControl {
   /** A one-shot firmware action, or null. Takes priority over `gait`. */
@@ -40,6 +44,7 @@ interface Rig {
   pivots: { joint: Joint; group: Group }[];
   /** Bounding-box corners of each foot and the body, for ground contact. */
   contacts: { object: Object3D; points: Vector3[] }[];
+  screen: OledScreen;
 }
 
 /** Bounding-box corners in `part`'s own frame (GLB primitives carry no local transform). */
@@ -106,7 +111,10 @@ function buildRig(scene: Group): Rig {
     if (joint.node.startsWith("foot")) contacts.push({ object: part, points: localCorners(part) });
   }
   contacts.push({ object: body, points: localCorners(body) });
-  return { root, ground, tilt, pivots, contacts };
+  // Added after measuring the body so the face plane never counts as a contact.
+  const screen = createOledScreen();
+  body.add(screen.mesh);
+  return { root, ground, tilt, pivots, contacts, screen };
 }
 
 function targetPose(c: MoltyControl, now: number): ServoPose {
@@ -149,6 +157,7 @@ export function Molty({ control, onPose, onPoke }: MoltyProps) {
   const rigRef = useRef(rig);
   useEffect(() => {
     rigRef.current = rig;
+    return () => rig.screen.dispose();
   }, [rig]);
   const servos = useRef<ServoPose>(STAND);
   const tilt = useRef<Tilt>({ roll: 0, pitch: 0 });
@@ -157,6 +166,7 @@ export function Molty({ control, onPose, onPoke }: MoltyProps) {
   useFrame(({ clock }, dt) => {
     const rig = rigRef.current;
     const now = clock.getElapsedTime();
+    rig.screen.show(now % BLINK_EVERY_S < BLINK_S ? "blink" : "open");
     servos.current = slewToward(servos.current, targetPose(control.current, now), Math.min(dt, 0.05) * 1000);
     for (const { joint, group } of rig.pivots) {
       group.quaternion.setFromAxisAngle(scratch.set(...joint.axis), jointAngle(joint, servos.current));
