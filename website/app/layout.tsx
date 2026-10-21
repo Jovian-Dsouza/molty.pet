@@ -15,12 +15,13 @@ const mono = Space_Mono({
   variable: '--font-space-mono',
 })
 
+const title = 'Molty — A desk robot with an agent for a brain'
 const description =
-  'Molty is an open-source Raspberry Pi robot pet you build yourself. The prototype walks today; voice, memory, and AI agent connections are planned.'
+  'Molty is a $150 desk quadruped that walks, waves, dances, and talks, powered by your Hermes AI agent in the cloud. Pre-orders open.'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://molty.pet'),
-  title: 'Molty — Build a Robot Pet. Give Your AI a Body.',
+  title,
   description,
   icons: {
     icon: {
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Build a Robot Pet. Give Your AI a Body.',
+    title,
     description,
     siteName: 'molty.pet',
     url: 'https://molty.pet',
@@ -45,14 +46,14 @@ export const metadata: Metadata = {
         url: '/molty-dog-front.jpg',
         width: 1800,
         height: 1350,
-        alt: 'Molty, a red four-legged robot pet prototype, standing on a workbench.',
+        alt: 'Molty, a red four-legged desk robot, standing on a desk.',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     creator: '@moltypet',
-    title: 'Build a Robot Pet. Give Your AI a Body.',
+    title,
     description,
     images: ['/molty-dog-front.jpg'],
   },

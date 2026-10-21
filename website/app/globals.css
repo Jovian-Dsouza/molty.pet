@@ -89,6 +89,8 @@
   --font-mono: var(--font-space-mono), monospace;
 }
 
+/* ---------- Base ---------- */
+
 * {
   border-color: var(--border);
 }
@@ -139,20 +141,25 @@ button {
   translate: 0;
 }
 
+.focus-ring:focus-visible,
+.button:focus-visible,
+.icon-button:focus-visible,
+.trick-button:focus-visible,
+.stepper button:focus-visible,
+.faq-item summary:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+
+/* ---------- Header & nav ---------- */
+
 .site-header {
   position: sticky;
   top: 0;
   z-index: 50;
-  border-bottom: 1px solid
-    color-mix(in oklch, var(--border) 72%, transparent);
+  border-bottom: 1px solid color-mix(in oklch, var(--border) 72%, transparent);
   background: color-mix(in oklch, var(--background) 88%, transparent);
   backdrop-filter: blur(18px);
-}
-
-.focus-ring:focus-visible,
-.button:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 3px;
 }
 
 .nav-link,
@@ -161,9 +168,7 @@ button {
   color: var(--muted-foreground);
   font-size: 0.875rem;
   font-weight: 500;
-  transition:
-    color 120ms ease-out,
-    text-decoration-color 120ms ease-out;
+  transition: color 120ms ease-out;
 }
 
 .nav-link:hover,
@@ -171,7 +176,10 @@ button {
   color: var(--foreground);
 }
 
+/* ---------- Buttons ---------- */
+
 .button {
+  position: relative;
   display: inline-flex;
   min-height: 2.75rem;
   align-items: center;
@@ -179,32 +187,33 @@ button {
   gap: 0.55rem;
   border: 1px solid transparent;
   border-radius: var(--radius);
-  padding-inline: 1rem;
+  padding-inline: 1.1rem;
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1;
   transition:
     background-color 120ms ease-out,
     border-color 120ms ease-out,
-    color 120ms ease-out,
+    box-shadow 120ms ease-out,
     transform 120ms ease-out;
 }
 
-.button:hover {
-  transform: translateY(-1px);
-}
-
-.button:active {
-  transform: translateY(0);
-}
-
+/* Chunky, pressable primary — a nod to tactile desk-toy buttons. */
 .button-primary {
   background: var(--primary);
   color: var(--primary-foreground);
+  box-shadow: 0 4px 0 0 oklch(0.5 0.2 25);
 }
 
 .button-primary:hover {
   background: color-mix(in oklch, var(--primary) 90%, white);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 0 0 oklch(0.5 0.2 25);
+}
+
+.button-primary:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 0 oklch(0.5 0.2 25);
 }
 
 .button-secondary {
@@ -218,19 +227,118 @@ button {
   background: var(--secondary);
 }
 
-.status-line {
-  max-width: 36rem;
-  margin-top: 1.25rem;
-  border-left: 2px solid var(--primary);
-  padding-left: 0.9rem;
+.icon-button {
+  display: inline-grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border-radius: var(--radius);
   color: var(--muted-foreground);
-  font-size: 0.925rem;
-  line-height: 1.6;
+  transition:
+    color 120ms ease-out,
+    background-color 120ms ease-out;
 }
 
-.status-line strong {
+.icon-button:hover {
+  background: var(--secondary);
   color: var(--foreground);
 }
+
+.cart-button {
+  padding-inline: 0.85rem;
+}
+
+.cart-badge {
+  display: inline-grid;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding-inline: 0.3rem;
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* ---------- Labels ---------- */
+
+.kicker,
+.eyebrow,
+.hud-label {
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.kicker-accent {
+  color: var(--primary);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.status-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--primary);
+  box-shadow: 0 0 0 0.28rem color-mix(in oklch, var(--primary) 18%, transparent);
+}
+
+.hud-label {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid color-mix(in oklch, var(--border) 75%, transparent);
+  border-radius: var(--radius);
+  background: color-mix(in oklch, var(--background) 85%, transparent);
+  color: var(--foreground);
+  padding: 0.55rem 0.75rem;
+  backdrop-filter: blur(14px);
+}
+
+.hud-chip {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: color-mix(in oklch, var(--background) 75%, transparent);
+  padding: 0.5rem 0.75rem;
+  backdrop-filter: blur(8px);
+}
+
+/* OpenGotchi-style "Label: value" spec list */
+.spec-list {
+  display: grid;
+  gap: 0.4rem;
+  border-left: 2px solid var(--primary);
+  padding-left: 1rem;
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.8rem;
+}
+
+.spec-list > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.spec-list dt {
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ---------- Hero ---------- */
 
 .hero-section {
   position: relative;
@@ -244,112 +352,70 @@ button {
   content: "";
   pointer-events: none;
   background-image:
-    linear-gradient(
-      color-mix(in oklch, var(--border) 32%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in oklch, var(--border) 32%, transparent) 1px,
-      transparent 1px
-    );
+    linear-gradient(color-mix(in oklch, var(--border) 32%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklch, var(--border) 32%, transparent) 1px, transparent 1px);
   background-size: 4rem 4rem;
   mask-image: radial-gradient(circle at 75% 45%, black 5%, transparent 62%);
 }
 
-.eyebrow,
-.photo-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-family: var(--font-space-mono), monospace;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-}
-
-.eyebrow {
-  color: var(--muted-foreground);
-  text-transform: uppercase;
-}
-
-.status-dot {
-  width: 0.45rem;
-  height: 0.45rem;
-  flex: 0 0 auto;
-  border-radius: 999px;
-  background: var(--primary);
-  box-shadow: 0 0 0 0.28rem
-    color-mix(in oklch, var(--primary) 18%, transparent);
-}
-
-.metric-label {
-  font-family: var(--font-space-mono), monospace;
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
-}
-
-.metric-value {
-  margin-top: 0.45rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-}
-
 .hero-photo-frame {
   position: relative;
-  min-height: 32rem;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) * 1.4);
   background: var(--card);
-  box-shadow: 0 1.5rem 4rem
-    color-mix(in oklch, black 35%, transparent);
+  box-shadow: 0 1.5rem 4rem color-mix(in oklch, black 35%, transparent);
 }
 
-.photo-label {
-  position: absolute;
-  z-index: 2;
-  border: 1px solid
-    color-mix(in oklch, var(--border) 75%, transparent);
-  border-radius: var(--radius);
-  background: color-mix(in oklch, var(--background) 88%, transparent);
-  color: var(--foreground);
-  padding: 0.6rem 0.75rem;
-  backdrop-filter: blur(14px);
+.hermes-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--card) 80%, transparent);
+  padding: 0.4rem 1rem 0.4rem 0.4rem;
+  font-size: 0.875rem;
+  transition: border-color 120ms ease-out;
 }
+
+.hermes-badge:hover {
+  border-color: color-mix(in oklch, var(--primary) 50%, var(--border));
+}
+
+.hermes-badge-lg {
+  padding-right: 1.25rem;
+  font-size: 1rem;
+}
+
+.hermes-logo {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 999px;
+  background: oklch(0.08 0.01 20);
+  outline: 1px solid var(--border);
+}
+
+/* ---------- Sections ---------- */
 
 .section {
   padding-block: 6rem;
 }
 
 .section-alt {
-  border-block: 1px solid
-    color-mix(in oklch, var(--border) 70%, transparent);
+  border-block: 1px solid color-mix(in oklch, var(--border) 70%, transparent);
   background: color-mix(in oklch, var(--muted) 42%, var(--background));
-}
-
-.section-heading {
-  max-width: 48rem;
-}
-
-.section-kicker {
-  font-family: var(--font-space-mono), monospace;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--muted-foreground);
 }
 
 .section-title {
   margin-top: 0.9rem;
-  max-width: 19ch;
+  max-width: 20ch;
   text-wrap: balance;
-  font-size: clamp(2.25rem, 5vw, 4rem);
+  font-size: clamp(2.1rem, 5vw, 3.5rem);
   font-weight: 600;
-  line-height: 1.02;
+  line-height: 1.04;
   letter-spacing: -0.045em;
 }
 
@@ -362,33 +428,40 @@ button {
   line-height: 1.8;
 }
 
-.mind-card,
-.roadmap-card,
-.creator-card,
-.feature-card,
-.reaction-card,
-.signup-card {
-  overflow: hidden;
+.section-copy > * + * {
+  margin-top: 1rem;
+}
+
+.split-layout {
+  display: grid;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+/* ---------- Cards ---------- */
+
+.card {
+  position: relative;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) * 1.35);
   background: var(--card);
+  padding: clamp(1.5rem, 4vw, 2rem);
 }
 
-.mind-card {
-  position: relative;
-  padding: clamp(1.5rem, 4vw, 2.25rem);
+.card-chunky {
+  transition:
+    transform 160ms ease-out,
+    border-color 160ms ease-out;
 }
 
-.mind-card-fast {
-  border-color: color-mix(in oklch, var(--primary) 52%, var(--border));
+.card-chunky:hover {
+  border-color: color-mix(in oklch, var(--primary) 50%, var(--border));
+  transform: translateY(-3px);
 }
 
-.mind-card-fast::before {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 0.2rem;
-  content: "";
-  background: var(--primary);
+.card-featured {
+  border-color: color-mix(in oklch, var(--primary) 55%, var(--border));
+  box-shadow: 0 6px 0 0 color-mix(in oklch, var(--primary) 35%, transparent);
 }
 
 .icon-box {
@@ -402,67 +475,50 @@ button {
   color: var(--primary);
 }
 
-.state-badge {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0.42rem 0.65rem;
-  color: var(--muted-foreground);
-  font-family: var(--font-space-mono), monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.flow-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 2rem;
-  color: var(--foreground);
-  font-family: var(--font-space-mono), monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.flow-row svg {
-  width: 0.9rem;
-  height: 0.9rem;
-  color: var(--primary);
-}
-
-.learning-loop {
+.note-card {
   display: flex;
   align-items: flex-start;
   gap: 1.25rem;
-  border: 1px dashed
-    color-mix(in oklch, var(--primary) 55%, var(--border));
+  border: 1px dashed color-mix(in oklch, var(--primary) 55%, var(--border));
   border-radius: calc(var(--radius) * 1.35);
   background: color-mix(in oklch, var(--primary) 7%, var(--card));
   padding: clamp(1.5rem, 4vw, 2rem);
 }
 
-.video-frame {
+.session-card {
+  background:
+    linear-gradient(color-mix(in oklch, var(--primary) 6%, transparent), transparent 40%),
+    var(--card);
+}
+
+.session-step {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 1rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+}
+
+.session-who {
+  padding-top: 0.3rem;
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.founder-card {
+  padding: clamp(1.5rem, 5vw, 3rem);
+}
+
+/* ---------- Media ---------- */
+
+.media-frame {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) * 1.35);
   background: var(--card);
-}
-
-.proof-layout,
-.connect-layout {
-  display: grid;
-  align-items: center;
-  gap: 2.5rem;
-}
-
-.prototype-video {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: var(--background);
-  object-fit: cover;
 }
 
 .media-caption {
@@ -470,65 +526,171 @@ button {
   padding: 0.9rem 1rem;
   color: var(--muted-foreground);
   font-size: 0.875rem;
-  line-height: 1.5;
 }
 
-.feature-grid,
-.status-grid {
+/* ---------- Playground ---------- */
+
+.playground {
   display: grid;
-  gap: 1.25rem;
-  margin-top: 3rem;
-}
-
-.feature-card {
-  min-height: 16rem;
-  padding: clamp(1.5rem, 4vw, 2rem);
-}
-
-.reaction-card {
-  padding: clamp(1.5rem, 5vw, 3rem);
-}
-
-.prototype-layout {
-  display: grid;
-  align-items: start;
-  gap: 2.5rem;
-}
-
-.prototype-copy {
-  max-width: 34rem;
-}
-
-.roadmap-card {
-  min-height: 20rem;
-  padding: clamp(1.5rem, 4vw, 2rem);
-}
-
-.creator-card {
-  padding: clamp(1.5rem, 5vw, 3rem);
-}
-
-.progress-photo {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) * 1.35);
   background: var(--card);
-  box-shadow: 0 1.5rem 4rem
-    color-mix(in oklch, black 25%, transparent);
 }
 
-.signup-card {
-  padding: clamp(2rem, 7vw, 4.5rem);
+.playground-stage {
+  position: relative;
+  height: 60svh;
+  min-height: 420px;
+  border-bottom: 1px solid var(--border);
+  background: #0b0202;
+}
+
+.trick-button {
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 0.6);
+  padding-block: 0.6rem;
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition:
+    border-color 120ms ease-out,
+    color 120ms ease-out,
+    background-color 120ms ease-out,
+    transform 120ms ease-out;
+}
+
+.trick-button:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.trick-button:active {
+  transform: scale(0.94);
+}
+
+.trick-button[aria-pressed="true"] {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* ---------- Specs & FAQ ---------- */
+
+.spec-grid {
+  display: grid;
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+
+.spec-grid > div {
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem;
+}
+
+.faq-list {
+  border-top: 1px solid var(--border);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-item summary {
+  display: flex;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 0.25rem;
+  padding-block: 1.25rem;
+  font-weight: 600;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-icon {
+  color: var(--primary);
+  transition: rotate 160ms ease-out;
+}
+
+.faq-item[open] .faq-icon {
+  rotate: 45deg;
+}
+
+/* ---------- Cart drawer ---------- */
+
+.cart-root {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+}
+
+.cart-overlay {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklch, black 60%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.cart-panel {
+  position: absolute;
+  inset: 0 0 0 auto;
+  display: flex;
+  width: min(100%, 26rem);
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: -1rem 0 3rem color-mix(in oklch, black 40%, transparent);
+}
+
+.cart-panel:focus {
+  outline: none;
+}
+
+.cart-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.stepper button {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: var(--radius);
+  color: var(--muted-foreground);
+}
+
+.stepper button:hover:not(:disabled) {
+  color: var(--foreground);
+}
+
+.stepper button:disabled {
+  opacity: 0.35;
+}
+
+.stepper output {
+  min-width: 1.75rem;
   text-align: center;
+  font-family: var(--font-space-mono), monospace;
+  font-variant-numeric: tabular-nums;
 }
 
-.signup-card .section-title,
-.signup-card .section-copy {
-  max-width: 38rem;
-}
+/* ---------- Footer ---------- */
 
 .footer-layout {
   display: flex;
@@ -543,33 +705,24 @@ button {
   gap: 1.25rem;
 }
 
+/* ---------- Responsive ---------- */
+
 @media (max-width: 767px) {
   .site-shell {
-    width: min(100% - 1.25rem, 76rem);
-  }
-
-  .site-header .button {
-    min-height: 2.5rem;
-    padding-inline: 0.75rem;
-    font-size: 0.75rem;
-  }
-
-  .hero-photo-frame {
-    min-height: 25rem;
+    width: min(100% - 2rem, 76rem);
   }
 
   .section {
     padding-block: 4.5rem;
   }
 
-  .learning-loop {
+  .note-card {
     flex-direction: column;
   }
-
 }
 
 @media (min-width: 640px) {
-  .status-grid {
+  .spec-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -585,48 +738,59 @@ button {
 }
 
 @media (min-width: 768px) {
-  .feature-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .playground {
+    grid-template-columns: minmax(0, 3fr) minmax(14rem, 1fr);
+  }
+
+  .playground-stage {
+    height: 600px;
+    border-right: 1px solid var(--border);
+    border-bottom: 0;
   }
 }
 
 @media (min-width: 1024px) {
-  .proof-layout {
-    grid-template-columns: minmax(0, 0.82fr) minmax(32rem, 1.18fr);
+  .split-layout {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     gap: clamp(3rem, 6vw, 6rem);
   }
 
-  .connect-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(28rem, 0.85fr);
-    gap: clamp(3rem, 7vw, 7rem);
-  }
-
-  .prototype-layout {
-    grid-template-columns: minmax(0, 0.82fr) minmax(34rem, 1.18fr);
-    gap: clamp(3rem, 6vw, 6rem);
-  }
-
-  .prototype-copy {
-    position: sticky;
-    top: 7rem;
-    padding-block: 1.5rem;
-  }
-
-  .prototype-copy .section-title {
-    font-size: clamp(2.75rem, 4vw, 3.75rem);
+  .spec-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
+/* ---------- Motion ---------- */
 
 @media (prefers-reduced-motion: no-preference) {
   .status-dot {
     animation: status-pulse 2.4s ease-out infinite;
   }
 
+  .cart-panel {
+    animation: cart-in 220ms cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .cart-overlay {
+    animation: fade-in 220ms ease-out;
+  }
+
   @keyframes status-pulse {
     70%,
     100% {
-      box-shadow: 0 0 0 0.7rem
-        color-mix(in oklch, var(--primary) 0%, transparent);
+      box-shadow: 0 0 0 0.7rem color-mix(in oklch, var(--primary) 0%, transparent);
+    }
+  }
+
+  @keyframes cart-in {
+    from {
+      translate: 100% 0;
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
     }
   }
 }
@@ -644,7 +808,8 @@ button {
     animation-iteration-count: 1 !important;
   }
 
-  .button:hover {
+  .button:hover,
+  .card-chunky:hover {
     transform: none;
   }
 }
