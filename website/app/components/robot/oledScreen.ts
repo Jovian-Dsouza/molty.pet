@@ -8,7 +8,7 @@ import {
   SRGBColorSpace,
   Vector3,
 } from "three";
-import { OLED_HEIGHT, OLED_SCREEN, OLED_WIDTH, faceBitmap, type Expression } from "./face";
+import { OLED_HEIGHT, OLED_SCREEN, OLED_WIDTH, faceBitmap, type Expression, type Mood } from "./face";
 
 /** SSD1306 white-on-black: lit pixels glow ice white, unlit stay glass black. */
 const LIT: readonly [number, number, number] = [222, 244, 255];
@@ -18,7 +18,7 @@ const LIFT_MM = 0.12;
 
 export interface OledScreen {
   mesh: Mesh;
-  show: (expression: Expression) => void;
+  show: (expression: Expression, mood?: Mood) => void;
   dispose: () => void;
 }
 
@@ -45,12 +45,13 @@ export function createOledScreen(): OledScreen {
   mesh.quaternion.setFromRotationMatrix(new Matrix4().makeBasis(right, up, normal));
   mesh.position.set(...OLED_SCREEN.center).addScaledVector(normal, LIFT_MM);
 
-  let shown: Expression | null = null;
+  let shown: string | null = null;
   const image = ctx.createImageData(OLED_WIDTH, OLED_HEIGHT);
-  const show = (expression: Expression) => {
-    if (expression === shown) return;
-    shown = expression;
-    const bitmap = faceBitmap(expression);
+  const show = (expression: Expression, mood: Mood = "happy") => {
+    const key = `${expression}:${mood}`;
+    if (key === shown) return;
+    shown = key;
+    const bitmap = faceBitmap(expression, mood);
     for (let i = 0; i < bitmap.length; i++) {
       const [r, g, b] = bitmap[i] ? LIT : DARK;
       image.data.set([r, g, b, 255], i * 4);

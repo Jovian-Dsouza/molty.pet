@@ -1,0 +1,26 @@
+{
+  "morning": {
+    "youMs": 2229,
+    "moltyMs": 4240
+  },
+  "fix": {
+    "youMs": 3251,
+    "moltyMs": 2640
+  },
+  "stretch": {
+    "youMs": 2276,
+    "moltyMs": 2800
+  },
+  "research": {
+    "youMs": 2368,
+    "moltyMs": 7280
+  },
+  "shipped": {
+    "youMs": 0,
+    "moltyMs": 2880
+  },
+  "night": {
+    "youMs": 1486,
+    "moltyMs": 2480
+  }
+}

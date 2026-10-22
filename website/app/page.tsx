@@ -3,13 +3,14 @@ import { CartDrawer } from './components/cart/CartDrawer'
 import { Header } from './components/sections/Header'
 import { Hero } from './components/sections/Hero'
 import { Proof } from './components/sections/Proof'
-import { WhyPhysical } from './components/sections/WhyPhysical'
-import { AgentBody } from './components/sections/AgentBody'
-import { HowItWorks } from './components/sections/HowItWorks'
+import { Abilities } from './components/sections/Abilities'
+import { Flow } from './components/sections/Flow'
 import { Playground } from './components/sections/Playground'
+import { Audiences } from './components/sections/Audiences'
 import { Specs } from './components/sections/Specs'
 import { GetYours } from './components/sections/GetYours'
 import { Faq } from './components/sections/Faq'
+import { Closing } from './components/sections/Closing'
 import { Footer } from './components/sections/Footer'
 
 export default function Home() {
@@ -22,13 +23,14 @@ export default function Home() {
       <main id="main" tabIndex={-1}>
         <Hero />
         <Proof />
-        <WhyPhysical />
-        <AgentBody />
-        <HowItWorks />
+        <Abilities />
+        <Flow />
         <Playground />
+        <Audiences />
         <Specs />
         <GetYours />
         <Faq />
+        <Closing />
       </main>
       <Footer />
       <CartDrawer />

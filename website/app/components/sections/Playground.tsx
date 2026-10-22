@@ -114,7 +114,7 @@ export function Playground() {
   return (
     <section id="play" className="section scroll-mt-20">
       <div className="site-shell">
-        <SectionHeading kicker={PLAY.kicker} title={PLAY.title}>
+        <SectionHeading title={PLAY.title}>
           <p>{PLAY.body}</p>
         </SectionHeading>
 

@@ -5,6 +5,8 @@ import Image from 'next/image'
 
 interface SceneBoundaryProps {
   children: ReactNode
+  /** Shown over the fallback photo when the canvas fails. */
+  label?: string
 }
 
 interface SceneBoundaryState {
@@ -23,7 +25,7 @@ export class SceneBoundary extends Component<SceneBoundaryProps, SceneBoundarySt
   }
 
   componentDidCatch(error: unknown) {
-    console.error('Molty playground failed to start', error)
+    console.error('Molty 3D scene failed to start', error)
   }
 
   render() {
@@ -32,7 +34,7 @@ export class SceneBoundary extends Component<SceneBoundaryProps, SceneBoundarySt
       <div className="relative size-full">
         <Image src="/molty-dog-side.jpg" alt="" fill sizes="75vw" className="object-cover opacity-40" />
         <p className="kicker absolute inset-0 grid place-items-center p-6 text-center text-foreground">
-          3D playground unavailable in this browser (WebGL is off)
+          {this.props.label ?? '3D playground unavailable in this browser (WebGL is off)'}
         </p>
       </div>
     )

@@ -6,7 +6,7 @@ export function Faq() {
   return (
     <section id="faq" className="section section-alt scroll-mt-20">
       <div className="site-shell grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
-        <SectionHeading kicker="FAQ" title="Good questions." />
+        <SectionHeading title="Questions, answered." />
         <div className="faq-list">
           {FAQ.map(({ q, a }) => (
             <details key={q} className="faq-item">

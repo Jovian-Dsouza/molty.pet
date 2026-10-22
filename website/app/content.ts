@@ -28,115 +28,113 @@ export const LAUNCH_VIDEO = {
 } as const
 
 export const NAV = [
-  { href: '#why', label: 'Why physical' },
-  { href: '#agent', label: 'Agent' },
-  { href: '#play', label: 'Play' },
+  { href: '#day', label: 'A day with Molty' },
+  { href: '#proof', label: 'Real robot' },
+  { href: '#play', label: 'Try it' },
   { href: '#specs', label: 'Specs' },
 ] as const
 
 /* ---------- Copy ---------- */
 
 export const HERO = {
-  kicker: 'Physical AI · Pre-orders open',
-  title: 'A desk robot with legs, moods,',
-  titleAccent: 'and an agent for a brain.',
-  body: 'Molty is a pocket-sized quadruped that lives on your desk. It walks, waves, and dances, and it is wired to your personal AI agent. Ask out loud and it gets done.',
-  specs: [
-    { label: 'Body', value: '8-servo quadruped' },
-    { label: 'Brain', value: 'Hermes Agent, in the cloud' },
-    { label: 'Compute', value: 'Raspberry Pi Zero 2 W' },
-    { label: 'Wake word', value: '“Hey Molty”' },
-  ],
+  title: 'A robot pet for your AI agent.',
+  body: 'Molty sits on your desk and listens for “Hey Molty.” It hands the job to your Hermes agent in the cloud, then shows you how it’s going with its whole body.',
+  cta: 'Pre-order',
+  secondary: 'Watch the real one',
+} as const
+
+export const STAGE = {
+  label: 'A day with Molty',
+  play: 'Play',
+  pause: 'Pause',
+  soundOn: 'Turn sound on',
+  soundOff: 'Mute',
+  you: 'You',
+  molty: 'Molty',
+  note: 'Simulation: Molty’s CAD model running the firmware’s motion files. Demo voices.',
+  loading: 'Setting up the desk…',
 } as const
 
 export const PROOF = {
-  kicker: 'Real hardware · Not a render',
-  title: 'It’s real, and it’s already walking.',
-  body: 'Printed body, eight servos, a Raspberry Pi, and a voice. This is the actual robot on the actual workbench, walking, waving, and dancing on command.',
-  caption: 'Unedited prototype footage. Full launch video coming soon.',
+  title: 'Same moves. Real robot.',
+  body: 'Everything on the desk above already runs on the workbench: walking, waving, dancing, and talking back. A printed body, eight servos, and a Raspberry Pi.',
+  caption: 'Unedited prototype footage. The launch video is on the way.',
 } as const
 
-export const WHY = {
-  kicker: 'Why physical?',
-  title: 'Your agents work hard. You just never see it.',
-  body: 'Agents already write code, research, and remind you of things, invisibly, in a tab you forgot about. Molty gives that work a body you can see, hear, and talk to.',
-  cards: [
+export const ABILITIES = {
+  title: 'What Molty does today.',
+  body: 'Your agents already write code, research, and keep track of things, in a tab you forgot about. Molty puts that work on your desk, where you can see it.',
+  items: [
     {
-      id: 'moves',
-      title: 'It moves',
-      body: '19 built-in motions: walk, turn, wave, dance, bow, push-ups, even the worm. Every move runs on the robot itself, so it reacts instantly.',
+      title: 'Moves',
+      body: '19 built-in motions: walk, turn, wave, dance, bow, push-ups, even the worm. They run on the robot, so it reacts instantly.',
     },
     {
-      id: 'listens',
-      title: 'It listens',
-      body: 'Say “Hey Molty” and just talk. The wake word runs locally, and echo cancellation keeps Molty from hearing its own voice.',
+      title: 'Listens',
+      body: 'Say “Hey Molty” and talk. The wake word runs on the robot, and echo cancellation keeps Molty from hearing itself.',
     },
     {
-      id: 'emotes',
-      title: 'It emotes',
-      body: 'Molty moves with what it says. Good news gets a little dance; a tough answer gets a shrug. Body language for your agent.',
+      title: 'Shows how it feels',
+      body: 'Every reply comes with body language: a dance for good news, a shrug when it isn’t sure, a bow to say goodnight.',
     },
     {
-      id: 'works',
-      title: 'It works for you',
-      body: 'Behind the cute is a real agent. Ask for code, research, or reminders and Hermes gets it done while Molty keeps you posted.',
+      title: 'Gets work done',
+      body: 'Behind the face is your Hermes agent. Ask for code, research, or reminders and it does the work in the cloud.',
     },
   ],
 } as const
 
-export const AGENT = {
-  kicker: 'Body for your AI agent',
-  title: 'Your agent finally has legs.',
-  body: [
-    'Molty is powered by Hermes Agent. Your agent lives in the cloud around the clock, with its own memory, tools, and skills. Molty is the part you can talk to.',
-    'It listens in the room, hands the task to Hermes, and shows you what is happening with its whole body. No dashboard to check. No tab to babysit.',
-  ],
-  points: [
-    'Always on in the cloud: no server on your desk',
-    'Memory and skills that grow with you',
-    'Coding, research, reminders, whatever your agent can do',
-  ],
-  session: {
-    label: 'A real session',
-    steps: [
-      { who: 'You', text: '“Hey Molty, fix the failing test and open a PR.”' },
-      { who: 'Hermes', text: 'Picks it up in the cloud: reads the repo, runs the tests, pushes the fix.' },
-      { who: 'Molty', text: 'Nods, says it’s on it, and does a little dance when the PR is up.' },
-    ],
-  },
-} as const
-
-export const LOOP = {
-  kicker: 'The loop',
-  title: 'How it works',
+export const FLOW = {
+  title: 'From your voice to its legs.',
   steps: [
-    { title: 'Plug in', body: 'Unbox Molty, power it up, and put it on your WiFi.' },
-    { title: 'Connect', body: 'Link your Hermes agent. It is hosted in the cloud, so there is nothing to install or keep running.' },
-    { title: 'Talk', body: 'Say “Hey Molty” and ask for something, the way you would ask a teammate.' },
-    { title: 'Watch it work', body: 'Hermes does the task. Molty reacts in the room and tells you when it is done.' },
+    { title: 'You ask', body: 'Say “Hey Molty” and ask for something, the way you’d ask a teammate.' },
+    { title: 'Molty hands it off', body: 'The request goes to your Hermes agent in the cloud. Nothing to install or keep running.' },
+    { title: 'Hermes does the work', body: 'Code, research, reminders: whatever your agent can do, with its own memory and tools.' },
+    { title: 'Molty reports back', body: 'It tells you how it went and moves to match: a nod, a shrug, or a dance.' },
   ],
   note: {
     title: 'Fast reflexes, slow thoughts.',
-    body: 'The body never waits on the cloud. Motion runs locally on the Pi, and the agent can only choose from named, validated moves, never raw servo angles. Smart in the cloud, safe on your desk.',
+    body: 'The body never waits on the cloud. Motion runs on the Pi, and the agent can only pick from named, tested moves, never raw servo angles. Smart in the cloud, safe on your desk.',
   },
 } as const
 
 export const PLAY = {
-  kicker: 'Try it',
   title: 'Take Molty for a walk.',
-  body: 'This is Molty’s real CAD model, running the same servo keyframes as the firmware. Drive it around, push the ball into the goal, or make it wave.',
-  hint: 'Click the arena · WASD / arrows to drive · click Molty to poke',
+  body: 'The same model, now you drive. Push the ball into the goal, or pick a trick and watch the servo angles change.',
+  hint: 'Click the arena, then WASD or arrow keys to drive. Click Molty to poke it.',
   footnote: 'Geometry from the open Sesame robot CAD (Apache-2.0). Motion is keyframe playback, not physics: the real one fits on your desk.',
 } as const
 
+export const AUDIENCES = {
+  title: 'Pick your way in.',
+  items: [
+    {
+      title: 'You work with agents',
+      body: 'You already hand work to an AI agent. Molty lets you do it out loud and tells you the moment it’s done.',
+      cta: { label: 'Pre-order Molty', href: '#buy', external: false },
+    },
+    {
+      title: 'You like to build',
+      body: 'The firmware is public. Print the body, wire eight servos, and add your own moves in Python.',
+      cta: { label: 'Read the firmware', href: `${LINKS.github}/tree/main/firmware`, external: true },
+    },
+    {
+      title: 'You’re learning robotics',
+      body: 'Train walking gaits in the MuJoCo simulation, then try them on a real eight-servo body.',
+      cta: { label: 'Open the simulation', href: `${LINKS.github}/tree/main/simulation`, external: true },
+    },
+  ],
+} as const
+
 export const SPECS = {
-  kicker: 'Tech specs',
   title: 'What’s inside.',
+  body: 'Small enough to sit next to your keyboard. Every part is printed or off the shelf, so you can fix it yourself.',
+  photoAlt: 'Molty, a red four-legged robot with a Raspberry Pi on its back, standing on a workbench',
   items: [
     { label: 'Compute', value: 'Raspberry Pi Zero 2 W' },
-    { label: 'Actuators', value: '8 servos · PCA9685 driver' },
+    { label: 'Actuators', value: '8 servos on a PCA9685 driver' },
     { label: 'Motion', value: '19 named actions, run on-device' },
-    { label: 'Voice', value: 'Microphone + speaker · “Hey Molty” wake word' },
+    { label: 'Voice', value: 'Microphone and speaker, “Hey Molty” wake word' },
     { label: 'Agent', value: 'Hermes Agent, hosted in the cloud' },
     { label: 'Connectivity', value: 'WiFi' },
     { label: 'Body', value: '3D-printed and repairable' },
@@ -145,7 +143,6 @@ export const SPECS = {
 } as const
 
 export const OFFER = {
-  kicker: 'Get yours',
   title: 'Two ways to bring Molty home.',
   diy: {
     tag: 'For makers',
@@ -154,7 +151,7 @@ export const OFFER = {
     cta: 'View on GitHub',
   },
   assembled: {
-    tag: 'First batch · Pre-order',
+    tag: 'First batch pre-order',
     title: 'Molty, assembled',
     body: 'Built, calibrated, and ready for your Hermes agent. Plug it in and say hi.',
     includes: [
@@ -167,6 +164,10 @@ export const OFFER = {
 } as const
 
 export const FAQ = [
+  {
+    q: 'How do I set it up?',
+    a: 'Power it on, put it on your WiFi, and link your Hermes agent. Then say “Hey Molty.”',
+  },
   {
     q: 'When does it ship?',
     a: 'Molty is in pre-order for the first batch. We email you a shipping estimate when we confirm your order.',
@@ -199,6 +200,12 @@ export const FOUNDER = {
   name: 'Jovian Dsouza',
   role: 'Creator of Molty',
   avatar: '/avatars/dsouzajovian.jpg',
+} as const
+
+export const CLOSING = {
+  title: 'Say hey to Molty.',
+  body: 'First batch, $150. No payment today: we confirm your order by email.',
+  cta: 'Pre-order',
 } as const
 
 export const FOOTER = {

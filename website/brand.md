@@ -147,7 +147,7 @@ Avoid generic AI hype such as revolutionary, game-changing, supercharged, magica
 
 > Your agents work hard. You just never see it. Molty gives that work a body you can see, hear, and talk to.
 
-Copy lives in `app/content.ts`; short punchy blocks with uppercase mono kickers (OpenGotchi-inspired rhythm).
+Copy lives in `app/content.ts` (page) and `app/scenarios.ts` (hero scenes). Headings carry the message on their own: no uppercase kickers above them. Keep Space Mono for live data such as clock times and servo telemetry.
 
 ## Usage dos and don'ts
 

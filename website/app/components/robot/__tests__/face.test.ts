@@ -47,3 +47,35 @@ describe("faceBitmap", () => {
     expect(lit(blink, 0, 38, 128, 64)).toBe(lit(open, 0, 38, 128, 64));
   });
 });
+
+describe("faceBitmap moods", () => {
+  const happy = faceBitmap("open", "happy");
+  const eyes = (b: Uint8Array) => lit(b, 0, 0, 128, 38);
+  const mouth = (b: Uint8Array) => lit(b, 0, 38, 128, 64);
+
+  it("defaults to the happy face", () => {
+    expect(faceBitmap("open")).toEqual(happy);
+  });
+
+  it("narrows the eyes and flattens the mouth when focused", () => {
+    const focus = faceBitmap("open", "focus");
+    expect(eyes(focus)).toBeLessThan(eyes(happy));
+    expect(eyes(focus)).toBeGreaterThan(eyes(happy) / 2);
+    expect(mouth(focus)).toBeGreaterThan(0);
+    expect(mouth(focus)).not.toBe(mouth(happy));
+  });
+
+  it("tilts the mouth when unsure, so the face is no longer symmetric", () => {
+    const unsure = faceBitmap("open", "unsure");
+    const mirrored = (x: number, y: number) => unsure[y * OLED_WIDTH + (OLED_WIDTH - 1 - x)];
+    let asymmetric = 0;
+    for (let y = 38; y < OLED_HEIGHT; y++) for (let x = 0; x < 64; x++) asymmetric += Number(unsure[y * OLED_WIDTH + x] !== mirrored(x, y));
+    expect(asymmetric).toBeGreaterThan(10);
+  });
+
+  it("keeps the eyes shut when sleepy, even between blinks", () => {
+    const sleepy = faceBitmap("open", "sleepy");
+    expect(eyes(sleepy)).toBeLessThan(eyes(happy) / 4);
+    expect(faceBitmap("blink", "sleepy")).toEqual(sleepy);
+  });
+});

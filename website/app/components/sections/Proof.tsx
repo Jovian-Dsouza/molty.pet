@@ -1,15 +1,15 @@
 import { LAUNCH_VIDEO, PROOF } from '@/app/content'
-import { SectionHeading } from '../SectionHeading'
 
 export function Proof() {
   return (
-    <section id="proof" className="section section-alt scroll-mt-20">
-      <div className="site-shell split-layout">
-        <SectionHeading kicker={PROOF.kicker} title={PROOF.title}>
-          <p>{PROOF.body}</p>
-        </SectionHeading>
+    <section id="proof" className="section scroll-mt-20">
+      <div className="site-shell">
+        <div className="proof-head">
+          <h2 className="section-title">{PROOF.title}</h2>
+          <p className="section-copy">{PROOF.body}</p>
+        </div>
 
-        <figure className="media-frame">
+        <figure className="media-frame mt-10">
           <video
             controls
             playsInline

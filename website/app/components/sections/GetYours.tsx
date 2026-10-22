@@ -10,7 +10,7 @@ export function GetYours() {
   return (
     <section id="buy" className="section scroll-mt-20">
       <div className="site-shell">
-        <SectionHeading kicker={OFFER.kicker} title={OFFER.title} />
+        <SectionHeading title={OFFER.title} />
 
         <div className="mt-12 grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
           <article className="card flex flex-col">

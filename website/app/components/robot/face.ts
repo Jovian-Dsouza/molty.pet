@@ -10,6 +10,9 @@ export const OLED_HEIGHT = 64;
 
 export type Expression = "open" | "blink";
 
+/** Molty's mood sets the eye shape and mouth; blinking still happens on top. */
+export type Mood = "happy" | "focus" | "unsure" | "sleepy";
+
 /**
  * Active area of the display glass, measured from the Sesame STEP (#o1.11):
  * the screen tilts ~20° upward in the top cover's front window. CAD mm.
@@ -27,8 +30,14 @@ export const OLED_SCREEN = {
 };
 
 const EYE = { x0: 30, x1: 48, y0: 10, y1: 34, corner: 5 };
+/** Focused: the same eyes with the lids half down. */
+const FOCUS_EYE = { ...EYE, y0: 18, y1: 32, corner: 4 };
 const BLINK_ROWS = [21, 22, 23];
 const SMILE = { x0: 44, x1: 84, top: 42, depth: 10, thickness: 3 };
+/** Drawn on the left half and mirrored, so it spans x0 … 127 − x0. */
+const FLAT_MOUTH = { x0: 52, y: 47, thickness: 3 };
+/** Unsure: a mouth that rises from left to right. */
+const TILTED_MOUTH = { x0: 50, x1: 78, yLeft: 50, yRight: 44, thickness: 3 };
 
 function set(bitmap: Uint8Array, x: number, y: number): void {
   if (x >= 0 && x < OLED_WIDTH && y >= 0 && y < OLED_HEIGHT) bitmap[y * OLED_WIDTH + x] = 1;
@@ -40,8 +49,8 @@ function setMirrored(bitmap: Uint8Array, x: number, y: number): void {
   set(bitmap, OLED_WIDTH - 1 - x, y);
 }
 
-function drawEyes(bitmap: Uint8Array, expression: Expression): void {
-  const { x0, x1, y0, y1, corner } = EYE;
+function drawEyes(bitmap: Uint8Array, expression: Expression, eye: typeof EYE): void {
+  const { x0, x1, y0, y1, corner } = eye;
   for (let x = x0; x < x1; x++) {
     if (expression === "blink") {
       for (const y of BLINK_ROWS) setMirrored(bitmap, x, y);
@@ -69,10 +78,27 @@ function drawSmile(bitmap: Uint8Array): void {
   }
 }
 
+function drawFlatMouth(bitmap: Uint8Array): void {
+  const { x0, y, thickness } = FLAT_MOUTH;
+  for (let x = x0; x < OLED_WIDTH / 2; x++) {
+    for (let dy = 0; dy < thickness; dy++) setMirrored(bitmap, x, y + dy);
+  }
+}
+
+function drawTiltedMouth(bitmap: Uint8Array): void {
+  const { x0, x1, yLeft, yRight, thickness } = TILTED_MOUTH;
+  for (let x = x0; x <= x1; x++) {
+    const y = Math.round(yLeft + ((yRight - yLeft) * (x - x0)) / (x1 - x0));
+    for (let dy = 0; dy < thickness; dy++) set(bitmap, x, y + dy);
+  }
+}
+
 /** A 128 × 64 frame, row-major, 1 = lit pixel. */
-export function faceBitmap(expression: Expression): Uint8Array {
+export function faceBitmap(expression: Expression, mood: Mood = "happy"): Uint8Array {
   const bitmap = new Uint8Array(OLED_WIDTH * OLED_HEIGHT);
-  drawEyes(bitmap, expression);
-  drawSmile(bitmap);
+  drawEyes(bitmap, mood === "sleepy" ? "blink" : expression, mood === "focus" ? FOCUS_EYE : EYE);
+  if (mood === "focus") drawFlatMouth(bitmap);
+  else if (mood === "unsure") drawTiltedMouth(bitmap);
+  else drawSmile(bitmap);
   return bitmap;
 }

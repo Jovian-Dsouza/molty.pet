@@ -15,7 +15,7 @@ const mono = Space_Mono({
   variable: '--font-space-mono',
 })
 
-const title = 'Molty — A desk robot with an agent for a brain'
+const title = 'Molty: a robot pet for your AI agent'
 const description =
   'Molty is a $150 desk quadruped that walks, waves, dances, and talks, powered by your Hermes AI agent in the cloud. Pre-orders open.'
 

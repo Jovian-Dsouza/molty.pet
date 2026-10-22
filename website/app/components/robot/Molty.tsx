@@ -8,6 +8,7 @@ import { HIPS, KNEES, BODY_CENTER, STAND, jointAngle, type Joint, type ServoPose
 import { ACTIONS, gaitCycle, loopPoseAt, poseAt, slewToward, type ActionName, type GaitName } from "./motions";
 import { supportTilt, type Tilt } from "./support";
 import { createOledScreen, type OledScreen } from "./oledScreen";
+import type { Mood } from "./face";
 
 export const MOLTY_MODEL_URL = "/models/molty.glb";
 
@@ -31,6 +32,8 @@ export interface MoltyControl {
 
 interface MoltyProps {
   control: RefObject<MoltyControl>;
+  /** Face shown on the OLED; happy when omitted. */
+  mood?: RefObject<Mood>;
   onPose?: (pose: ServoPose) => void;
   onPoke?: () => void;
 }
@@ -150,7 +153,7 @@ function lowestPoint(rig: Rig): number {
   return lowest;
 }
 
-export function Molty({ control, onPose, onPoke }: MoltyProps) {
+export function Molty({ control, mood, onPose, onPoke }: MoltyProps) {
   const { scene } = useGLTF(MOLTY_MODEL_URL);
   const rig = useMemo(() => buildRig(scene), [scene]);
   // The frame loop mutates three.js objects every frame; reach them through a ref.
@@ -166,7 +169,7 @@ export function Molty({ control, onPose, onPoke }: MoltyProps) {
   useFrame(({ clock }, dt) => {
     const rig = rigRef.current;
     const now = clock.getElapsedTime();
-    rig.screen.show(now % BLINK_EVERY_S < BLINK_S ? "blink" : "open");
+    rig.screen.show(now % BLINK_EVERY_S < BLINK_S ? "blink" : "open", mood?.current);
     servos.current = slewToward(servos.current, targetPose(control.current, now), Math.min(dt, 0.05) * 1000);
     for (const { joint, group } of rig.pivots) {
       group.quaternion.setFromAxisAngle(scratch.set(...joint.axis), jointAngle(joint, servos.current));
