@@ -2,9 +2,9 @@
 
 import { Suspense, useRef, type RefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Grid } from "@react-three/drei";
 import type { Group, Mesh } from "three";
 import { Molty, type MoltyControl } from "./Molty";
+import { Pitch } from "./Pitch";
 import { ACTIONS, motionDuration, type ActionName, type GaitName } from "./motions";
 import type { ServoPose } from "./servos";
 import {
@@ -31,6 +31,11 @@ export interface Telemetry {
 export type TrickRequest = ActionName | null;
 
 const GOAL: Goal = { x: 0, z: -ARENA_HALF + 0.5, halfWidth: 1.1, depth: 0.9 };
+/** The goal mouth faces the field; the scoring zone is the space inside the net. */
+const GOAL_LINE_Z = GOAL.z + GOAL.depth / 2;
+const GOAL_HEIGHT = 0.8;
+const POST = 0.06;
+const SKY = "#9fc4e0";
 /** Chase camera: close enough to read the CAD detail, far enough to see the goal. */
 const CAMERA_HEIGHT = 4.2;
 const CAMERA_DISTANCE = 4.6;
@@ -135,29 +140,37 @@ function World({ readInput, trickRef, onTelemetry, onGoal }: SceneProps) {
         <meshStandardMaterial color="#fcf3f2" flatShading roughness={0.4} />
       </mesh>
 
-      {/* goal */}
-      <group position={[GOAL.x, 0, GOAL.z]}>
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.003, 0]}>
-          <planeGeometry args={[GOAL.halfWidth * 2, GOAL.depth]} />
-          <meshBasicMaterial color="#ff9e95" transparent opacity={0.12} />
-        </mesh>
-        {[-1, 1].map((s) => (
-          <mesh key={s} position={[s * GOAL.halfWidth, 0.4, -GOAL.depth / 2]} castShadow>
-            <boxGeometry args={[0.06, 0.8, 0.06]} />
-            <meshStandardMaterial color="#ff9e95" emissive="#ff9e95" emissiveIntensity={0.4} />
+      {/* goal: white frame at the goal line, net running back to the scoring zone's far edge */}
+      <group position={[GOAL.x, 0, GOAL_LINE_Z]}>
+        {[-1, 1].map((side) => (
+          <mesh key={side} position={[side * GOAL.halfWidth, GOAL_HEIGHT / 2, 0]} castShadow>
+            <boxGeometry args={[POST, GOAL_HEIGHT, POST]} />
+            <meshStandardMaterial color="#ffffff" roughness={0.4} />
           </mesh>
         ))}
-        <mesh position={[0, 0.8, -GOAL.depth / 2]}>
-          <boxGeometry args={[GOAL.halfWidth * 2 + 0.06, 0.06, 0.06]} />
-          <meshStandardMaterial color="#ff9e95" emissive="#ff9e95" emissiveIntensity={0.4} />
+        <mesh position={[0, GOAL_HEIGHT, 0]} castShadow>
+          <boxGeometry args={[GOAL.halfWidth * 2 + POST, POST, POST]} />
+          <meshStandardMaterial color="#ffffff" roughness={0.4} />
         </mesh>
+        <mesh position={[0, GOAL_HEIGHT / 2, -GOAL.depth]}>
+          <boxGeometry args={[GOAL.halfWidth * 2, GOAL_HEIGHT, 0.01, 22, 8, 1]} />
+          <meshBasicMaterial color="#ffffff" wireframe transparent opacity={0.35} />
+        </mesh>
+        <mesh position={[0, GOAL_HEIGHT, -GOAL.depth / 2]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[GOAL.halfWidth * 2, GOAL.depth, 22, 9]} />
+          <meshBasicMaterial color="#ffffff" wireframe transparent opacity={0.35} />
+        </mesh>
+        {[-1, 1].map((side) => (
+          <mesh
+            key={side}
+            position={[side * GOAL.halfWidth, GOAL_HEIGHT / 2, -GOAL.depth / 2]}
+            rotation={[0, Math.PI / 2, 0]}
+          >
+            <planeGeometry args={[GOAL.depth, GOAL_HEIGHT, 9, 8]} />
+            <meshBasicMaterial color="#ffffff" wireframe transparent opacity={0.35} />
+          </mesh>
+        ))}
       </group>
-
-      {/* arena walls */}
-      <mesh position={[0, 0.06, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[ARENA_HALF * 1.414, ARENA_HALF * 1.43, 4, 1, Math.PI / 4]} />
-        <meshBasicMaterial color="#fcf3f2" transparent opacity={0.25} />
-      </mesh>
     </>
   );
 }
@@ -174,28 +187,21 @@ export default function PlaygroundScene(props: SceneProps & { active: boolean })
       aria-label="Robot playground: drive Molty and push the ball into the goal"
       role="img"
     >
-      <color attach="background" args={["#0b0202"]} />
-      <fog attach="fog" args={["#0b0202", 9, 18]} />
-      <ambientLight intensity={0.45} />
-      <directionalLight position={[4, 8, 3]} intensity={2} castShadow shadow-mapSize={[1024, 1024]}>
-        <orthographicCamera attach="shadow-camera" args={[-7, 7, 7, -7, 0.5, 20]} />
+      <color attach="background" args={[SKY]} />
+      <fog attach="fog" args={[SKY, 14, 30]} />
+      <hemisphereLight args={["#e8f3ff", "#2f5a2a", 1.1]} />
+      <directionalLight
+        position={[5, 10, 4]}
+        intensity={2.6}
+        color="#fff6e8"
+        castShadow
+        shadow-mapSize={[2048, 2048]}
+        shadow-bias={-0.0005}
+      >
+        <orthographicCamera attach="shadow-camera" args={[-7, 7, 7, -7, 0.5, 25]} />
       </directionalLight>
-      <directionalLight position={[-4, 3, -3]} intensity={0.5} color="#ff5b59" />
-      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[ARENA_HALF * 2, ARENA_HALF * 2]} />
-        <meshStandardMaterial color="#140505" roughness={1} />
-      </mesh>
-      <Grid
-        position={[0, 0.002, 0]}
-        args={[ARENA_HALF * 2, ARENA_HALF * 2]}
-        cellSize={0.5}
-        cellThickness={0.6}
-        cellColor="#2e1212"
-        sectionSize={2.5}
-        sectionThickness={1}
-        sectionColor="#ff5b59"
-        fadeDistance={20}
-      />
+      <directionalLight position={[-5, 6, -4]} intensity={0.6} color="#dbe8ff" />
+      <Pitch goalLineZ={GOAL_LINE_Z} />
       <World {...rest} />
     </Canvas>
   );
