@@ -22,9 +22,9 @@ export const LINKS = {
 
 export const NAV = [
   { href: '#day', label: 'A day with Molty' },
+  { href: '#inside', label: 'Inside' },
   { href: '#social', label: 'Build log' },
   { href: '#play', label: 'Try it' },
-  { href: '#specs', label: 'Specs' },
 ] as const
 
 /* ---------- Copy ---------- */
@@ -129,8 +129,8 @@ export const AUDIENCES = {
 } as const
 
 export const SPECS = {
-  title: 'What’s inside.',
-  body: 'Small enough to sit next to your keyboard. Every part is printed or off the shelf, so you can fix it yourself.',
+  title: 'The real one, on the bench.',
+  body: 'The same robot, built and walking. Here is what runs it.',
   photoAlt: 'Molty, a red four-legged robot with a Raspberry Pi on its back, standing on a workbench',
   items: [
     { label: 'Compute', value: 'Raspberry Pi Zero 2 W' },

@@ -9,63 +9,15 @@
  * scene without loading audio. Existing clips are kept unless --force.
  */
 
-import { execFile } from 'node:child_process'
 import { existsSync } from 'node:fs'
-import { mkdir, rm, writeFile } from 'node:fs/promises'
+import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { promisify } from 'node:util'
 import { SCENARIOS } from '../../app/scenarios.ts'
+import { durationMs, requireApiKey, synthesize } from './elevenlabs.mjs'
 
 const ROOT = path.resolve(import.meta.dirname, '../..')
 const OUT_DIR = path.join(ROOT, 'public/voice')
 const MANIFEST = path.join(ROOT, 'app/voice-lines.json')
-const API = 'https://api.elevenlabs.io/v1/text-to-speech'
-const OUTPUT_FORMAT = 'mp3_44100_128'
-const LOUDNESS = 'loudnorm=I=-16:TP=-1.5:LRA=11'
-
-/** Voices in the ElevenLabs library. Override with env vars to recast. */
-const VOICES = {
-  you: {
-    id: process.env.ELEVENLABS_YOU_VOICE_ID ?? 'Wg9tQPGmiNUCWMmaCEaC',
-    model: 'eleven_multilingual_v2',
-    settings: { stability: 0.5, similarity_boost: 0.8, style: 0.1 },
-  },
-  molty: {
-    id: process.env.ELEVENLABS_MOLTY_VOICE_ID ?? 'MKFRAolX19CwxqZ1qLZ8',
-    model: 'eleven_v3',
-    settings: { stability: 0.5, similarity_boost: 0.75 },
-  },
-}
-
-const run = promisify(execFile)
-
-async function durationMs(file) {
-  const { stdout } = await run('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', file])
-  const seconds = Number.parseFloat(stdout)
-  if (!Number.isFinite(seconds)) throw new Error(`ffprobe could not read a duration from ${file}`)
-  return Math.round(seconds * 1000)
-}
-
-async function synthesize(apiKey, role, text, file) {
-  const voice = VOICES[role]
-  const res = await fetch(`${API}/${voice.id}?output_format=${OUTPUT_FORMAT}`, {
-    method: 'POST',
-    headers: { 'xi-api-key': apiKey, 'content-type': 'application/json', accept: 'audio/mpeg' },
-    body: JSON.stringify({ text, model_id: voice.model, voice_settings: voice.settings }),
-  })
-  if (!res.ok) {
-    throw new Error(`ElevenLabs ${res.status} for "${text}": ${await res.text()}`)
-  }
-  const raw = `${file}.raw.mp3`
-  await writeFile(raw, Buffer.from(await res.arrayBuffer()))
-  await normalize(raw, file)
-  await rm(raw)
-}
-
-/** Both voices land at the same loudness, so neither needs its own volume. */
-async function normalize(input, output) {
-  await run('ffmpeg', ['-v', 'error', '-y', '-i', input, '-af', LOUDNESS, '-ar', '44100', '-b:a', '64k', output])
-}
 
 async function clip(apiKey, role, text, id, force) {
   if (!text) return 0
@@ -78,8 +30,7 @@ async function clip(apiKey, role, text, id, force) {
 }
 
 async function main() {
-  const apiKey = process.env.ELEVENLABS_API_KEY
-  if (!apiKey) throw new Error('Set ELEVENLABS_API_KEY to generate voice lines.')
+  const apiKey = requireApiKey()
   const force = process.argv.includes('--force')
 
   await mkdir(OUT_DIR, { recursive: true })

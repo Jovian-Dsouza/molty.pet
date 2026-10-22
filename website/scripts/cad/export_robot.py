@@ -109,7 +109,7 @@ def tessellate(shapes: list[bd.Shape], simplify: bool = False) -> tuple[np.ndarr
 class GlbWriter:
     """Minimal glTF 2.0 binary writer: positions + indices, named nodes."""
 
-    def __init__(self) -> None:
+    def __init__(self, materials: dict = MATERIALS) -> None:
         self.buffer = bytearray()
         self.gltf: dict = {
             "asset": {"version": "2.0", "generator": "molty export_robot.py"},
@@ -123,7 +123,7 @@ class GlbWriter:
             "buffers": [],
         }
         self.material_index: dict[str, int] = {}
-        for name, (color, metal, rough) in MATERIALS.items():
+        for name, (color, metal, rough) in materials.items():
             self.material_index[name] = len(self.gltf["materials"])
             self.gltf["materials"].append(
                 {

@@ -1,0 +1,422 @@
+/* ---------- Teardown: Molty comes apart onto a cutting mat ---------- */
+
+.teardown {
+  /* Matches MAT in TeardownScene.tsx so the canvas edge disappears. */
+  --teardown-mat: #140606;
+  border-block: 1px solid var(--border);
+  background: var(--teardown-mat);
+}
+
+/* The scroll distance the sticky panel rides through: 0 → 1 progress. */
+.teardown-track {
+  position: relative;
+  height: 560svh;
+}
+
+.teardown-sticky {
+  position: sticky;
+  top: 4rem;
+  height: calc(100svh - 4rem);
+  overflow: hidden;
+}
+
+.teardown-canvas {
+  position: absolute;
+  inset: 0;
+  /* Contain the callouts' z-indexes below the copy and controls. */
+  z-index: 0;
+}
+
+.teardown-top,
+.teardown-bottom {
+  position: absolute;
+  inset-inline: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.teardown-top > *,
+.teardown-bottom > * {
+  pointer-events: auto;
+}
+
+.teardown-top {
+  top: clamp(1.25rem, 4svh, 3rem);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.teardown-intro {
+  max-width: 30rem;
+  transition:
+    opacity 280ms ease-out,
+    translate 280ms ease-out;
+}
+
+.teardown-intro[data-hidden="true"] {
+  opacity: 0;
+  translate: 0 -0.5rem;
+  pointer-events: none;
+}
+
+.teardown-intro .section-title {
+  margin-top: 0;
+}
+
+.teardown-intro .section-copy {
+  margin-top: 0.9rem;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.teardown-bottom {
+  bottom: clamp(0.75rem, 3svh, 2rem);
+  display: grid;
+  gap: 0.75rem;
+}
+
+.teardown-caption {
+  max-width: 26rem;
+  border: 1px solid color-mix(in oklch, var(--border) 70%, transparent);
+  border-radius: calc(var(--radius) * 1.35);
+  background: color-mix(in oklch, var(--teardown-mat) 76%, transparent);
+  padding: 1rem 1.2rem;
+  backdrop-filter: blur(12px);
+}
+
+.teardown-caption-title {
+  text-wrap: balance;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.teardown-caption-body {
+  margin-top: 0.4rem;
+  text-wrap: pretty;
+  color: var(--muted-foreground);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.teardown-controls {
+  display: grid;
+  gap: 0.25rem;
+}
+
+/* Scrubber: a hairline that fills in brand red as Molty comes apart. */
+.teardown-scrub {
+  --fill: 0%;
+  width: 100%;
+  height: 2.75rem;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.teardown-scrub::-webkit-slider-runnable-track {
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--primary) var(--fill),
+    color-mix(in oklch, var(--foreground) 22%, transparent) var(--fill)
+  );
+}
+
+.teardown-scrub::-moz-range-track {
+  height: 2px;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--foreground) 22%, transparent);
+}
+
+.teardown-scrub::-moz-range-progress {
+  height: 2px;
+  border-radius: 999px;
+  background: var(--primary);
+}
+
+.teardown-scrub::-webkit-slider-thumb {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: calc(-0.55rem + 1px);
+  appearance: none;
+  border: 3px solid var(--teardown-mat);
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.teardown-scrub::-moz-range-thumb {
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 3px solid var(--teardown-mat);
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+.teardown-scrub:focus-visible {
+  outline: none;
+}
+
+.teardown-scrub:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 2px var(--ring), 0 0 0 5px color-mix(in oklch, var(--ring) 35%, transparent);
+}
+
+.teardown-scrub:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 2px var(--ring), 0 0 0 5px color-mix(in oklch, var(--ring) 35%, transparent);
+}
+
+.teardown-steps {
+  display: none;
+}
+
+.teardown-step {
+  min-height: 2.25rem;
+  border-radius: 0.375rem;
+  padding-inline: 0.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: color 120ms ease-out;
+}
+
+.teardown-step:hover,
+.teardown-step[aria-current="step"] {
+  color: var(--foreground);
+}
+
+.teardown-step[aria-current="step"] {
+  font-weight: 600;
+}
+
+.teardown-step:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.teardown-grid {
+  justify-self: end;
+  color: var(--muted-foreground);
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.6875rem;
+}
+
+.teardown-bom {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 1rem;
+  margin-top: 0.85rem;
+  font-size: 0.875rem;
+}
+
+.teardown-bom li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.teardown-bom .balloon {
+  width: 1.35rem;
+  height: 1.35rem;
+  font-size: 0.6875rem;
+}
+
+.teardown-bom-count {
+  margin-left: auto;
+  color: var(--muted-foreground);
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.75rem;
+}
+
+.teardown-note {
+  padding-block: 1.25rem 2.5rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+/* ---------- Callouts: BOM balloons on leader lines ---------- */
+
+.callout {
+  position: relative;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  color: var(--foreground);
+  font-family: var(--font-space-grotesk), sans-serif;
+  text-shadow: 0 1px 10px var(--teardown-mat, #140606);
+  transition: opacity 240ms ease-out;
+}
+
+.callout[data-visible="true"] {
+  opacity: 1;
+}
+
+.callout-dot {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--primary) 28%, transparent);
+}
+
+.callout-leader {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  width: 64px;
+  height: 40px;
+  overflow: visible;
+}
+
+.callout-leader polyline {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.callout[data-side="left"] .callout-leader {
+  transform: scaleX(-1);
+  transform-origin: 0 0;
+}
+
+.callout-label {
+  position: absolute;
+  top: -34px;
+  left: 70px;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  translate: 0 -0.75rem;
+  white-space: nowrap;
+}
+
+.callout[data-side="left"] .callout-label {
+  right: 70px;
+  left: auto;
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.balloon {
+  display: grid;
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border: 1px solid var(--primary);
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--teardown-mat, #140606) 80%, transparent);
+  color: var(--primary);
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.75rem;
+  text-shadow: none;
+}
+
+.callout-text {
+  display: grid;
+  gap: 0.05rem;
+  border-radius: 0.5rem;
+  background: color-mix(in oklch, var(--teardown-mat, #140606) 62%, transparent);
+  padding: 0.25rem 0.55rem 0.35rem;
+  backdrop-filter: blur(6px);
+}
+
+.callout-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+}
+
+.callout-job {
+  font-size: 0.8125rem;
+}
+
+.callout-spec {
+  color: var(--muted-foreground);
+  font-family: var(--font-space-mono), monospace;
+  font-size: 0.6875rem;
+}
+
+/* On the tray the parts list names each balloon, as on a drawing. */
+.callout[data-compact="true"] .callout-text {
+  display: none;
+}
+
+.callout[data-compact="true"] .callout-leader {
+  top: -24px;
+  width: 32px;
+  height: 24px;
+}
+
+.callout[data-compact="true"] .callout-label {
+  top: -20px;
+  left: 38px;
+}
+
+.callout[data-compact="true"][data-side="left"] .callout-label {
+  right: 38px;
+  left: auto;
+}
+
+@media (max-width: 639px) {
+  .teardown-sound {
+    width: 2.75rem;
+    flex: none;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .teardown-intro .section-copy {
+    display: none;
+  }
+
+  .callout-job,
+  .callout-spec {
+    display: none;
+  }
+
+  .teardown-caption {
+    padding: 0.8rem 1rem;
+  }
+
+  .teardown-caption-body {
+    font-size: 0.875rem;
+  }
+
+  .teardown[data-stage="tray"] .teardown-caption-body {
+    display: none;
+  }
+}
+
+@media (min-width: 640px) {
+  .teardown-steps {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .teardown-bottom {
+    grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+    align-items: end;
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teardown-intro,
+  .callout {
+    transition: none;
+  }
+}

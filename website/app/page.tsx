@@ -4,6 +4,7 @@ import { Header } from './components/sections/Header'
 import { Hero } from './components/sections/Hero'
 import { Social } from './components/sections/Social'
 import { Abilities } from './components/sections/Abilities'
+import { Teardown } from './components/sections/Teardown'
 import { Flow } from './components/sections/Flow'
 import { Playground } from './components/sections/Playground'
 import { Audiences } from './components/sections/Audiences'
@@ -22,6 +23,7 @@ export default function Home() {
       <Header />
       <main id="main" tabIndex={-1}>
         <Hero />
+        <Teardown />
         <Social />
         <Abilities />
         <Flow />
