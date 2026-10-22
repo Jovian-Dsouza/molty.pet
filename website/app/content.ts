@@ -20,16 +20,9 @@ export const LINKS = {
   contact: `mailto:${ORDER_EMAIL}`,
 } as const
 
-/** Swap this for the launch video when it's ready. */
-export const LAUNCH_VIDEO = {
-  src: '/molty-prototype-demo.mp4',
-  poster: '/molty-dog-front.jpg',
-  label: 'Molty walking, waving, and dancing on the workbench',
-} as const
-
 export const NAV = [
   { href: '#day', label: 'A day with Molty' },
-  { href: '#proof', label: 'Real robot' },
+  { href: '#social', label: 'Build log' },
   { href: '#play', label: 'Try it' },
   { href: '#specs', label: 'Specs' },
 ] as const
@@ -40,7 +33,7 @@ export const HERO = {
   title: 'A robot pet for your AI agent.',
   body: 'Molty sits on your desk and listens for “Hey Molty.” It hands the job to your Hermes agent in the cloud, then shows you how it’s going with its whole body.',
   cta: 'Pre-order',
-  secondary: 'Watch the real one',
+  secondary: 'Follow the build',
 } as const
 
 export const STAGE = {
@@ -55,10 +48,19 @@ export const STAGE = {
   loading: 'Setting up the desk…',
 } as const
 
-export const PROOF = {
-  title: 'Same moves. Real robot.',
-  body: 'Everything on the desk above already runs on the workbench: walking, waving, dancing, and talking back. A printed body, eight servos, and a Raspberry Pi.',
-  caption: 'Unedited prototype footage. The launch video is on the way.',
+export const SOCIAL = {
+  title: 'Built in public, one post at a time.',
+  body: 'Every Molty build, test, and stumble goes up on X as it happens. Follow along, or tell us what Molty should learn next.',
+  follow: 'Follow @moltypet',
+  /** Post IDs from x.com, oldest first. Fetched at build time; add more to grow the wall. */
+  posts: ['2077026876728676777', '2078107900359356547'],
+  milestone: {
+    event: 'ETHGlobal HackMoney 2026',
+    result: '2nd place, Yellow track',
+    body: 'Molty’s first body, a wheeled desk robot with claws, won a prize for handling crypto bets and swaps by voice.',
+    href: 'https://ethglobal.com/showcase/molty-s23q7',
+    cta: 'See the project',
+  },
 } as const
 
 export const ABILITIES = {

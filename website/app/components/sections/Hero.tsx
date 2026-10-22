@@ -1,4 +1,4 @@
-import { Play } from 'lucide-react'
+import { ArrowDown } from 'lucide-react'
 import { HERO, PRICE_USD } from '@/app/content'
 import { formatUsd } from '@/app/lib/cart'
 import { AddToCartButton } from '../cart/AddToCartButton'
@@ -15,8 +15,8 @@ export function Hero() {
             <AddToCartButton>
               {HERO.cta} for {formatUsd(PRICE_USD)}
             </AddToCartButton>
-            <a href="#proof" className="button button-secondary">
-              <Play aria-hidden="true" className="size-4 fill-current" />
+            <a href="#social" className="button button-secondary">
+              <ArrowDown aria-hidden="true" className="size-4" />
               {HERO.secondary}
             </a>
           </div>

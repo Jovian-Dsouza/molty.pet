@@ -2,7 +2,7 @@ import { CartProvider } from './components/cart/CartProvider'
 import { CartDrawer } from './components/cart/CartDrawer'
 import { Header } from './components/sections/Header'
 import { Hero } from './components/sections/Hero'
-import { Proof } from './components/sections/Proof'
+import { Social } from './components/sections/Social'
 import { Abilities } from './components/sections/Abilities'
 import { Flow } from './components/sections/Flow'
 import { Playground } from './components/sections/Playground'
@@ -22,7 +22,7 @@ export default function Home() {
       <Header />
       <main id="main" tabIndex={-1}>
         <Hero />
-        <Proof />
+        <Social />
         <Abilities />
         <Flow />
         <Playground />

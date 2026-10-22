@@ -519,13 +519,62 @@ button {
 
 /* ---------- Content sections ---------- */
 
-.proof-head {
+.post-wall {
   display: grid;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
-.proof-head .section-copy {
-  margin-top: 0;
+.post-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.35);
+  background: var(--card);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.milestone-card {
+  border-color: color-mix(in oklch, var(--primary) 45%, var(--border));
+  background: color-mix(in oklch, var(--primary) 6%, var(--card));
+}
+
+.post-link {
+  color: var(--primary);
+}
+
+.post-link:hover {
+  text-decoration: underline;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.post-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  border-radius: 0.25rem;
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.post-meta .post-open {
+  margin-left: auto;
+}
+
+.post-open:hover {
+  color: var(--primary);
 }
 
 .abilities-layout {
@@ -766,20 +815,6 @@ button {
 
 /* ---------- Media ---------- */
 
-.media-frame {
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius) * 1.35);
-  background: var(--card);
-}
-
-.media-caption {
-  border-top: 1px solid var(--border);
-  padding: 0.9rem 1rem;
-  color: var(--muted-foreground);
-  font-size: 0.875rem;
-}
-
 /* ---------- Playground ---------- */
 
 .playground {
@@ -1006,7 +1041,8 @@ button {
     backdrop-filter: blur(14px);
   }
 
-  .audience-list {
+  .audience-list,
+  .post-wall {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
@@ -1024,11 +1060,6 @@ button {
 @media (min-width: 1024px) {
   .hero-intro {
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.9fr);
-    align-items: end;
-  }
-
-  .proof-head {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: end;
   }
 
