@@ -534,8 +534,64 @@ button {
 }
 
 .milestone-card {
+  --milestone-bg: color-mix(in oklch, var(--primary) 6%, var(--card));
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 32rem;
   border-color: color-mix(in oklch, var(--primary) 45%, var(--border));
-  background: color-mix(in oklch, var(--primary) 6%, var(--card));
+  background: var(--milestone-bg);
+}
+
+/* The photo fills the lower card, so the robot's face sits below the copy. */
+.milestone-photo {
+  position: absolute;
+  inset: 30% 0 0;
+  z-index: -2;
+}
+
+.milestone-photo img {
+  object-fit: cover;
+  object-position: center 15%;
+}
+
+/* Solid behind the copy, clear over the robot, dark again under the link. */
+.milestone-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    var(--milestone-bg) 30%,
+    color-mix(in oklch, var(--milestone-bg) 55%, transparent) 42%,
+    transparent 56%,
+    transparent 78%,
+    color-mix(in oklch, var(--milestone-bg) 90%, transparent) 100%
+  );
+}
+
+.post-reply {
+  display: block;
+  margin-top: 1rem;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--primary);
+  border-radius: calc(var(--radius) * 0.85);
+  background: color-mix(in oklch, var(--primary) 4%, var(--card));
+  padding: 0.85rem 1rem;
+}
+
+.post-reply-tag {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--primary);
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.post-reply-tag:hover {
+  text-decoration: underline;
 }
 
 .post-link {
@@ -577,57 +633,6 @@ button {
   color: var(--primary);
 }
 
-.abilities-layout {
-  display: grid;
-  gap: 3rem;
-}
-
-.ability-list > div {
-  display: grid;
-  gap: 0.5rem;
-  border-top: 1px solid var(--border);
-  padding-block: 1.5rem;
-}
-
-.ability-list > div:last-child {
-  border-bottom: 1px solid var(--border);
-}
-
-.ability-list dt {
-  font-size: 1.25rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.ability-list dd {
-  color: var(--muted-foreground);
-  line-height: 1.75;
-}
-
-.flow-steps {
-  display: grid;
-  gap: 2.5rem;
-}
-
-.flow-steps > li {
-  position: relative;
-}
-
-.flow-index {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
-  place-items: center;
-  border: 1px solid color-mix(in oklch, var(--primary) 60%, var(--border));
-  border-radius: 999px;
-  background: var(--background);
-  color: var(--primary);
-  font-family: var(--font-space-mono), monospace;
-  font-weight: 700;
-}
-
 .audience-list {
   display: grid;
   gap: 1px;
@@ -658,41 +663,6 @@ button {
 
 .audience-link:hover {
   text-decoration: underline;
-}
-
-.specs-layout {
-  display: grid;
-  align-items: center;
-  gap: 3rem;
-}
-
-.specs-photo {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius) * 1.6);
-}
-
-.spec-rows > div {
-  display: grid;
-  grid-template-columns: 7.5rem 1fr;
-  gap: 1rem;
-  border-top: 1px solid var(--border);
-  padding-block: 0.85rem;
-}
-
-.spec-rows > div:last-child {
-  border-bottom: 1px solid var(--border);
-}
-
-.spec-rows dt {
-  color: var(--muted-foreground);
-  font-size: 0.875rem;
-}
-
-.spec-rows dd {
-  font-weight: 500;
 }
 
 .closing {
@@ -790,27 +760,6 @@ button {
 .card-featured {
   border-color: color-mix(in oklch, var(--primary) 55%, var(--border));
   box-shadow: 0 6px 0 0 color-mix(in oklch, var(--primary) 35%, transparent);
-}
-
-.icon-box {
-  display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
-  place-items: center;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--secondary);
-  color: var(--primary);
-}
-
-.note-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.25rem;
-  border: 1px dashed color-mix(in oklch, var(--primary) 55%, var(--border));
-  border-radius: calc(var(--radius) * 1.35);
-  background: color-mix(in oklch, var(--primary) 7%, var(--card));
-  padding: clamp(1.5rem, 4vw, 2rem);
 }
 
 /* ---------- Media ---------- */
@@ -990,22 +939,9 @@ button {
   .section {
     padding-block: 4.5rem;
   }
-
-  .note-card {
-    flex-direction: column;
-  }
 }
 
 @media (min-width: 640px) {
-  .ability-list > div {
-    grid-template-columns: 11rem 1fr;
-    gap: 1.5rem;
-  }
-
-  .flow-steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .footer-layout {
     align-items: flex-end;
     flex-direction: row;
@@ -1063,45 +999,173 @@ button {
     align-items: end;
   }
 
-  .abilities-layout {
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: clamp(3rem, 6vw, 6rem);
-  }
-
-  .abilities-heading {
-    position: sticky;
-    top: 6rem;
-    align-self: start;
-  }
-
-  .flow-steps {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  /* Connect each step to the next. */
-  .flow-steps > li:not(:last-child)::after {
-    position: absolute;
-    top: 1.375rem;
-    right: -2.5rem;
-    left: 2.75rem;
-    height: 1px;
-    content: "";
-    background: color-mix(in oklch, var(--primary) 45%, var(--border));
-  }
-
-  .specs-layout {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(3rem, 6vw, 6rem);
-  }
-
-  .specs-photo {
-    aspect-ratio: 4 / 5;
-  }
-
   .closing-layout {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: end;
     gap: clamp(3rem, 6vw, 6rem);
+  }
+}
+
+/* ---------- Architecture diagram ---------- */
+
+.arch-scroll {
+  overflow-x: auto;
+}
+
+.arch-diagram {
+  display: block;
+  width: 100%;
+  min-width: 760px;
+  height: auto;
+}
+
+.arch-zone {
+  fill: color-mix(in oklch, var(--card) 55%, transparent);
+  stroke: var(--border);
+  stroke-dasharray: 5 7;
+}
+
+.arch-zone-cloud {
+  fill: color-mix(in oklch, var(--primary) 6%, transparent);
+  stroke: color-mix(in oklch, var(--primary) 40%, var(--border));
+}
+
+.arch-zone-label {
+  fill: var(--muted-foreground);
+  font-family: var(--font-space-mono), monospace;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+}
+
+.arch-label {
+  fill: var(--muted-foreground);
+  font-size: 15px;
+}
+
+.arch-node,
+.arch-card {
+  fill: var(--card);
+  stroke: color-mix(in oklch, var(--primary) 55%, var(--border));
+}
+
+.arch-icon,
+.arch-memory,
+.arch-grow {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.arch-grow rect {
+  fill: color-mix(in oklch, var(--primary) 70%, transparent);
+  stroke: none;
+}
+
+.arch-dot {
+  fill: var(--primary);
+  stroke: none;
+}
+
+.arch-wave {
+  opacity: 0.8;
+}
+
+.arch-wave-2 {
+  opacity: 0.45;
+}
+
+.arch-wire path {
+  fill: none;
+  stroke: color-mix(in oklch, var(--primary) 30%, var(--border));
+  stroke-width: 1.5;
+}
+
+.arch-flow path {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2;
+  stroke-dasharray: 6 10;
+}
+
+.arch-pill {
+  fill: color-mix(in oklch, var(--primary) 10%, var(--card));
+  stroke: color-mix(in oklch, var(--primary) 45%, var(--border));
+}
+
+.arch-pill-text {
+  fill: var(--primary);
+  font-family: var(--font-space-mono), monospace;
+  font-size: 13px;
+}
+
+.arch-card-text {
+  fill: var(--foreground);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.arch-card-dot {
+  fill: color-mix(in oklch, var(--primary) 18%, var(--card));
+  stroke: var(--primary);
+}
+
+.arch-plus {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.arch-learn {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.arch-packet {
+  fill: var(--primary);
+  filter: drop-shadow(0 0 6px var(--primary));
+}
+
+.arch-packet-back {
+  fill: var(--foreground);
+  filter: drop-shadow(0 0 6px var(--foreground));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .arch-flow path {
+    animation: arch-dash 1s linear infinite;
+  }
+
+  .arch-flow-back path {
+    animation-direction: normal;
+  }
+
+  .arch-pulse {
+    animation: arch-pulse 3.2s ease-in-out infinite;
+    transform-origin: 930px 445px;
+  }
+
+  @keyframes arch-dash {
+    to {
+      stroke-dashoffset: -16;
+    }
+  }
+
+  @keyframes arch-pulse {
+    50% {
+      scale: 1.2;
+      opacity: 0.6;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arch-packet {
+    display: none;
   }
 }
 

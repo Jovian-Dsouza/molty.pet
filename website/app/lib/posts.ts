@@ -129,3 +129,20 @@ export async function fetchPost(id: string): Promise<Post | null> {
     return null
   }
 }
+
+/** A build post, optionally with the reply Molty's own account posted under it. */
+export interface ThreadRef {
+  id: string
+  reply?: string
+}
+
+export interface Thread {
+  post: Post
+  reply: Post | null
+}
+
+/** Fetches a post and its reply together. A missing post drops the thread; a missing reply only drops the reply. */
+export async function fetchThread(ref: ThreadRef): Promise<Thread | null> {
+  const [post, reply] = await Promise.all([fetchPost(ref.id), ref.reply ? fetchPost(ref.reply) : null])
+  return post ? { post, reply } : null
+}

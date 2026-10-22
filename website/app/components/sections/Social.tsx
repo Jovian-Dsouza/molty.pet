@@ -1,36 +1,74 @@
 import Image from 'next/image'
 import { ArrowUpRight, Heart, MessageCircle, Trophy } from 'lucide-react'
 import { LINKS, SOCIAL } from '@/app/content'
-import { fetchPost, type Post } from '@/app/lib/posts'
+import { fetchPost, fetchThread, type Post, type Thread } from '@/app/lib/posts'
 import { SectionHeading } from '../SectionHeading'
 
 const dateFormat = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
 const countFormat = new Intl.NumberFormat('en-US', { notation: 'compact' })
 
-function PostCard({ post }: { post: Post }) {
+function PostText({ post, className = '' }: { post: Post; className?: string }) {
+  return (
+    <p className={`whitespace-pre-line ${className}`}>
+      {post.parts.map((part, i) =>
+        part.href ? (
+          <a key={i} href={part.href} target="_blank" rel="noreferrer" className="post-link">
+            {part.text}
+          </a>
+        ) : (
+          <span key={i}>{part.text}</span>
+        ),
+      )}
+    </p>
+  )
+}
+
+function Author({ post, size }: { post: Post; size: 24 | 40 }) {
+  return (
+    <>
+      {post.avatar && (
+        <Image
+          src={post.avatar}
+          alt=""
+          width={size}
+          height={size}
+          className="shrink-0 rounded-full border border-border"
+          style={{ width: size, height: size }}
+        />
+      )}
+      <div className="min-w-0">
+        <p className="truncate font-semibold">{post.name}</p>
+        <p className="truncate text-sm text-muted-foreground">@{post.handle}</p>
+      </div>
+    </>
+  )
+}
+
+/** Molty's own reply, nested under the post it answered. */
+function MoltyReply({ reply }: { reply: Post }) {
+  return (
+    <div className="post-reply">
+      <header className="flex items-center gap-2.5 text-sm">
+        <Author post={reply} size={24} />
+        <a href={reply.url} target="_blank" rel="noreferrer" className="post-reply-tag focus-ring">
+          {SOCIAL.molty.replied}
+        </a>
+      </header>
+      <PostText post={reply} className="mt-2 text-[0.9375rem] leading-6" />
+    </div>
+  )
+}
+
+function PostCard({ post, reply = null }: Thread | { post: Post; reply?: null }) {
   return (
     <article className="post-card">
       <header className="flex items-center gap-3">
-        {post.avatar && (
-          <Image src={post.avatar} alt="" width={40} height={40} className="size-10 rounded-full border border-border" />
-        )}
-        <div className="min-w-0">
-          <p className="truncate font-semibold">{post.name}</p>
-          <p className="truncate text-sm text-muted-foreground">@{post.handle}</p>
-        </div>
+        <Author post={post} size={40} />
       </header>
 
-      <p className="mt-4 flex-1 whitespace-pre-line leading-7">
-        {post.parts.map((part, i) =>
-          part.href ? (
-            <a key={i} href={part.href} target="_blank" rel="noreferrer" className="post-link">
-              {part.text}
-            </a>
-          ) : (
-            <span key={i}>{part.text}</span>
-          ),
-        )}
-      </p>
+      <PostText post={post} className="mt-4 leading-7" />
+      {reply && <MoltyReply reply={reply} />}
+      <div className="flex-1" />
 
       <footer className="post-meta">
         <time dateTime={post.date}>{dateFormat.format(new Date(post.date))}</time>
@@ -57,6 +95,9 @@ function Milestone() {
   const { milestone } = SOCIAL
   return (
     <article className="post-card milestone-card">
+      <div className="milestone-photo">
+        <Image src={milestone.image} alt={milestone.imageAlt} fill sizes="(min-width: 1024px) 33vw, 100vw" />
+      </div>
       <Trophy aria-hidden="true" className="size-6 text-primary" />
       <p className="mt-5 text-sm text-muted-foreground">{milestone.event}</p>
       <p className="mt-1 text-2xl font-semibold tracking-tight">{milestone.result}</p>
@@ -69,17 +110,35 @@ function Milestone() {
   )
 }
 
-/** Build-in-public wall: real posts from X, plus milestones. */
+/** Posts from people talking about Molty. Renders nothing until there are some. */
+function Praise({ posts }: { posts: readonly Post[] }) {
+  if (posts.length === 0) return null
+  return (
+    <div className="mt-16">
+      <h3 className="text-sm font-semibold tracking-wide text-muted-foreground uppercase">{SOCIAL.praise.title}</h3>
+      <div className="post-wall mt-6">
+        {posts.map((post) => (
+          <PostCard key={post.id} post={post} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const isPresent = <T,>(value: T | null): value is T => value !== null
+
+/** Build-in-public wall: real posts from X with Molty's own replies, what people say, and milestones. */
 export async function Social() {
-  const posts = (await Promise.all(SOCIAL.posts.map(fetchPost))).filter((p): p is Post => p !== null)
+  const [threads, praise] = await Promise.all([
+    Promise.all(SOCIAL.posts.map(fetchThread)).then((all) => all.filter(isPresent)),
+    Promise.all(SOCIAL.praise.posts.map(fetchPost)).then((all) => all.filter(isPresent)),
+  ])
 
   return (
     <section id="social" className="section scroll-mt-20">
       <div className="site-shell">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading title={SOCIAL.title}>
-            <p>{SOCIAL.body}</p>
-          </SectionHeading>
+          <SectionHeading title={SOCIAL.title} />
           <a href={LINKS.productX} target="_blank" rel="noreferrer" className="button button-secondary">
             {SOCIAL.follow}
             <ArrowUpRight aria-hidden="true" className="size-4" />
@@ -87,11 +146,13 @@ export async function Social() {
         </div>
 
         <div className="post-wall mt-12">
-          {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
+          {threads.map((thread) => (
+            <PostCard key={thread.post.id} {...thread} />
           ))}
           <Milestone />
         </div>
+
+        <Praise posts={praise} />
       </div>
     </section>
   )

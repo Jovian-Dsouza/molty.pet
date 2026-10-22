@@ -49,12 +49,22 @@ export const STAGE = {
 } as const
 
 export const SOCIAL = {
-  title: 'Built in public, one post at a time.',
-  body: 'Every Molty build, test, and stumble goes up on X as it happens. Follow along, or tell us what Molty should learn next.',
-  follow: 'Follow @moltypet',
-  /** Post IDs from x.com, oldest first. Fetched at build time; add more to grow the wall. */
-  posts: ['2077026876728676777', '2078107900359356547'],
+  title: 'Built in public.',
+  follow: 'Follow the journey',
+  /**
+   * Build posts from x.com, oldest first. `reply` is the ID of the post @moltypet
+   * replied with under it; it shows nested in the card. Fetched at build time.
+   */
+  posts: [{ id: '2077026876728676777' }, { id: '2078107900359356547' }],
+  molty: { replied: 'replied on its own' },
+  praise: {
+    title: 'What people are saying',
+    /** Post IDs from people talking about Molty. The row stays hidden while this is empty. */
+    posts: [] as readonly string[],
+  },
   milestone: {
+    image: '/social/hackmoney-molty.jpg',
+    imageAlt: 'Molty’s first body: a red 3D-printed robot on tank treads, with a face on its screen and one claw raised.',
     event: 'ETHGlobal HackMoney 2026',
     result: '2nd place, Yellow track',
     body: 'Molty’s first body, a wheeled desk robot with claws, won a prize for handling crypto bets and swaps by voice.',
@@ -63,41 +73,11 @@ export const SOCIAL = {
   },
 } as const
 
-export const ABILITIES = {
-  title: 'What Molty does today.',
-  body: 'Your agents already write code, research, and keep track of things, in a tab you forgot about. Molty puts that work on your desk, where you can see it.',
-  items: [
-    {
-      title: 'Moves',
-      body: '19 built-in motions: walk, turn, wave, dance, bow, push-ups, even the worm. They run on the robot, so it reacts instantly.',
-    },
-    {
-      title: 'Listens',
-      body: 'Say “Hey Molty” and talk. The wake word runs on the robot, and echo cancellation keeps Molty from hearing itself.',
-    },
-    {
-      title: 'Shows how it feels',
-      body: 'Every reply comes with body language: a dance for good news, a shrug when it isn’t sure, a bow to say goodnight.',
-    },
-    {
-      title: 'Gets work done',
-      body: 'Behind the face is your Hermes agent. Ask for code, research, or reminders and it does the work in the cloud.',
-    },
-  ],
-} as const
-
 export const FLOW = {
   title: 'From your voice to its legs.',
-  steps: [
-    { title: 'You ask', body: 'Say “Hey Molty” and ask for something, the way you’d ask a teammate.' },
-    { title: 'Molty hands it off', body: 'The request goes to your Hermes agent in the cloud. Nothing to install or keep running.' },
-    { title: 'Hermes does the work', body: 'Code, research, reminders: whatever your agent can do, with its own memory and tools.' },
-    { title: 'Molty reports back', body: 'It tells you how it went and moves to match: a nod, a shrug, or a dance.' },
-  ],
-  note: {
-    title: 'Fast reflexes, slow thoughts.',
-    body: 'The body never waits on the cloud. Motion runs on the Pi, and the agent can only pick from named, tested moves, never raw servo angles. Smart in the cloud, safe on your desk.',
-  },
+  caption: 'Your words leave the robot as text. The answer comes back as a named, tested move.',
+  agents: ['Hermes', 'OpenClaw', 'Claude Code', 'Any agent'],
+  alt: 'Diagram. You speak to Molty. On the robot, a local voice model hears “Hey Molty” and turns speech into text. The text goes to a cloud agent that holds your memory: Hermes, OpenClaw, Claude Code, or any other. The agent replies with a named move, the robot picks it and drives its servos and face, and the memory grows with every task.',
 } as const
 
 export const PLAY = {
@@ -125,22 +105,6 @@ export const AUDIENCES = {
       body: 'Train walking gaits in the MuJoCo simulation, then try them on a real eight-servo body.',
       cta: { label: 'Open the simulation', href: `${LINKS.github}/tree/main/simulation`, external: true },
     },
-  ],
-} as const
-
-export const SPECS = {
-  title: 'The real one, on the bench.',
-  body: 'The same robot, built and walking. Here is what runs it.',
-  photoAlt: 'Molty, a red four-legged robot with a Raspberry Pi on its back, standing on a workbench',
-  items: [
-    { label: 'Compute', value: 'Raspberry Pi Zero 2 W' },
-    { label: 'Actuators', value: '8 servos on a PCA9685 driver' },
-    { label: 'Motion', value: '19 named actions, run on-device' },
-    { label: 'Voice', value: 'Microphone and speaker, “Hey Molty” wake word' },
-    { label: 'Agent', value: 'Hermes Agent, hosted in the cloud' },
-    { label: 'Connectivity', value: 'WiFi' },
-    { label: 'Body', value: '3D-printed and repairable' },
-    { label: 'Software', value: 'Source-available on GitHub' },
   ],
 } as const
 

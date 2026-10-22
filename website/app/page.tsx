@@ -3,12 +3,10 @@ import { CartDrawer } from './components/cart/CartDrawer'
 import { Header } from './components/sections/Header'
 import { Hero } from './components/sections/Hero'
 import { Social } from './components/sections/Social'
-import { Abilities } from './components/sections/Abilities'
 import { Teardown } from './components/sections/Teardown'
 import { Flow } from './components/sections/Flow'
 import { Playground } from './components/sections/Playground'
 import { Audiences } from './components/sections/Audiences'
-import { Specs } from './components/sections/Specs'
 import { GetYours } from './components/sections/GetYours'
 import { Faq } from './components/sections/Faq'
 import { Closing } from './components/sections/Closing'
@@ -25,11 +23,9 @@ export default function Home() {
         <Hero />
         <Teardown />
         <Social />
-        <Abilities />
         <Flow />
         <Playground />
         <Audiences />
-        <Specs />
         <GetYours />
         <Faq />
         <Closing />

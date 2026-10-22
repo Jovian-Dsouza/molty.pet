@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest'
-import { toPost } from './posts'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { fetchThread, toPost } from './posts'
 
 const tweet = {
   id_str: '2078107900359356547',
@@ -60,5 +60,51 @@ describe('toPost', () => {
 
   it('treats a missing reply count as zero', () => {
     expect(toPost({ ...tweet, conversation_count: undefined })?.replies).toBe(0)
+  })
+})
+
+describe('fetchThread', () => {
+  const reply = {
+    ...tweet,
+    id_str: '2078200000000000000',
+    text: '@DsouzaJovian Day 3 and my legs already work better than my jokes.',
+    display_text_range: [14, 67],
+    entities: {},
+    user: { ...tweet.user, name: 'Molty', screen_name: 'moltypet' },
+  }
+
+  const stubX = (byId: Record<string, unknown>) =>
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) => {
+        const body = byId[new URL(url).searchParams.get('id') ?? '']
+        return body ? new Response(JSON.stringify(body)) : new Response('', { status: 404 })
+      }),
+    )
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+    vi.restoreAllMocks()
+  })
+
+  it('pairs a post with Molty’s reply', async () => {
+    stubX({ [tweet.id_str]: tweet, [reply.id_str]: reply })
+    const thread = await fetchThread({ id: tweet.id_str, reply: reply.id_str })
+    expect(thread?.post.id).toBe(tweet.id_str)
+    expect(thread?.reply?.handle).toBe('moltypet')
+    expect(thread?.reply?.parts.map((p) => p.text).join('')).toBe('Day 3 and my legs already work better than my jokes.')
+  })
+
+  it('keeps the post when the reply is missing or fails', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    stubX({ [tweet.id_str]: tweet })
+    expect((await fetchThread({ id: tweet.id_str }))?.reply).toBeNull()
+    expect((await fetchThread({ id: tweet.id_str, reply: '404' }))?.reply).toBeNull()
+  })
+
+  it('drops the thread when the post itself fails', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    stubX({ [reply.id_str]: reply })
+    expect(await fetchThread({ id: tweet.id_str, reply: reply.id_str })).toBeNull()
   })
 })
