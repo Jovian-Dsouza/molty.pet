@@ -7,7 +7,6 @@ import { Teardown } from './components/sections/Teardown'
 import { Flow } from './components/sections/Flow'
 import { Playground } from './components/sections/Playground'
 import { Audiences } from './components/sections/Audiences'
-import { GetYours } from './components/sections/GetYours'
 import { Faq } from './components/sections/Faq'
 import { Closing } from './components/sections/Closing'
 import { Footer } from './components/sections/Footer'
@@ -26,7 +25,6 @@ export default function Home() {
         <Flow />
         <Playground />
         <Audiences />
-        <GetYours />
         <Faq />
         <Closing />
       </main>

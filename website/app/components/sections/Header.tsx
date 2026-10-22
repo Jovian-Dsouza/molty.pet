@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { NAV } from '@/app/content'
+import { AddToCartButton } from '../cart/AddToCartButton'
 import { CartButton } from '../cart/CartButton'
 
 export function Header() {
@@ -20,9 +21,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <a href="#buy" className="button button-primary hidden sm:inline-flex">
-            Pre-order
-          </a>
+          <AddToCartButton className="hidden sm:inline-flex">Pre-order</AddToCartButton>
           <CartButton />
         </div>
       </div>

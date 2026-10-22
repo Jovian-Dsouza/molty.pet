@@ -92,7 +92,7 @@ export const AUDIENCES = {
     {
       title: 'You work with agents',
       body: 'You already hand work to an AI agent. Molty lets you do it out loud and tells you the moment it’s done.',
-      cta: { label: 'Pre-order Molty', href: '#buy', external: false },
+      cta: { label: 'Pre-order Molty', href: '#main', external: false },
     },
     {
       title: 'You like to build',
@@ -105,27 +105,6 @@ export const AUDIENCES = {
       cta: { label: 'Open the simulation', href: `${LINKS.github}/tree/main/simulation`, external: true },
     },
   ],
-} as const
-
-export const OFFER = {
-  title: 'Two ways to bring Molty home.',
-  diy: {
-    tag: 'For makers',
-    title: 'Build your own',
-    body: 'The firmware is public on GitHub. Grab a Pi and some servos, and build along as parts and guides are published. Free for personal, noncommercial builds.',
-    cta: 'View on GitHub',
-  },
-  assembled: {
-    tag: 'First batch pre-order',
-    title: 'Molty, assembled',
-    body: 'Built, calibrated, and ready for your Hermes agent. Plug it in and say hi.',
-    includes: [
-      'Assembled and calibrated robot',
-      'Voice and wake word ready to go',
-      'Connects to your cloud Hermes agent',
-      'No payment today: we confirm by email',
-    ],
-  },
 } as const
 
 export const FAQ = [
