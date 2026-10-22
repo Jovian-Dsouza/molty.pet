@@ -74,8 +74,7 @@ export const SOCIAL = {
 } as const
 
 export const FLOW = {
-  title: 'From your voice to its legs.',
-  caption: 'Your words leave the robot as text. The answer comes back as a named, tested move.',
+  title: 'From your voice to interactive actions.',
   agents: ['Hermes', 'OpenClaw', 'Claude Code', 'Any agent'],
   alt: 'Diagram. You speak to Molty. On the robot, a local voice model hears “Hey Molty” and turns speech into text. The text goes to a cloud agent that holds your memory: Hermes, OpenClaw, Claude Code, or any other. The agent replies with a named move, the robot picks it and drives its servos and face, and the memory grows with every task.',
 } as const

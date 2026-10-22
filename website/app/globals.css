@@ -1146,7 +1146,7 @@ button {
 
   .arch-pulse {
     animation: arch-pulse 3.2s ease-in-out infinite;
-    transform-origin: 930px 445px;
+    transform-origin: 930px 540px;
   }
 
   @keyframes arch-dash {
